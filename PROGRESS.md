@@ -221,7 +221,70 @@
 
 ---
 
-## 📋 Phase 7: Advanced Features (Следующая)
+## ✅ Phase 7: Advanced Features [ЗАВЕРШЕНО 100%]
+
+### Image Upload System:
+- [x] **Supabase Storage** configured
+  - avatars bucket (5MB limit)
+  - portfolio bucket (10MB limit)
+  - RLS policies for security
+- [x] **ImageUpload** component
+  - File validation (type, size)
+  - Preview functionality
+  - Upload to Supabase Storage
+  - Delete functionality
+  - Loading states
+
+### Profile Enhancements:
+- [x] **Profile page** avatar upload
+  - Dialog with ImageUpload
+  - Avatar display in header
+  - Update profile.avatar_url
+- [x] **PortfolioManagement** component
+  - Multiple image uploads
+  - Gallery view
+  - Individual image deletion
+  - Stored in vendor_profiles.portfolio_images
+
+### Email Notifications:
+- [x] **send-email-notification** edge function
+  - Booking confirmation emails
+  - Booking cancellation emails
+  - Payment confirmation emails
+  - Event reminders
+  - HTML email templates
+  - Respects user preferences
+  - Ready for production email service integration
+
+### PDF Export:
+- [x] **export-wedding-plan-pdf** edge function
+  - Wedding plan details
+  - Budget breakdown with visual bar
+  - Bookings table with vendor info
+  - Guests list with statuses
+  - Styled HTML output
+  - Download as HTML file
+- [x] **ExportPDFButton** component
+  - Integrated in Planner page
+  - Loading states
+  - Error handling
+
+### Storage Buckets:
+- [x] avatars bucket created
+- [x] portfolio bucket created
+- [x] Public read access
+- [x] User-specific write policies
+- [x] Vendor-only portfolio upload
+- [x] File size limits
+- [x] MIME type restrictions
+
+### Edge Functions:
+- [x] send-email-notification
+- [x] export-wedding-plan-pdf
+
+---
+
+## 📋 Phase 8: Mobile & Polish (Следующая)
 
 ### Pending Tasks:
 - [ ] Real-time notifications (Supabase Realtime)

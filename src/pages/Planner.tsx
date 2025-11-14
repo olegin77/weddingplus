@@ -8,6 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { GuestList } from "@/components/GuestList";
 import { CreateWeddingPlanDialog } from "@/components/CreateWeddingPlanDialog";
+import ExportPDFButton from "@/components/ExportPDFButton";
 
 const Planner = () => {
   const [activeTab, setActiveTab] = useState("checklist");
@@ -73,11 +74,17 @@ const Planner = () => {
   return (
     <DashboardLayout>
       <div className="max-w-7xl mx-auto space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold">Мой свадебный план</h1>
-          <p className="text-muted-foreground">
-            {weddingPlan.theme || "Ваша идеальная свадьба"}
-          </p>
+        <div className="flex justify-between items-start">
+          <div>
+            <h1 className="text-3xl font-bold">Мой свадебный план</h1>
+            <p className="text-muted-foreground">
+              {weddingPlan.theme || "Ваша идеальная свадьба"}
+            </p>
+          </div>
+          <ExportPDFButton 
+            planId={weddingPlan.id} 
+            planName={weddingPlan.theme || 'plan'}
+          />
         </div>
 
         <Card>

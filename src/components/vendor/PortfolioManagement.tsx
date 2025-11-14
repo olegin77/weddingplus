@@ -6,13 +6,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Camera, Save } from "lucide-react";
+import { Camera, Save, X } from "lucide-react";
+import ImageUpload from "@/components/ImageUpload";
 
 export const PortfolioManagement = () => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [vendorProfile, setVendorProfile] = useState<any>(null);
+  const [portfolioImages, setPortfolioImages] = useState<string[]>([]);
   const [formData, setFormData] = useState({
     business_name: "",
     description: "",
@@ -45,6 +47,7 @@ export const PortfolioManagement = () => {
         }
       } else {
         setVendorProfile(data);
+        setPortfolioImages(data.portfolio_images || []);
         setFormData({
           business_name: data.business_name || "",
           description: data.description || "",
@@ -112,6 +115,49 @@ export const PortfolioManagement = () => {
       });
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handlePortfolioImageUpload = async (url: string) => {
+    const updatedImages = [...portfolioImages, url];
+    setPortfolioImages(updatedImages);
+
+    const { error } = await supabase
+      .from("vendor_profiles")
+      .update({ portfolio_images: updatedImages })
+      .eq("id", vendorProfile.id);
+
+    if (error) {
+      toast({
+        variant: "destructive",
+        title: "Ошибка",
+        description: "Не удалось добавить изображение",
+      });
+      setPortfolioImages(portfolioImages);
+    }
+  };
+
+  const handleRemovePortfolioImage = async (url: string) => {
+    const updatedImages = portfolioImages.filter(img => img !== url);
+    setPortfolioImages(updatedImages);
+
+    const { error } = await supabase
+      .from("vendor_profiles")
+      .update({ portfolio_images: updatedImages })
+      .eq("id", vendorProfile.id);
+
+    if (error) {
+      toast({
+        variant: "destructive",
+        title: "Ошибка",
+        description: "Не удалось удалить изображение",
+      });
+      setPortfolioImages(portfolioImages);
+    } else {
+      toast({
+        title: "Удалено",
+        description: "Изображение удалено из портфолио",
+      });
     }
   };
 
@@ -202,16 +248,47 @@ export const PortfolioManagement = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle>Портфолио</CardTitle>
+          <CardTitle>Портфолио ({portfolioImages.length})</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="border-2 border-dashed rounded-lg p-12 text-center">
-            <Camera className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-            <p className="text-muted-foreground mb-4">Загрузка изображений в разработке</p>
-            <Button variant="outline" disabled>
-              Загрузить фото
-            </Button>
-          </div>
+        <CardContent className="space-y-4">
+          {/* Existing Portfolio Images */}
+          {portfolioImages.length > 0 && (
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {portfolioImages.map((url, index) => (
+                <div key={index} className="relative group">
+                  <img
+                    src={url}
+                    alt={`Portfolio ${index + 1}`}
+                    className="w-full h-40 object-cover rounded-lg"
+                  />
+                  <Button
+                    variant="destructive"
+                    size="icon"
+                    className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                    onClick={() => handleRemovePortfolioImage(url)}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Upload New Image */}
+          {vendorProfile && (
+            <ImageUpload
+              bucket="portfolio"
+              userId={vendorProfile.user_id}
+              onUploadComplete={handlePortfolioImageUpload}
+              maxSize={10}
+            />
+          )}
+
+          {!vendorProfile && (
+            <p className="text-sm text-muted-foreground">
+              Сначала сохраните основную информацию профиля
+            </p>
+          )}
         </CardContent>
       </Card>
     </div>

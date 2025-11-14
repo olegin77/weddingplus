@@ -10,8 +10,99 @@
 ## [Unreleased]
 
 ### Planned
-- Advanced features (Phase 7)
-- Mobile app (Phase 8)
+- Mobile optimizations (Phase 8)
+- PWA features (Phase 9)
+
+---
+
+## [0.7.0] - 2025-11-14
+
+### Added - Advanced Features (Image Upload, Email, PDF Export)
+
+- **Supabase Storage Integration**
+  - Created avatars bucket (5MB limit, public read)
+  - Created portfolio bucket (10MB limit, public read)
+  - RLS policies for secure file access
+  - User-specific upload/delete permissions
+  - Vendor-only portfolio uploads
+  - File type restrictions (JPEG, PNG, WebP)
+  
+- **ImageUpload Component**
+  - Universal image upload component
+  - File validation (size, type)
+  - Image preview before upload
+  - Upload to Supabase Storage
+  - Delete functionality
+  - Loading states
+  - Error handling with toasts
+  - Support for single/multiple uploads
+  
+- **Profile Avatar System**
+  - Avatar upload dialog in Profile page
+  - ImageUpload integration
+  - Updates profile.avatar_url
+  - Display in profile header
+  - Fallback to initials
+  
+- **Vendor Portfolio Management**
+  - Multiple portfolio image uploads
+  - Gallery grid view
+  - Individual image deletion
+  - Stores in vendor_profiles.portfolio_images array
+  - Visual feedback on hover
+  - Requires profile creation first
+  
+- **Email Notification System**
+  - `send-email-notification` edge function
+  - HTML email templates for:
+    - Booking confirmations
+    - Booking cancellations
+    - Event reminders (7 days before)
+    - Payment confirmations
+  - Respects user notification preferences
+  - Ready for integration with:
+    - Resend
+    - SendGrid
+    - AWS SES
+    - Mailgun
+  - Currently logs emails for development
+  
+- **PDF Export Feature**
+  - `export-wedding-plan-pdf` edge function
+  - Exports complete wedding plan to HTML
+  - Includes:
+    - Plan details (date, venue, theme, guests)
+    - Budget breakdown with visual progress bar
+    - Bookings table with vendor names
+    - Guest list with RSVP statuses
+    - Custom notes
+  - Professional styling with rose gold theme
+  - Download as HTML file
+  - ExportPDFButton component in Planner
+  - Loading states and error handling
+
+### Changed
+- Enhanced Profile page with avatar upload
+- Improved PortfolioManagement with functional image gallery
+- Updated Planner page with PDF export button
+- Added ImageUpload import to Profile and PortfolioManagement
+
+### Database Changes
+- Created avatars storage bucket
+- Created portfolio storage bucket
+- Added storage RLS policies for both buckets
+
+### Edge Functions
+- Added send-email-notification (public endpoint)
+- Added export-wedding-plan-pdf (protected endpoint)
+- Updated config.toml with new functions
+
+### Technical
+- File uploads use Supabase Storage API
+- Images stored with user ID in path structure
+- Public URLs for avatar/portfolio display
+- Cache control headers for performance
+- Upsert disabled to prevent overwrites
 
 ---
 

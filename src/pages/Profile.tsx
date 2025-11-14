@@ -7,14 +7,17 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { User, Mail, Phone, Camera } from "lucide-react";
+import ImageUpload from "@/components/ImageUpload";
 
 const Profile = () => {
   const { toast } = useToast();
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [showAvatarDialog, setShowAvatarDialog] = useState(false);
   
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
@@ -69,6 +72,28 @@ const Profile = () => {
     setSaving(false);
   };
 
+  const handleAvatarUpload = async (url: string) => {
+    const { error } = await supabase
+      .from("profiles")
+      .update({ avatar_url: url })
+      .eq("id", profile.id);
+
+    if (error) {
+      toast({
+        variant: "destructive",
+        title: "Ошибка",
+        description: "Не удалось обновить аватар",
+      });
+    } else {
+      toast({
+        title: "Успешно!",
+        description: "Аватар обновлён",
+      });
+      setShowAvatarDialog(false);
+      fetchProfile();
+    }
+  };
+
   if (loading) {
     return (
       <DashboardLayout>
@@ -107,13 +132,29 @@ const Profile = () => {
                     {initials || "?"}
                   </AvatarFallback>
                 </Avatar>
-                <Button
-                  size="icon"
-                  variant="secondary"
-                  className="absolute bottom-0 right-0 rounded-full w-8 h-8"
-                >
-                  <Camera className="w-4 h-4" />
-                </Button>
+                <Dialog open={showAvatarDialog} onOpenChange={setShowAvatarDialog}>
+                  <DialogTrigger asChild>
+                    <Button
+                      size="icon"
+                      variant="secondary"
+                      className="absolute bottom-0 right-0 rounded-full w-8 h-8"
+                    >
+                      <Camera className="w-4 h-4" />
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Изменить аватар</DialogTitle>
+                    </DialogHeader>
+                    <ImageUpload
+                      bucket="avatars"
+                      userId={profile?.id}
+                      currentImage={profile?.avatar_url}
+                      onUploadComplete={handleAvatarUpload}
+                      maxSize={5}
+                    />
+                  </DialogContent>
+                </Dialog>
               </div>
 
               <div className="flex-1">

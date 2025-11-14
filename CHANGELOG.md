@@ -10,9 +10,94 @@
 ## [Unreleased]
 
 ### Planned
-- AI integration services (Phase 4)
 - Payment integration (Phase 5)
-- Mobile app (Phase 6)
+- Real-time notifications (Phase 6)
+- Mobile app (Phase 7)
+
+---
+
+## [0.5.0] - 2025-11-14
+
+### Added
+- **Lovable AI Integration**
+  - Enabled Lovable AI Gateway with Gemini 2.5 Flash
+  - Auto-configured LOVABLE_API_KEY secret
+  - Ready for production AI features
+  
+- **wedding-assistant Edge Function**
+  - General wedding planning chat assistant
+  - Budget advisory with detailed breakdowns
+  - Vendor recommendations with priorities
+  - Timeline planning assistance
+  - Context-aware AI responses
+  - Rate limiting (429/402) error handling
+  - Multiple conversation types support
+  
+- **AIAssistant Component**
+  - Real-time chat interface with AI
+  - Message history management
+  - Streaming responses support
+  - Loading and error states
+  - Type-specific system prompts
+  - Auto-scroll to latest messages
+  - User-friendly UI with Bot icon
+  
+- **BudgetCalculator Component**
+  - Budget input form
+  - Guest count and style inputs
+  - Location specification
+  - AI-powered budget distribution
+  - Dialog integration with chat
+  - Percentage-based allocations
+  - Category breakdowns
+  
+- **VendorRecommendations Component**
+  - Wedding style preferences
+  - Budget range input
+  - Priority specification textarea
+  - AI analysis and suggestions
+  - Booking timeline guidance
+  - Vendor selection tips
+  
+- **AI Assistant Page (/ai-assistant)**
+  - Tabbed interface with 3 sections
+  - General chat tab
+  - Budget calculator tab with guide
+  - Vendor recommendations tab with tips
+  - How-it-works documentation
+  - Priority timeline cards
+  
+### Changed
+- Updated Dashboard quick actions
+  - Added "AI Помощник" button
+  - Replaced guest management with AI assistant
+  - Added Sparkles icon for AI features
+  
+- Enhanced AppSidebar navigation
+  - Added "AI Помощник" menu item for couples
+  - Positioned between Planner and Profile
+  - Uses Sparkles icon
+  
+- Updated App.tsx routing
+  - Added /ai-assistant protected route
+  - Imported AIAssistantPage component
+
+### Features
+- ✅ Conversational AI wedding planning
+- ✅ Smart budget distribution with AI
+- ✅ Vendor recommendation system
+- ✅ Timeline planning assistance
+- ✅ Multi-type conversation support
+- ✅ Error recovery and rate limiting
+- ✅ Dialog-based AI interactions
+
+### Technical
+- Edge function uses Lovable AI Gateway
+- Model: google/gemini-2.5-flash
+- Temperature: 0.7 for creativity
+- Max tokens: 1000 per response
+- CORS enabled for all origins
+- Proper error handling with user-friendly messages
 
 ---
 

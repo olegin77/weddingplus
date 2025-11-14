@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { DashboardLayout } from "@/components/DashboardLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Calendar, DollarSign, Users, ShoppingBag } from "lucide-react";
+import { Calendar, DollarSign, Users, ShoppingBag, Sparkles } from "lucide-react";
 import { CreateWeddingPlanDialog } from "@/components/CreateWeddingPlanDialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
@@ -165,9 +165,9 @@ const Dashboard = () => {
                   <ShoppingBag className="mr-2 h-4 w-4" />
                   Найти поставщиков
                 </Button>
-                <Button className="w-full" variant="outline" onClick={() => navigate("/planner")}>
-                  <Users className="mr-2 h-4 w-4" />
-                  Управление гостями
+                <Button className="w-full" variant="outline" onClick={() => navigate("/ai-assistant")}>
+                  <Sparkles className="mr-2 h-4 w-4" />
+                  AI Помощник
                 </Button>
               </>
             )}

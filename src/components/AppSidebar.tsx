@@ -6,7 +6,8 @@ import {
   Settings,
   Heart,
   LogOut,
-  Briefcase
+  Briefcase,
+  Sparkles
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -32,6 +33,7 @@ const coupleMenuItems = [
   { title: "Главная", url: "/dashboard", icon: Home },
   { title: "Маркетплейс", url: "/marketplace", icon: ShoppingBag },
   { title: "Мой план", url: "/planner", icon: Calendar },
+  { title: "AI Помощник", url: "/ai-assistant", icon: Sparkles },
   { title: "Профиль", url: "/profile", icon: User },
   { title: "Настройки", url: "/settings", icon: Settings },
 ];

@@ -16,6 +16,161 @@
 
 ---
 
+## [0.11.0] - 2025-11-14
+
+### Added - Guest RSVP Portal
+
+- **Database Schema**
+  - Created guest_invitations table
+  - Unique token generation per invitation
+  - Foreign keys: guest_id, wedding_plan_id
+  - Tracking fields: sent_at, viewed_at, responded_at
+  - Custom message field for personalization
+  - RLS policies for couples and public access
+  - Indexes for performance (token, guest_id, wedding_plan_id)
+  - Auto-update trigger for updated_at
+
+- **Public RSVP Page (/rsvp/:token)**
+  - Beautiful wedding-themed design with gradients
+  - No authentication required
+  - Dynamic guest name personalization
+  - Wedding details display:
+    - Date with full formatting (Russian locale)
+    - Venue location
+    - Theme information
+  - Couple name fetched from profiles
+  - Custom invitation message display
+  - Heart icon branding throughout
+  - Mobile-responsive layout
+
+- **RSVP Form Features**
+  - **Attendance Selection** (Required)
+    - Radio buttons: "Да, с радостью приду!" / "К сожалению, не смогу" / "Пока не уверен(-а)"
+    - Updates guest.attendance_status
+  - **Plus One Handling**
+    - Conditional display (only if plus_one_allowed)
+    - Checkbox to enable bringing plus one
+    - Text input for plus one name
+    - Auto-saves to guest.plus_one_name
+  - **Dietary Restrictions**
+    - Multi-line textarea for allergies and preferences
+    - Optional field
+    - Saves to guest.dietary_restrictions
+  - **Auto-tracking**
+    - viewed_at timestamp on page load
+    - responded_at timestamp on form submission
+    - Real-time guest data updates
+
+- **Success Confirmation**
+  - Beautiful thank you page after submission
+  - CheckCircle icon animation
+  - Conditional message based on attendance
+  - Wedding date reminder
+  - Heart icon with primary color fill
+
+- **InvitationManager Component**
+  - **Bulk Invitation Generation**
+    - Multi-select guests without invitations
+    - "Select all" button for convenience
+    - Custom message textarea (optional)
+    - Unique token generation (base36 + timestamp)
+    - Bulk insert into database
+    - Success toast with count
+  - **Invitations Table**
+    - Comprehensive guest list view
+    - Email display (with fallback)
+    - Status badges with visual indicators:
+      - "Не отправлено" (outline)
+      - "Создано" (outline)
+      - "Отправлено" (default)
+      - "Просмотрено" (secondary)
+      - "Ответил" (green)
+    - Attendance response display:
+      - "Придет" (green with CheckCircle)
+      - "Не придет" (red)
+      - "Думает" (yellow with Clock)
+    - Action buttons:
+      - Copy link (with toast confirmation)
+      - View link dialog
+    - Checkboxes for bulk selection
+
+- **Link Management**
+  - Copy to clipboard functionality
+  - Full URL generation with domain
+  - View link dialog with formatted display
+  - Toast notifications on copy
+
+### Changed
+
+- **Planner Page**
+  - Added "Приглашения" tab to existing tabs
+  - Tab order: Чек-лист → Гости → Приглашения
+  - Integrated InvitationManager component
+  - Wedding plan ID passed to manager
+
+- **App Routing**
+  - Added public route /rsvp/:token
+  - Positioned before protected routes
+  - No ProtectedRoute wrapper (public access)
+
+### Technical Details
+
+- **Security**
+  - RLS policies allow couples to manage their invitations
+  - Public can view/update by token only
+  - No direct guest_id exposure
+  - Cascade delete on guest/plan removal
+
+- **Performance**
+  - Indexed token lookups (O(1) access)
+  - Indexed guest_id and wedding_plan_id
+  - Efficient join queries for status display
+  - Optimized bulk operations
+
+- **UX Enhancements**
+  - Loading states throughout
+  - Error handling with toast notifications
+  - Form validation (attendance required)
+  - Auto-populate existing responses
+  - Responsive design (mobile-first)
+  - Gradient backgrounds for elegance
+
+- **Data Flow**
+  1. Couple creates invitations via InvitationManager
+  2. Unique token generated per guest
+  3. Link shared with guest (manual or email)
+  4. Guest opens /rsvp/:token (viewed_at tracked)
+  5. Guest fills form and submits (responded_at tracked)
+  6. Updates reflected in InvitationManager table
+  7. Couple sees status and attendance in real-time
+
+### User Experience
+
+- **For Couples**
+  - Easy bulk invitation creation
+  - Visual status tracking
+  - Quick link sharing
+  - Real-time response monitoring
+  - Copy-paste ready links
+
+- **For Guests**
+  - Simple, beautiful RSVP page
+  - No account needed
+  - Mobile-friendly form
+  - Clear wedding details
+  - Dietary preferences support
+  - Plus one management
+  - Confirmation feedback
+
+### Future Enhancements Ready
+- Email sending integration (infrastructure ready)
+- SMS notifications (tracking in place)
+- QR code generation for invitations
+- Calendar event generation
+- Reminder scheduling
+
+---
+
 ## [0.10.0] - 2025-11-14
 
 ### Added - Multi-language Support

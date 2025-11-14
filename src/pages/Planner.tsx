@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { GuestList } from "@/components/GuestList";
 import { CreateWeddingPlanDialog } from "@/components/CreateWeddingPlanDialog";
 import ExportPDFButton from "@/components/ExportPDFButton";
+import { InvitationManager } from "@/components/InvitationManager";
 
 const Planner = () => {
   const [activeTab, setActiveTab] = useState("checklist");
@@ -103,6 +104,7 @@ const Planner = () => {
           <TabsList>
             <TabsTrigger value="checklist">Чек-лист</TabsTrigger>
             <TabsTrigger value="guests">Гости</TabsTrigger>
+            <TabsTrigger value="invitations">Приглашения</TabsTrigger>
           </TabsList>
 
           <TabsContent value="checklist" className="space-y-4">
@@ -124,6 +126,10 @@ const Planner = () => {
 
           <TabsContent value="guests">
             <GuestList weddingPlanId={weddingPlan.id} />
+          </TabsContent>
+
+          <TabsContent value="invitations">
+            <InvitationManager weddingPlanId={weddingPlan.id} />
           </TabsContent>
         </Tabs>
       </div>

@@ -17,6 +17,7 @@ import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import Install from "./pages/Install";
+import RSVP from "./pages/RSVP";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +32,8 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/rsvp/:token" element={<RSVP />} />
+          <Route path="/install" element={<Install />} />
           
           {/* Protected Routes */}
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
@@ -42,7 +45,6 @@ const App = () => (
           <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
           <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
           <Route path="/payment-success" element={<ProtectedRoute><PaymentSuccess /></ProtectedRoute>} />
-          <Route path="/install" element={<Install />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

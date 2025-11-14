@@ -405,6 +405,105 @@
 - [x] **uz.json** - O'zbekcha (полный перевод)
 - [x] **en.json** - English (полный перевод)
 
+### Components:
+- [x] **LanguageSwitcher** component
+  - Globe icon with flag
+  - Dropdown menu
+  - 3 languages (Русский 🇷🇺, O'zbekcha 🇺🇿, English 🇬🇧)
+  - Highlights current language
+  - Saves preference to localStorage
+
+### Integration:
+- [x] Added to **Header** (desktop & mobile)
+- [x] Added to **AppSidebar** footer
+- [x] Initialized in **main.tsx**
+- [x] Translated navigation items
+
+---
+
+## ✅ Phase 11: Guest RSVP Portal [ЗАВЕРШЕНО 100%]
+
+### Database:
+- [x] **guest_invitations** table created
+  - Unique token for each invitation
+  - Guest and wedding plan references
+  - Tracking: sent_at, viewed_at, responded_at
+  - Custom message support
+  - RLS policies for security
+
+### Public RSVP Page:
+- [x] **/rsvp/:token** - Public invitation page
+  - No authentication required
+  - Beautiful wedding-themed design
+  - Guest name personalization
+  - Wedding details display (date, venue, theme)
+  - Couple name from profile
+  - Custom message from invitation
+  
+### RSVP Form Features:
+- [x] **Attendance selection**
+  - Radio buttons: Confirmed / Declined / Pending
+  - Required field validation
+- [x] **Plus One handling**
+  - Shows only if guest has plus_one_allowed
+  - Checkbox to enable plus one
+  - Input for plus one name
+- [x] **Dietary restrictions**
+  - Textarea for allergies and preferences
+  - Optional field
+- [x] **Auto-tracking**
+  - Viewed timestamp on page open
+  - Responded timestamp on submission
+  - Updates guest attendance_status
+
+### InvitationManager Component:
+- [x] **Invitation generation**
+  - Select multiple guests
+  - Custom message field
+  - Bulk invitation creation
+  - Unique token per guest
+  - "Select all" functionality
+- [x] **Invitations table**
+  - Guest name and email
+  - Status badges (Not sent / Created / Sent / Viewed / Responded)
+  - Attendance response display
+  - Copy link button
+  - View link dialog
+- [x] **Status tracking**
+  - Visual indicators for all stages
+  - Confirmed/Declined/Pending badges
+  - Checkboxes for bulk selection
+
+### Integration:
+- [x] Added to **Planner** page as new tab
+- [x] "Приглашения" tab in Planner
+- [x] Public route in App.tsx
+- [x] Mobile-responsive RSVP page
+- [x] Success confirmation page
+
+### Features:
+- [x] Beautiful gradient design
+- [x] Heart icon branding
+- [x] Date formatting (Russian locale)
+- [x] Email display for confirmation
+- [x] Link copying functionality
+- [x] Auto-populate from existing responses
+- [x] Toast notifications
+- [x] Loading states throughout
+
+---
+
+### i18n Integration:
+- [x] **i18next** installed and configured
+- [x] **react-i18next** for React integration
+- [x] **i18next-browser-languagedetector** for auto language detection
+- [x] LocalStorage persistence
+
+### Language Files:
+- [x] **ru.json** - Русский (полный перевод)
+- [x] **uz.json** - O'zbekcha (полный перевод)
+- [x] **en.json** - English (полный перевод)
+
 ### Translated Sections:
 - [x] Navigation (nav)
 - [x] Hero section

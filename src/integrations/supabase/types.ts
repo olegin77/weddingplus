@@ -71,6 +71,60 @@ export type Database = {
           },
         ]
       }
+      guest_invitations: {
+        Row: {
+          created_at: string
+          guest_id: string
+          id: string
+          message: string | null
+          responded_at: string | null
+          sent_at: string | null
+          token: string
+          updated_at: string
+          viewed_at: string | null
+          wedding_plan_id: string
+        }
+        Insert: {
+          created_at?: string
+          guest_id: string
+          id?: string
+          message?: string | null
+          responded_at?: string | null
+          sent_at?: string | null
+          token: string
+          updated_at?: string
+          viewed_at?: string | null
+          wedding_plan_id: string
+        }
+        Update: {
+          created_at?: string
+          guest_id?: string
+          id?: string
+          message?: string | null
+          responded_at?: string | null
+          sent_at?: string | null
+          token?: string
+          updated_at?: string
+          viewed_at?: string | null
+          wedding_plan_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guest_invitations_guest_id_fkey"
+            columns: ["guest_id"]
+            isOneToOne: false
+            referencedRelation: "guests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "guest_invitations_wedding_plan_id_fkey"
+            columns: ["wedding_plan_id"]
+            isOneToOne: false
+            referencedRelation: "wedding_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       guests: {
         Row: {
           attendance_status: string | null

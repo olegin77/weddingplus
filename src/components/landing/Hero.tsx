@@ -1,10 +1,19 @@
 import { Button } from "@/components/ui/button";
 import { Sparkles, Heart, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { useEffect, useState } from "react";
 import heroImage from "@/assets/hero-wedding.jpg";
 
 export const Hero = () => {
   const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setIsAuthenticated(!!session);
+    });
+  }, []);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -53,7 +62,7 @@ export const Hero = () => {
             <Button
               size="lg"
               className="text-lg h-14 px-8 shadow-elegant hover:shadow-xl transition-all"
-              onClick={() => navigate('/auth')}
+              onClick={() => navigate(isAuthenticated ? '/dashboard' : '/auth')}
             >
               Начать планирование
               <ArrowRight className="ml-2 w-5 h-5" />
@@ -63,7 +72,7 @@ export const Hero = () => {
               size="lg"
               variant="outline"
               className="text-lg h-14 px-8 border-2 hover:bg-accent"
-              onClick={() => navigate('/ai-visualizer')}
+              onClick={() => navigate(isAuthenticated ? '/ai-visualizer' : '/auth')}
             >
               Посмотреть примеры
             </Button>

@@ -2,9 +2,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sparkles, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { useEffect, useState } from "react";
 
 export const CTA = () => {
   const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setIsAuthenticated(!!session);
+    });
+  }, []);
 
   return (
     <section className="py-24">
@@ -41,7 +50,7 @@ export const CTA = () => {
                   size="lg"
                   variant="secondary"
                   className="h-14 px-8 whitespace-nowrap hover:scale-105 transition-transform"
-                  onClick={() => navigate('/auth')}
+                  onClick={() => navigate(isAuthenticated ? '/dashboard' : '/auth')}
                 >
                   Начать
                   <ArrowRight className="ml-2 w-5 h-5" />

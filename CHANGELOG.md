@@ -16,6 +16,241 @@
 
 ---
 
+## [0.12.0] - 2025-11-14
+
+### Added - Wedding Website Generator
+
+- **Database Schema**
+  - Created wedding_websites table
+  - Unique slug for public URLs
+  - Foreign key to wedding_plans
+  - Published status flag
+  - Hero section fields (title, subtitle, image, date)
+  - Story section (enabled, title, content)
+  - Gallery images array (TEXT[])
+  - Timeline events (JSONB array)
+  - Location details (name, address, coordinates, map_url)
+  - RSVP integration (enabled, deadline)
+  - Design settings (theme_color, font_family, custom_css)
+  - SEO metadata (meta_title, description, image)
+  - RLS policies for couples and public
+  - Indexes for slug, wedding_plan_id, published
+  - Auto-update trigger for updated_at
+
+- **Public Wedding Website (/wedding/:slug)**
+  - Beautiful full-page wedding site
+  - No authentication required
+  - Published websites only (via RLS)
+  - Custom theme color support
+  - Responsive mobile-first design
+  - Smooth scroll sections
+  - Professional typography
+  
+- **Hero Section**
+  - Full-screen hero with background image
+  - Gradient overlay support
+  - Custom title and subtitle
+  - Wedding date display (formatted)
+  - Heart icon branding with theme color
+  - Center-aligned content
+  - Mobile-optimized text sizes
+  
+- **Story Section**
+  - "Our Story" narrative section
+  - Custom section title
+  - Multi-paragraph content support
+  - Center-aligned prose layout
+  - Conditional rendering (can be disabled)
+  - Whitespace-preserved formatting
+  - Beautiful typography
+  
+- **Gallery Section**
+  - Responsive grid layout (1/2/3 columns)
+  - Aspect-ratio maintained images
+  - Hover scale animation
+  - Shadow effects on hover
+  - Rounded corners
+  - Lazy loading ready
+  - Conditional rendering
+  
+- **Timeline Section**
+  - Event schedule display
+  - Circular time badges with theme color
+  - Event title and description cards
+  - Clock icon integration
+  - Professional card layout
+  - Responsive spacing
+  - Conditional rendering
+  
+- **Location Section**
+  - Venue name and address
+  - Google Maps iframe embed
+  - Direct "Open in Maps" link
+  - Coordinates support for deep linking
+  - MapPin icon integration
+  - Responsive iframe aspect ratio
+  - Conditional rendering
+  
+- **RSVP Section**
+  - Call-to-action for guests
+  - RSVP deadline display
+  - Integration messaging
+  - Center-aligned content
+  - Conditional rendering
+  
+- **Footer**
+  - Heart icon branding
+  - "Created with WeddingTech UZ" credit
+  - Theme color styling
+  - Subtle background
+
+- **WeddingWebsiteBuilder Component**
+  - **Main Interface**
+    - Save button with loading state
+    - Open website button (published only)
+    - Slug configuration with validation
+    - Publish toggle switch
+    - Live URL preview
+    - Globe icon for visual clarity
+    
+  - **Tab-Based Editor**
+    - 5 main tabs: Hero, Story, Gallery, Timeline, Location
+    - Clean tab navigation
+    - Section-specific forms
+    - Enable/disable toggles per section
+    
+  - **Hero Tab**
+    - Title input
+    - Subtitle input
+    - Date-time picker for wedding
+    - Background image URL input
+    - Color picker for theme
+    - Real-time preview of hex color
+    
+  - **Story Tab**
+    - Enable/disable toggle
+    - Custom title input
+    - Multi-line textarea (10 rows)
+    - Placeholder guidance
+    - Disabled state styling
+    
+  - **Gallery Tab**
+    - Enable/disable toggle
+    - Image URL input with Enter-to-add
+    - Grid preview (2-3 columns)
+    - Hover-to-delete functionality
+    - Trash icon on images
+    - Visual feedback
+    
+  - **Timeline Tab**
+    - Enable/disable toggle
+    - Add event button
+    - Event cards with:
+      - Time input (HH:MM format)
+      - Title input
+      - Description textarea
+      - Delete button
+    - Dynamic event list
+    - Card-based editing
+    
+  - **Location Tab**
+    - Enable/disable toggle
+    - Venue name input
+    - Address input
+    - Google Maps embed URL textarea
+    - Helper text with link to Google Maps
+    - Instructions for obtaining embed URL
+
+### Changed
+
+- **Planner Page**
+  - Added "Сайт" tab (4th tab)
+  - Tab layout now uses grid (4 columns)
+  - Integrated WeddingWebsiteBuilder component
+  - Passes wedding_plan_id to builder
+
+- **App Routing**
+  - Added public route /wedding/:slug
+  - Positioned with other public routes
+  - No ProtectedRoute wrapper
+  - SEO-friendly URLs
+
+### Technical Details
+
+- **Security**
+  - RLS ensures only published sites are public
+  - Couples can only manage their own websites
+  - Slug uniqueness enforced at database level
+  - XSS protection via React rendering
+  
+- **Performance**
+  - Indexed slug lookups (O(1) access)
+  - Indexed wedding_plan_id for joins
+  - Indexed published status for queries
+  - Efficient JSONB queries for timeline
+  - Lazy image loading ready
+  
+- **SEO**
+  - Dynamic page title from meta_title
+  - Meta description support
+  - Meta image support
+  - Semantic HTML structure
+  - Clean URL slugs
+  - Mobile-optimized viewport
+  
+- **UX Features**
+  - Auto-save indicators
+  - Toast notifications
+  - Loading states
+  - Error handling
+  - Form validation (slug required)
+  - Slug auto-formatting (lowercase, hyphens)
+  - Preview before publish
+  - External link opening in new tab
+
+- **Design**
+  - Customizable theme colors
+  - Beautiful gradient backgrounds
+  - Smooth hover transitions
+  - Professional typography
+  - Consistent spacing
+  - Shadow effects
+  - Rounded corners
+  - Icon integration (Lucide React)
+
+### User Experience
+
+- **For Couples**
+  - Easy website creation
+  - No coding required
+  - Visual editor
+  - Section-by-section approach
+  - Enable/disable sections
+  - Custom branding (colors)
+  - Preview before publishing
+  - Share-ready URLs
+
+- **For Guests**
+  - Beautiful wedding pages
+  - Mobile-friendly design
+  - Easy navigation
+  - Visual timeline
+  - Map integration
+  - RSVP integration
+  - No account needed
+
+### Future Enhancements Ready
+- Custom domain mapping
+- Additional color schemes
+- Font family selection
+- Custom CSS injection
+- Image upload to storage
+- Video embeds
+- Music player
+- Guest book section
+
+---
+
 ## [0.11.0] - 2025-11-14
 
 ### Added - Guest RSVP Portal

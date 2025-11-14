@@ -18,6 +18,7 @@ import Settings from "./pages/Settings";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import Install from "./pages/Install";
 import RSVP from "./pages/RSVP";
+import WeddingWebsite from "./pages/WeddingWebsite";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -33,6 +34,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/rsvp/:token" element={<RSVP />} />
+          <Route path="/wedding/:slug" element={<WeddingWebsite />} />
           <Route path="/install" element={<Install />} />
           
           {/* Protected Routes */}

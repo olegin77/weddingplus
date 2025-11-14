@@ -493,6 +493,146 @@
 
 ---
 
+## ✅ Phase 12: Wedding Website Generator [ЗАВЕРШЕНО 100%]
+
+### Database:
+- [x] **wedding_websites** table created
+  - Unique slug for each website
+  - Wedding plan reference
+  - Published status
+  - Hero section data
+  - Story section
+  - Gallery images array
+  - Timeline events (JSONB)
+  - Location details
+  - RSVP integration
+  - Theme customization
+  - SEO metadata
+  - RLS policies
+
+### Public Wedding Page:
+- [x] **/wedding/:slug** - Public wedding website
+  - No authentication required
+  - Custom theme colors
+  - Responsive design
+  - Beautiful sections
+  - Social sharing ready
+
+### Hero Section:
+- [x] **Full-screen hero**
+  - Custom title and subtitle
+  - Background image support
+  - Wedding date display
+  - Gradient overlays
+  - Heart icon branding
+  - Theme color integration
+
+### Story Section:
+- [x] **Our Story**
+  - Custom title
+  - Rich text content
+  - Center-aligned layout
+  - Enable/disable toggle
+  - Beautiful typography
+
+### Gallery Section:
+- [x] **Photo Gallery**
+  - Grid layout (1/2/3 columns)
+  - Image URL support
+  - Hover effects
+  - Responsive images
+  - Enable/disable toggle
+
+### Timeline Section:
+- [x] **Event Timeline**
+  - Time-based events
+  - Title and description
+  - Circular time badges
+  - Card-based layout
+  - Enable/disable toggle
+
+### Location Section:
+- [x] **Venue Information**
+  - Venue name and address
+  - Google Maps embed
+  - Direct map link
+  - Coordinates support
+  - Enable/disable toggle
+
+### RSVP Integration:
+- [x] **RSVP Section**
+  - Integration with RSVP portal
+  - Deadline display
+  - Call-to-action
+  - Enable/disable toggle
+
+### WeddingWebsiteBuilder Component:
+- [x] **Website Editor**
+  - Tab-based interface
+  - 5 section tabs
+  - Real-time preview link
+  - Save functionality
+  - Publish toggle
+  
+- [x] **Settings & Publishing**
+  - Custom URL slug
+  - Slug validation
+  - Published status toggle
+  - Preview before publish
+  - Copy website link
+
+- [x] **Hero Editor**
+  - Title/subtitle inputs
+  - Date-time picker
+  - Image URL input
+  - Color picker for theme
+  
+- [x] **Story Editor**
+  - Enable toggle
+  - Title customization
+  - Multi-line text area
+  
+- [x] **Gallery Editor**
+  - Enable toggle
+  - Add images by URL
+  - Image grid preview
+  - Delete images
+  - Press Enter to add
+  
+- [x] **Timeline Editor**
+  - Enable toggle
+  - Add/remove events
+  - Time input (HH:MM)
+  - Title and description
+  - Card-based editing
+  
+- [x] **Location Editor**
+  - Enable toggle
+  - Venue name
+  - Address input
+  - Google Maps embed URL
+  - Instructions link
+
+### Integration:
+- [x] Added to **Planner** page as "Сайт" tab
+- [x] Public route /wedding/:slug
+- [x] Mobile-responsive builder
+- [x] Mobile-responsive public page
+
+### Features:
+- [x] Custom theme colors
+- [x] Beautiful gradient backgrounds
+- [x] Smooth hover effects
+- [x] Loading states
+- [x] Error handling
+- [x] Toast notifications
+- [x] SEO-ready structure
+- [x] Social media preview support
+- [x] Iframe support for maps
+- [x] External link support
+
+---
+
 ### i18n Integration:
 - [x] **i18next** installed and configured
 - [x] **react-i18next** for React integration

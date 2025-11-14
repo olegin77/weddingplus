@@ -10,6 +10,7 @@ import { GuestList } from "@/components/GuestList";
 import { CreateWeddingPlanDialog } from "@/components/CreateWeddingPlanDialog";
 import ExportPDFButton from "@/components/ExportPDFButton";
 import { InvitationManager } from "@/components/InvitationManager";
+import { WeddingWebsiteBuilder } from "@/components/WeddingWebsiteBuilder";
 
 const Planner = () => {
   const [activeTab, setActiveTab] = useState("checklist");
@@ -101,10 +102,11 @@ const Planner = () => {
         </Card>
 
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList>
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="checklist">Чек-лист</TabsTrigger>
             <TabsTrigger value="guests">Гости</TabsTrigger>
             <TabsTrigger value="invitations">Приглашения</TabsTrigger>
+            <TabsTrigger value="website">Сайт</TabsTrigger>
           </TabsList>
 
           <TabsContent value="checklist" className="space-y-4">
@@ -130,6 +132,10 @@ const Planner = () => {
 
           <TabsContent value="invitations">
             <InvitationManager weddingPlanId={weddingPlan.id} />
+          </TabsContent>
+
+          <TabsContent value="website">
+            <WeddingWebsiteBuilder weddingPlanId={weddingPlan.id} />
           </TabsContent>
         </Tabs>
       </div>

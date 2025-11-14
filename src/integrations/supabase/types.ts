@@ -435,6 +435,113 @@ export type Database = {
         }
         Relationships: []
       }
+      wedding_websites: {
+        Row: {
+          created_at: string
+          custom_css: string | null
+          font_family: string | null
+          gallery_enabled: boolean | null
+          gallery_images: string[] | null
+          hero_date: string | null
+          hero_image_url: string | null
+          hero_subtitle: string | null
+          hero_title: string | null
+          id: string
+          location_address: string | null
+          location_coordinates: string | null
+          location_enabled: boolean | null
+          location_map_url: string | null
+          location_name: string | null
+          meta_description: string | null
+          meta_image_url: string | null
+          meta_title: string | null
+          published: boolean
+          rsvp_deadline: string | null
+          rsvp_enabled: boolean | null
+          slug: string
+          story_content: string | null
+          story_enabled: boolean | null
+          story_title: string | null
+          theme_color: string | null
+          timeline_enabled: boolean | null
+          timeline_events: Json | null
+          updated_at: string
+          wedding_plan_id: string
+        }
+        Insert: {
+          created_at?: string
+          custom_css?: string | null
+          font_family?: string | null
+          gallery_enabled?: boolean | null
+          gallery_images?: string[] | null
+          hero_date?: string | null
+          hero_image_url?: string | null
+          hero_subtitle?: string | null
+          hero_title?: string | null
+          id?: string
+          location_address?: string | null
+          location_coordinates?: string | null
+          location_enabled?: boolean | null
+          location_map_url?: string | null
+          location_name?: string | null
+          meta_description?: string | null
+          meta_image_url?: string | null
+          meta_title?: string | null
+          published?: boolean
+          rsvp_deadline?: string | null
+          rsvp_enabled?: boolean | null
+          slug: string
+          story_content?: string | null
+          story_enabled?: boolean | null
+          story_title?: string | null
+          theme_color?: string | null
+          timeline_enabled?: boolean | null
+          timeline_events?: Json | null
+          updated_at?: string
+          wedding_plan_id: string
+        }
+        Update: {
+          created_at?: string
+          custom_css?: string | null
+          font_family?: string | null
+          gallery_enabled?: boolean | null
+          gallery_images?: string[] | null
+          hero_date?: string | null
+          hero_image_url?: string | null
+          hero_subtitle?: string | null
+          hero_title?: string | null
+          id?: string
+          location_address?: string | null
+          location_coordinates?: string | null
+          location_enabled?: boolean | null
+          location_map_url?: string | null
+          location_name?: string | null
+          meta_description?: string | null
+          meta_image_url?: string | null
+          meta_title?: string | null
+          published?: boolean
+          rsvp_deadline?: string | null
+          rsvp_enabled?: boolean | null
+          slug?: string
+          story_content?: string | null
+          story_enabled?: boolean | null
+          story_title?: string | null
+          theme_color?: string | null
+          timeline_enabled?: boolean | null
+          timeline_events?: Json | null
+          updated_at?: string
+          wedding_plan_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wedding_websites_wedding_plan_id_fkey"
+            columns: ["wedding_plan_id"]
+            isOneToOne: false
+            referencedRelation: "wedding_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

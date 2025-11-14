@@ -1,0 +1,215 @@
+{
+  "common": {
+    "loading": "Yuklanmoqda...",
+    "save": "Saqlash",
+    "cancel": "Bekor qilish",
+    "delete": "O'chirish",
+    "edit": "Tahrirlash",
+    "close": "Yopish",
+    "search": "Qidirish",
+    "filter": "Filtr",
+    "back": "Orqaga",
+    "next": "Keyingi",
+    "submit": "Yuborish"
+  },
+  "nav": {
+    "home": "Bosh sahifa",
+    "dashboard": "Panel",
+    "marketplace": "Bozor",
+    "planner": "Rejalashtirish",
+    "aiAssistant": "AI Yordamchi",
+    "profile": "Profil",
+    "settings": "Sozlamalar",
+    "install": "O'rnatish",
+    "signIn": "Kirish",
+    "signUp": "Ro'yxatdan o'tish",
+    "signOut": "Chiqish"
+  },
+  "hero": {
+    "title": "AI bilan mukammal to'yni rejalashtiring",
+    "subtitle": "O'zbekistondagi birinchi sun'iy intellekt bilan to'y rejalashtirish platformasi",
+    "cta": "Rejalashtirishni boshlash",
+    "learnMore": "Batafsil"
+  },
+  "features": {
+    "title": "Platforma imkoniyatlari",
+    "marketplace": {
+      "title": "Ta'minotchilar bozori",
+      "description": "To'yingiz uchun tekshirilgan ta'minotchilarni toping"
+    },
+    "ai": {
+      "title": "AI Yordamchi",
+      "description": "Rejalashtirish va byudjet uchun aqlli yordamchi"
+    },
+    "planner": {
+      "title": "Rejalashtiruvchi",
+      "description": "Barcha tafsilotlarni bir joyda boshqaring"
+    }
+  },
+  "dashboard": {
+    "welcome": "Xush kelibsiz",
+    "stats": {
+      "totalBudget": "Umumiy byudjet",
+      "budgetSpent": "Sarflangan",
+      "guests": "Mehmonlar",
+      "bookings": "Bronlar"
+    },
+    "quickActions": "Tezkor harakatlar",
+    "createPlan": "Reja yaratish",
+    "findVendors": "Ta'minotchilarni topish",
+    "manageGuests": "Mehmonlarni boshqarish",
+    "aiAssistant": "AI Yordamchi",
+    "recentBookings": "So'nggi bronlar",
+    "nothingYet": "Hali hech narsa yo'q"
+  },
+  "marketplace": {
+    "title": "Ta'minotchilar bozori",
+    "subtitle": "To'yingiz uchun ideal ta'minotchilarni toping",
+    "categories": {
+      "all": "Hammasi",
+      "venue": "Joylar",
+      "photographer": "Fotograflar",
+      "videographer": "Videograflar",
+      "caterer": "Oshpazlik",
+      "florist": "Gulchilar",
+      "decorator": "Bezakchilar",
+      "music": "Musiqa",
+      "makeup": "Vizaj",
+      "clothing": "Kiyim",
+      "transport": "Transport",
+      "other": "Boshqa"
+    },
+    "verified": "Tasdiqlangan",
+    "reviews": "sharh",
+    "from": "dan",
+    "viewDetails": "Batafsil"
+  },
+  "vendorDetail": {
+    "bookNow": "Bron qilish",
+    "writeReview": "Sharh yozish",
+    "description": "Tavsif",
+    "priceRange": "Narx diapazoni",
+    "location": "Joylashuv",
+    "rating": "Reyting",
+    "portfolio": "Portfolio",
+    "reviews": "Sharhlar",
+    "noReviews": "Hali sharhlar yo'q"
+  },
+  "booking": {
+    "title": "Bron qilish",
+    "selectPlan": "To'y rejasini tanlang",
+    "date": "Sana",
+    "notes": "Izohlar",
+    "price": "Narx",
+    "status": {
+      "pending": "Kutilmoqda",
+      "confirmed": "Tasdiqlangan",
+      "cancelled": "Bekor qilingan",
+      "completed": "Tugallangan"
+    }
+  },
+  "planner": {
+    "title": "To'y rejalashtiruvchi",
+    "weddingDetails": "To'y tafsilotlari",
+    "budget": "Byudjet",
+    "guests": "Mehmonlar",
+    "bookings": "Bronlar",
+    "exportPDF": "PDF ga eksport",
+    "noPlan": "Sizda hali to'y rejasi yo'q",
+    "createFirst": "Birinchi rejangizni yarating"
+  },
+  "guests": {
+    "title": "Mehmonlar ro'yxati",
+    "addGuest": "Mehmon qo'shish",
+    "fullName": "To'liq ism",
+    "email": "Email",
+    "phone": "Telefon",
+    "status": {
+      "pending": "Kutilmoqda",
+      "confirmed": "Tasdiqlangan",
+      "declined": "Rad etilgan"
+    },
+    "plusOne": "Qo'shimcha bir kishi",
+    "dietary": "Ovqatlanish cheklovlari"
+  },
+  "ai": {
+    "title": "AI Yordamchi",
+    "chat": "Suhbat",
+    "budget": "Byudjet kalkulyatori",
+    "vendors": "Tavsiyalar",
+    "askAnything": "To'y rejalashtirish haqida biror narsa so'rang...",
+    "budgetCalculator": "Byudjet kalkulyatori",
+    "vendorRecommendations": "Ta'minotchilar tavsiялari"
+  },
+  "profile": {
+    "title": "Profil",
+    "personalInfo": "Shaxsiy ma'lumot",
+    "fullName": "To'liq ism",
+    "email": "Email",
+    "phone": "Telefon",
+    "avatar": "Avatar",
+    "changeAvatar": "Avatarni o'zgartirish",
+    "uploadAvatar": "Avatar yuklash"
+  },
+  "settings": {
+    "title": "Sozlamalar",
+    "account": "Hisob",
+    "notifications": "Bildirishnomalar",
+    "privacy": "Maxfiylik",
+    "language": "Til",
+    "theme": "Mavzu"
+  },
+  "auth": {
+    "signIn": "Kirish",
+    "signUp": "Ro'yxatdan o'tish",
+    "email": "Email",
+    "password": "Parol",
+    "forgotPassword": "Parolni unutdingizmi?",
+    "noAccount": "Hisobingiz yo'qmi?",
+    "haveAccount": "Hisobingiz bormi?",
+    "roleSelection": "Rolni tanlang",
+    "couple": "Juftlik",
+    "vendor": "Ta'minotchi"
+  },
+  "vendor": {
+    "dashboard": "Ta'minotchi paneli",
+    "bookings": "Bronlar",
+    "portfolio": "Portfolio",
+    "reviews": "Sharhlar",
+    "earnings": "Daromad",
+    "accept": "Qabul qilish",
+    "decline": "Rad etish"
+  },
+  "reviews": {
+    "title": "Sharhlar",
+    "writeReview": "Sharh yozish",
+    "rating": "Reyting",
+    "comment": "Izoh",
+    "submit": "Sharhni yuborish"
+  },
+  "payment": {
+    "title": "To'lov",
+    "selectMethod": "To'lov usulini tanlang",
+    "providers": {
+      "payme": "Payme",
+      "click": "Click",
+      "uzum": "Uzum",
+      "apelsin": "Apelsin"
+    },
+    "amount": "Summa",
+    "proceed": "To'lovga o'tish",
+    "success": "To'lov muvaffaqiyatli!",
+    "failed": "To'lov amalga oshmadi"
+  },
+  "install": {
+    "title": "Ilovani o'rnatish",
+    "subtitle": "WeddingTech UZ-ni qurilmangizga o'rnating",
+    "alreadyInstalled": "Ilova allaqachon o'rnatilgan!",
+    "benefits": "Afzalliklar",
+    "benefit1": "Oflayn ishlaydi",
+    "benefit2": "Tez kirish",
+    "benefit3": "Bildirishnomalar",
+    "iosInstructions": "iOS uchun ko'rsatmalar",
+    "androidInstall": "Android-ga o'rnatish"
+  }
+}

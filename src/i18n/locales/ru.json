@@ -1,0 +1,215 @@
+{
+  "common": {
+    "loading": "Загрузка...",
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "delete": "Удалить",
+    "edit": "Редактировать",
+    "close": "Закрыть",
+    "search": "Поиск",
+    "filter": "Фильтр",
+    "back": "Назад",
+    "next": "Далее",
+    "submit": "Отправить"
+  },
+  "nav": {
+    "home": "Главная",
+    "dashboard": "Панель",
+    "marketplace": "Маркетплейс",
+    "planner": "Планировщик",
+    "aiAssistant": "AI Помощник",
+    "profile": "Профиль",
+    "settings": "Настройки",
+    "install": "Установить",
+    "signIn": "Войти",
+    "signUp": "Регистрация",
+    "signOut": "Выйти"
+  },
+  "hero": {
+    "title": "Планируйте идеальную свадьбу с AI",
+    "subtitle": "Первая в Узбекистане платформа для планирования свадеб с искусственным интеллектом",
+    "cta": "Начать планирование",
+    "learnMore": "Узнать больше"
+  },
+  "features": {
+    "title": "Возможности платформы",
+    "marketplace": {
+      "title": "Маркетплейс поставщиков",
+      "description": "Найдите проверенных поставщиков для вашей свадьбы"
+    },
+    "ai": {
+      "title": "AI Помощник",
+      "description": "Умный помощник для планирования и бюджета"
+    },
+    "planner": {
+      "title": "Планировщик",
+      "description": "Управляйте всеми деталями в одном месте"
+    }
+  },
+  "dashboard": {
+    "welcome": "Добро пожаловать",
+    "stats": {
+      "totalBudget": "Общий бюджет",
+      "budgetSpent": "Потрачено",
+      "guests": "Гости",
+      "bookings": "Бронирования"
+    },
+    "quickActions": "Быстрые действия",
+    "createPlan": "Создать план",
+    "findVendors": "Найти поставщиков",
+    "manageGuests": "Управление гостями",
+    "aiAssistant": "AI Помощник",
+    "recentBookings": "Последние бронирования",
+    "nothingYet": "Пока ничего нет"
+  },
+  "marketplace": {
+    "title": "Маркетплейс поставщиков",
+    "subtitle": "Найдите идеальных поставщиков для вашей свадьбы",
+    "categories": {
+      "all": "Все",
+      "venue": "Площадки",
+      "photographer": "Фотографы",
+      "videographer": "Видеографы",
+      "caterer": "Кейтеринг",
+      "florist": "Флористы",
+      "decorator": "Декораторы",
+      "music": "Музыка",
+      "makeup": "Макияж",
+      "clothing": "Одежда",
+      "transport": "Транспорт",
+      "other": "Другое"
+    },
+    "verified": "Проверено",
+    "reviews": "отзывов",
+    "from": "от",
+    "viewDetails": "Подробнее"
+  },
+  "vendorDetail": {
+    "bookNow": "Забронировать",
+    "writeReview": "Написать отзыв",
+    "description": "Описание",
+    "priceRange": "Диапазон цен",
+    "location": "Локация",
+    "rating": "Рейтинг",
+    "portfolio": "Портфолио",
+    "reviews": "Отзывы",
+    "noReviews": "Пока нет отзывов"
+  },
+  "booking": {
+    "title": "Бронирование",
+    "selectPlan": "Выберите план свадьбы",
+    "date": "Дата",
+    "notes": "Примечания",
+    "price": "Цена",
+    "status": {
+      "pending": "Ожидает",
+      "confirmed": "Подтверждено",
+      "cancelled": "Отменено",
+      "completed": "Завершено"
+    }
+  },
+  "planner": {
+    "title": "Планировщик свадьбы",
+    "weddingDetails": "Детали свадьбы",
+    "budget": "Бюджет",
+    "guests": "Гости",
+    "bookings": "Бронирования",
+    "exportPDF": "Экспорт в PDF",
+    "noPlan": "У вас пока нет плана свадьбы",
+    "createFirst": "Создайте свой первый план"
+  },
+  "guests": {
+    "title": "Список гостей",
+    "addGuest": "Добавить гостя",
+    "fullName": "Полное имя",
+    "email": "Email",
+    "phone": "Телефон",
+    "status": {
+      "pending": "Ожидает",
+      "confirmed": "Подтвержден",
+      "declined": "Отказался"
+    },
+    "plusOne": "Плюс один",
+    "dietary": "Диетические ограничения"
+  },
+  "ai": {
+    "title": "AI Помощник",
+    "chat": "Чат",
+    "budget": "Калькулятор бюджета",
+    "vendors": "Рекомендации",
+    "askAnything": "Спросите что угодно о планировании свадьбы...",
+    "budgetCalculator": "Калькулятор бюджета",
+    "vendorRecommendations": "Рекомендации поставщиков"
+  },
+  "profile": {
+    "title": "Профиль",
+    "personalInfo": "Личная информация",
+    "fullName": "Полное имя",
+    "email": "Email",
+    "phone": "Телефон",
+    "avatar": "Аватар",
+    "changeAvatar": "Изменить аватар",
+    "uploadAvatar": "Загрузить аватар"
+  },
+  "settings": {
+    "title": "Настройки",
+    "account": "Аккаунт",
+    "notifications": "Уведомления",
+    "privacy": "Приватность",
+    "language": "Язык",
+    "theme": "Тема"
+  },
+  "auth": {
+    "signIn": "Вход",
+    "signUp": "Регистрация",
+    "email": "Email",
+    "password": "Пароль",
+    "forgotPassword": "Забыли пароль?",
+    "noAccount": "Нет аккаунта?",
+    "haveAccount": "Уже есть аккаунт?",
+    "roleSelection": "Выберите роль",
+    "couple": "Пара",
+    "vendor": "Поставщик"
+  },
+  "vendor": {
+    "dashboard": "Панель поставщика",
+    "bookings": "Бронирования",
+    "portfolio": "Портфолио",
+    "reviews": "Отзывы",
+    "earnings": "Доходы",
+    "accept": "Принять",
+    "decline": "Отклонить"
+  },
+  "reviews": {
+    "title": "Отзывы",
+    "writeReview": "Написать отзыв",
+    "rating": "Рейтинг",
+    "comment": "Комментарий",
+    "submit": "Отправить отзыв"
+  },
+  "payment": {
+    "title": "Оплата",
+    "selectMethod": "Выберите способ оплаты",
+    "providers": {
+      "payme": "Payme",
+      "click": "Click",
+      "uzum": "Uzum",
+      "apelsin": "Apelsin"
+    },
+    "amount": "Сумма",
+    "proceed": "Перейти к оплате",
+    "success": "Оплата успешна!",
+    "failed": "Оплата не удалась"
+  },
+  "install": {
+    "title": "Установить приложение",
+    "subtitle": "Установите WeddingTech UZ на ваше устройство",
+    "alreadyInstalled": "Приложение уже установлено!",
+    "benefits": "Преимущества",
+    "benefit1": "Работает офлайн",
+    "benefit2": "Быстрый доступ",
+    "benefit3": "Уведомления",
+    "iosInstructions": "Инструкции для iOS",
+    "androidInstall": "Установить на Android"
+  }
+}

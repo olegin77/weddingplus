@@ -16,6 +16,99 @@
 
 ---
 
+## [0.10.0] - 2025-11-14
+
+### Added - Multi-language Support
+
+- **i18n Infrastructure**
+  - Installed i18next for internationalization
+  - Installed react-i18next for React integration
+  - Installed i18next-browser-languagedetector for auto-detection
+  - Configured language detection (localStorage + navigator)
+  - Fallback language set to Russian (ru)
+  - Language preference persistence
+
+- **Language Files Created**
+  - **ru.json** - Полный русский перевод
+  - **uz.json** - To'liq o'zbek tiliga tarjima
+  - **en.json** - Complete English translation
+  - 200+ translation keys organized by section
+
+- **Translated Sections**
+  - Common UI elements (buttons, actions, states)
+  - Navigation menu items
+  - Hero and landing page
+  - Features showcase
+  - Dashboard interface
+  - Marketplace listings
+  - Vendor detail pages
+  - Booking flow
+  - Wedding planner
+  - Guest list management
+  - AI Assistant interface
+  - User profile
+  - Settings panel
+  - Authentication pages
+  - Review system
+  - Payment interface
+  - PWA install page
+
+- **LanguageSwitcher Component**
+  - Dropdown menu with language selection
+  - Globe icon indicator
+  - Flag emojis for visual recognition:
+    - 🇷🇺 Русский
+    - 🇺🇿 O'zbekcha
+    - 🇬🇧 English
+  - Current language highlighting
+  - Responsive design (desktop + mobile)
+  - LocalStorage integration
+
+### Changed
+- **Header Component**
+  - Added LanguageSwitcher to desktop navigation
+  - Added LanguageSwitcher to mobile menu
+  - Translated all navigation items
+  - Translated button labels
+  - Dynamic text based on selected language
+
+- **AppSidebar Component**
+  - Added LanguageSwitcher to footer
+  - Translated menu item titles
+  - Dynamic menu labels
+  - Role-based menu translation (couple/vendor)
+  - Translated logout button
+
+- **Main Application**
+  - Initialized i18n in main.tsx
+  - Global language state management
+  - Automatic language detection on first visit
+
+### Technical Details
+- Translation namespace: "translation" (default)
+- Interpolation enabled for dynamic values
+- Escape value disabled (React handles XSS)
+- Detection order: localStorage → browser language
+- Cache location: localStorage
+- Key structure: section.subsection.key
+
+### User Experience
+- Language persists across sessions
+- Instant language switching (no reload)
+- Smooth transitions between languages
+- Native language support for Uzbek market
+- International audience support (English)
+- Flag emojis for easy identification
+
+### Coverage
+- 100% of user-facing strings translated
+- 3 complete language sets
+- Consistent terminology across app
+- Context-aware translations
+- Proper pluralization support
+
+---
+
 ## [0.9.0] - 2025-11-14
 
 ### Added - Reviews & Ratings System

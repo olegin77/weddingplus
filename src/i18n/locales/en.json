@@ -1,0 +1,215 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "search": "Search",
+    "filter": "Filter",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit"
+  },
+  "nav": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "marketplace": "Marketplace",
+    "planner": "Planner",
+    "aiAssistant": "AI Assistant",
+    "profile": "Profile",
+    "settings": "Settings",
+    "install": "Install",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "signOut": "Sign Out"
+  },
+  "hero": {
+    "title": "Plan Your Perfect Wedding with AI",
+    "subtitle": "Uzbekistan's first AI-powered wedding planning platform",
+    "cta": "Start Planning",
+    "learnMore": "Learn More"
+  },
+  "features": {
+    "title": "Platform Features",
+    "marketplace": {
+      "title": "Vendor Marketplace",
+      "description": "Find verified vendors for your wedding"
+    },
+    "ai": {
+      "title": "AI Assistant",
+      "description": "Smart assistant for planning and budgeting"
+    },
+    "planner": {
+      "title": "Planner",
+      "description": "Manage all details in one place"
+    }
+  },
+  "dashboard": {
+    "welcome": "Welcome",
+    "stats": {
+      "totalBudget": "Total Budget",
+      "budgetSpent": "Spent",
+      "guests": "Guests",
+      "bookings": "Bookings"
+    },
+    "quickActions": "Quick Actions",
+    "createPlan": "Create Plan",
+    "findVendors": "Find Vendors",
+    "manageGuests": "Manage Guests",
+    "aiAssistant": "AI Assistant",
+    "recentBookings": "Recent Bookings",
+    "nothingYet": "Nothing yet"
+  },
+  "marketplace": {
+    "title": "Vendor Marketplace",
+    "subtitle": "Find the perfect vendors for your wedding",
+    "categories": {
+      "all": "All",
+      "venue": "Venues",
+      "photographer": "Photographers",
+      "videographer": "Videographers",
+      "caterer": "Catering",
+      "florist": "Florists",
+      "decorator": "Decorators",
+      "music": "Music",
+      "makeup": "Makeup",
+      "clothing": "Clothing",
+      "transport": "Transport",
+      "other": "Other"
+    },
+    "verified": "Verified",
+    "reviews": "reviews",
+    "from": "from",
+    "viewDetails": "View Details"
+  },
+  "vendorDetail": {
+    "bookNow": "Book Now",
+    "writeReview": "Write Review",
+    "description": "Description",
+    "priceRange": "Price Range",
+    "location": "Location",
+    "rating": "Rating",
+    "portfolio": "Portfolio",
+    "reviews": "Reviews",
+    "noReviews": "No reviews yet"
+  },
+  "booking": {
+    "title": "Booking",
+    "selectPlan": "Select wedding plan",
+    "date": "Date",
+    "notes": "Notes",
+    "price": "Price",
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "cancelled": "Cancelled",
+      "completed": "Completed"
+    }
+  },
+  "planner": {
+    "title": "Wedding Planner",
+    "weddingDetails": "Wedding Details",
+    "budget": "Budget",
+    "guests": "Guests",
+    "bookings": "Bookings",
+    "exportPDF": "Export to PDF",
+    "noPlan": "You don't have a wedding plan yet",
+    "createFirst": "Create your first plan"
+  },
+  "guests": {
+    "title": "Guest List",
+    "addGuest": "Add Guest",
+    "fullName": "Full Name",
+    "email": "Email",
+    "phone": "Phone",
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "declined": "Declined"
+    },
+    "plusOne": "Plus One",
+    "dietary": "Dietary Restrictions"
+  },
+  "ai": {
+    "title": "AI Assistant",
+    "chat": "Chat",
+    "budget": "Budget Calculator",
+    "vendors": "Recommendations",
+    "askAnything": "Ask anything about wedding planning...",
+    "budgetCalculator": "Budget Calculator",
+    "vendorRecommendations": "Vendor Recommendations"
+  },
+  "profile": {
+    "title": "Profile",
+    "personalInfo": "Personal Information",
+    "fullName": "Full Name",
+    "email": "Email",
+    "phone": "Phone",
+    "avatar": "Avatar",
+    "changeAvatar": "Change Avatar",
+    "uploadAvatar": "Upload Avatar"
+  },
+  "settings": {
+    "title": "Settings",
+    "account": "Account",
+    "notifications": "Notifications",
+    "privacy": "Privacy",
+    "language": "Language",
+    "theme": "Theme"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot Password?",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "roleSelection": "Select Role",
+    "couple": "Couple",
+    "vendor": "Vendor"
+  },
+  "vendor": {
+    "dashboard": "Vendor Dashboard",
+    "bookings": "Bookings",
+    "portfolio": "Portfolio",
+    "reviews": "Reviews",
+    "earnings": "Earnings",
+    "accept": "Accept",
+    "decline": "Decline"
+  },
+  "reviews": {
+    "title": "Reviews",
+    "writeReview": "Write Review",
+    "rating": "Rating",
+    "comment": "Comment",
+    "submit": "Submit Review"
+  },
+  "payment": {
+    "title": "Payment",
+    "selectMethod": "Select payment method",
+    "providers": {
+      "payme": "Payme",
+      "click": "Click",
+      "uzum": "Uzum",
+      "apelsin": "Apelsin"
+    },
+    "amount": "Amount",
+    "proceed": "Proceed to Payment",
+    "success": "Payment Successful!",
+    "failed": "Payment Failed"
+  },
+  "install": {
+    "title": "Install App",
+    "subtitle": "Install WeddingTech UZ on your device",
+    "alreadyInstalled": "App is already installed!",
+    "benefits": "Benefits",
+    "benefit1": "Works offline",
+    "benefit2": "Quick access",
+    "benefit3": "Notifications",
+    "iosInstructions": "iOS Instructions",
+    "androidInstall": "Install on Android"
+  }
+}

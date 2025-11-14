@@ -1,7 +1,7 @@
 # 📊 WeddingTech UZ - Progress Tracker
 
-**Статус проекта:** Phase 14 завершена!  
-**Текущая фаза:** Phase 14 - AI Wedding Visualizer [ЗАВЕРШЕНО ✅]  
+**Статус проекта:** Phase 15 завершена!  
+**Текущая фаза:** Phase 15 - AI Invitation Creator [ЗАВЕРШЕНО ✅]  
 **Начало:** 14 ноября 2025
 
 ---
@@ -813,6 +813,83 @@
 - [x] Lovable AI Gateway
 - [x] gemini-2.5-flash-image-preview model
 - [x] Multimodal support (image generation)
+- [x] Error recovery
+- [x] Auto-credential handling
+
+---
+
+## ✅ Phase 15: AI Invitation Creator [ЗАВЕРШЕНО 100%]
+
+### Database:
+- [x] **wedding_invitations** table
+  - Stores AI-generated invitations
+  - Links to wedding plans
+  - Template tracking (6 types)
+  - Couple names, dates, venues
+  - Custom messages
+  - Base64 image URLs
+  - RLS policies for couples
+  - Indexes for performance
+
+### Edge Functions:
+- [x] **generate-wedding-invitation** function
+  - Uses Lovable AI (gemini-2.5-flash-image-preview)
+  - 6 invitation templates:
+    * 🎭 Classic (traditional elegant)
+    * ✨ Modern (minimalist)
+    * 💕 Romantic (watercolor flowers)
+    * 🌸 Floral (botanical)
+    * 👑 Luxury (gold premium)
+    * 🌾 Rustic (natural textures)
+  - Auto-fetch wedding data
+  - Portrait orientation
+  - Rate limiting (429/402) handling
+  - CORS headers
+
+### Components:
+- [x] **AIInvitationCreator** component
+  - Template selection (6 options)
+  - Form inputs (title, names, date, venue, message)
+  - Auto-fill from wedding plan
+  - Real-time generation with AI
+  - Gallery view (grid layout)
+  - Download functionality
+  - Delete functionality
+  - Error handling with toasts
+  - Loading states
+  - Empty state
+  
+- [x] **AIInvitationCreatorPage** page
+  - Wedding plan check
+  - Auto-create dialog if no plan
+  - Full creator interface
+  - Responsive layout
+
+### Features:
+- [x] AI invitation generation with Lovable AI
+- [x] 6 distinct invitation templates
+- [x] Personalized text (title, names, date, venue)
+- [x] Custom messages support
+- [x] Auto-populate from wedding plan
+- [x] Gallery management
+- [x] Download invitations (PNG)
+- [x] Delete invitations
+- [x] Professional typography
+- [x] Portrait card format
+- [x] Rate limit handling
+- [x] Payment required handling
+
+### Navigation:
+- [x] Added "AI Приглашения" to couple sidebar
+- [x] Route: /ai-invitations
+- [x] Protected route
+- [x] Mobile responsive
+
+### AI Integration:
+- [x] Lovable AI Gateway
+- [x] gemini-2.5-flash-image-preview model
+- [x] Multimodal support (image generation)
+- [x] Text-on-image rendering
 - [x] Error recovery
 - [x] Auto-credential handling
 

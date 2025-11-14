@@ -10,10 +10,43 @@
 ## [Unreleased]
 
 ### Planned
-- AI Invitation Creator
 - Timeline Visual Editor
 - Gift Registry с QR-кодами
 - Seating Chart Generator
+- Contract Management
+
+---
+
+## [0.15.0] - 2025-11-14
+
+### Added - AI Invitation Creator 💌
+
+- **Database Schema**
+  - Created wedding_invitations table
+  - Template, title, couple names tracking
+  - Event date, venue, custom message
+  - Base64 image storage
+  - RLS policies for couples
+
+- **Edge Function: generate-wedding-invitation**
+  - Lovable AI integration (gemini-2.5-flash-image-preview)
+  - 6 invitation templates: Classic, Modern, Romantic, Floral, Luxury, Rustic
+  - Text rendering on invitation cards
+  - Portrait orientation format
+  - Rate limiting (429/402) handling
+
+- **AIInvitationCreator Component**
+  - Template selection
+  - Form inputs (title, names, date, venue, message)
+  - Auto-fill from wedding plan
+  - Real-time AI generation
+  - Gallery with download/delete
+  - Error handling
+
+- **New Page: /ai-invitations**
+  - Wedding plan verification
+  - Auto-create dialog
+  - Protected route
 
 ---
 

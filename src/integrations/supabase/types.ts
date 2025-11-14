@@ -466,6 +466,56 @@ export type Database = {
         }
         Relationships: []
       }
+      wedding_invitations: {
+        Row: {
+          couple_names: string
+          created_at: string
+          custom_message: string | null
+          event_date: string | null
+          id: string
+          image_url: string
+          template: string
+          title: string
+          updated_at: string
+          venue_name: string | null
+          wedding_plan_id: string
+        }
+        Insert: {
+          couple_names: string
+          created_at?: string
+          custom_message?: string | null
+          event_date?: string | null
+          id?: string
+          image_url: string
+          template: string
+          title: string
+          updated_at?: string
+          venue_name?: string | null
+          wedding_plan_id: string
+        }
+        Update: {
+          couple_names?: string
+          created_at?: string
+          custom_message?: string | null
+          event_date?: string | null
+          id?: string
+          image_url?: string
+          template?: string
+          title?: string
+          updated_at?: string
+          venue_name?: string | null
+          wedding_plan_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_wedding_plan"
+            columns: ["wedding_plan_id"]
+            isOneToOne: false
+            referencedRelation: "wedding_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       wedding_plans: {
         Row: {
           budget_spent: number | null

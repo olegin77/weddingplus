@@ -13,6 +13,7 @@ import VendorDetail from "./pages/VendorDetail";
 import VendorDashboard from "./pages/VendorDashboard";
 import AIAssistantPage from "./pages/AIAssistantPage";
 import AIVisualizerPage from "./pages/AIVisualizerPage";
+import AIInvitationCreatorPage from "./pages/AIInvitationCreatorPage";
 import Planner from "./pages/Planner";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
@@ -45,6 +46,7 @@ const App = () => (
           <Route path="/vendor-dashboard" element={<ProtectedRoute><VendorDashboard /></ProtectedRoute>} />
           <Route path="/ai-assistant" element={<ProtectedRoute><AIAssistantPage /></ProtectedRoute>} />
           <Route path="/ai-visualizer" element={<ProtectedRoute><AIVisualizerPage /></ProtectedRoute>} />
+          <Route path="/ai-invitations" element={<ProtectedRoute><AIInvitationCreatorPage /></ProtectedRoute>} />
           <Route path="/planner" element={<ProtectedRoute><Planner /></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
           <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />

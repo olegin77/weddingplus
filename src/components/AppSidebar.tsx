@@ -13,6 +13,8 @@ import { NavLink } from "@/components/NavLink";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useTranslation } from "react-i18next";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import {
   Sidebar,
   SidebarContent,
@@ -29,29 +31,32 @@ import {
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 
-const coupleMenuItems = [
-  { title: "Главная", url: "/dashboard", icon: Home },
-  { title: "Маркетплейс", url: "/marketplace", icon: ShoppingBag },
-  { title: "Мой план", url: "/planner", icon: Calendar },
-  { title: "AI Помощник", url: "/ai-assistant", icon: Sparkles },
-  { title: "Профиль", url: "/profile", icon: User },
-  { title: "Настройки", url: "/settings", icon: Settings },
-];
-
-const vendorMenuItems = [
-  { title: "Главная", url: "/dashboard", icon: Home },
-  { title: "Мои услуги", url: "/vendor-dashboard", icon: Briefcase },
-  { title: "Профиль", url: "/profile", icon: User },
-  { title: "Настройки", url: "/settings", icon: Settings },
-];
-
 export function AppSidebar() {
   const { state } = useSidebar();
   const location = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useTranslation();
   const collapsed = state === "collapsed";
   const [userRole, setUserRole] = useState<string>("couple");
+
+  const coupleMenuItems = [
+    { title: t('nav.dashboard'), url: "/dashboard", icon: Home },
+    { title: t('nav.marketplace'), url: "/marketplace", icon: ShoppingBag },
+    { title: t('nav.planner'), url: "/planner", icon: Calendar },
+    { title: t('nav.aiAssistant'), url: "/ai-assistant", icon: Sparkles },
+    { title: t('nav.profile'), url: "/profile", icon: User },
+    { title: t('nav.settings'), url: "/settings", icon: Settings },
+  ];
+
+  const vendorMenuItems = [
+    { title: t('nav.dashboard'), url: "/dashboard", icon: Home },
+    { title: t('vendor.dashboard'), url: "/vendor-dashboard", icon: Briefcase },
+    { title: t('nav.profile'), url: "/profile", icon: User },
+    { title: t('nav.settings'), url: "/settings", icon: Settings },
+  ];
+
+  const menuItems = userRole === "vendor" ? vendorMenuItems : coupleMenuItems;
 
   useEffect(() => {
     fetchUserRole();
@@ -71,14 +76,12 @@ export function AppSidebar() {
     }
   };
 
-  const menuItems = userRole === "vendor" ? vendorMenuItems : coupleMenuItems;
-
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
       toast({
         variant: "destructive",
-        title: "Ошибка",
+        title: t('common.error'),
         description: "Не удалось выйти из системы",
       });
     } else {
@@ -103,7 +106,7 @@ export function AppSidebar() {
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Меню</SidebarGroupLabel>
+          <SidebarGroupLabel>{t('nav.home')}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (
@@ -126,14 +129,21 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter>
-        <Button
-          variant="ghost"
-          className="w-full justify-start"
-          onClick={handleLogout}
-        >
-          <LogOut className="h-4 w-4" />
-          {!collapsed && <span className="ml-2">Выход</span>}
-        </Button>
+        <div className="flex flex-col gap-2">
+          {!collapsed && (
+            <div className="px-2 pb-2">
+              <LanguageSwitcher />
+            </div>
+          )}
+          <Button
+            variant="ghost"
+            className="w-full justify-start"
+            onClick={handleLogout}
+          >
+            <LogOut className="h-4 w-4" />
+            {!collapsed && <span className="ml-2">{t('nav.signOut')}</span>}
+          </Button>
+        </div>
       </SidebarFooter>
     </Sidebar>
   );

@@ -10,9 +10,80 @@
 ## [Unreleased]
 
 ### Planned
-- Final polish and optimizations (Phase 9)
-- Reviews and ratings system
-- Calendar integration
+- Marketing website enhancements
+- Advanced analytics dashboard
+- SMS notifications
+
+---
+
+## [0.9.0] - 2025-11-14
+
+### Added - Reviews & Ratings System
+
+- **ReviewForm Component**
+  - Interactive star rating (1-5 stars)
+  - Hover preview for rating selection
+  - Text comment field (optional)
+  - 1000 character limit with counter
+  - Loading states during submission
+  - Toast notifications for success/error
+  - Rating required validation
+  - Clean, user-friendly interface
+  
+- **ReviewsList Component**
+  - Displays all vendor reviews
+  - User avatars with fallback initials
+  - Full name display
+  - Visual star rating display
+  - Relative timestamps (e.g., "2 days ago")
+  - Russian locale (date-fns/locale/ru)
+  - Empty state with encouraging message
+  - Automatic profile data fetching
+  - Refresh trigger support
+  
+- **VendorDetail Page Enhancements**
+  - "Leave Review" button (conditional)
+  - Only shows for users with completed bookings
+  - Review dialog with ReviewForm
+  - Auto-refresh after review submission
+  - Portfolio images gallery display
+  - Grid layout for vendor images
+  - Improved reviews section layout
+  - Review count in section title
+  
+- **Database Improvements**
+  - Enabled Realtime for reviews table
+  - Added REPLICA IDENTITY FULL
+  - Added to supabase_realtime publication
+  - New RLS policies:
+    - Users can update their own reviews
+    - Users can delete their own reviews
+  - Performance indexes:
+    - idx_reviews_vendor_id
+    - idx_reviews_user_id  
+    - idx_reviews_created_at (DESC order)
+
+### Business Logic
+- Users must have completed booking to review
+- One review per booking
+- Vendor rating auto-updates via trigger
+- Review count tracked automatically
+- Reviews update in real-time
+- Profile data enrichment
+
+### Changed
+- Removed old review display code from VendorDetail
+- Replaced with ReviewsList component
+- Enhanced vendor profile interface
+- Improved review UX workflow
+
+### Technical
+- date-fns for date formatting
+- Russian locale support
+- Real-time subscriptions ready
+- Optimized database queries
+- Proper TypeScript types
+- Error handling throughout
 
 ---
 

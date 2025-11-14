@@ -5,10 +5,12 @@ import { DashboardLayout } from "@/components/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Star, MapPin, ArrowLeft, Calendar } from "lucide-react";
+import { Star, MapPin, ArrowLeft, Calendar, MessageSquare } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookingForm } from "@/components/BookingForm";
+import ReviewForm from "@/components/ReviewForm";
+import ReviewsList from "@/components/ReviewsList";
 import { useToast } from "@/hooks/use-toast";
 
 interface VendorProfile {
@@ -22,16 +24,7 @@ interface VendorProfile {
   rating: number;
   total_reviews: number;
   verified: boolean;
-}
-
-interface Review {
-  id: string;
-  rating: number;
-  comment: string;
-  created_at: string;
-  user: {
-    full_name: string;
-  };
+  portfolio_images: string[] | null;
 }
 
 const VendorDetail = () => {
@@ -39,13 +32,34 @@ const VendorDetail = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [vendor, setVendor] = useState<VendorProfile | null>(null);
-  const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
+  const [userCompletedBookings, setUserCompletedBookings] = useState<string[]>([]);
+  const [reviewRefreshTrigger, setReviewRefreshTrigger] = useState(0);
 
   useEffect(() => {
     fetchVendorDetails();
+    checkUserBookings();
   }, [vendorId]);
+
+  const checkUserBookings = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data: bookings } = await supabase
+        .from("bookings")
+        .select("id")
+        .eq("vendor_id", vendorId)
+        .eq("couple_user_id", user.id)
+        .eq("status", "completed");
+
+      setUserCompletedBookings(bookings?.map(b => b.id) || []);
+    } catch (error) {
+      console.error("Error checking bookings:", error);
+    }
+  };
 
   const fetchVendorDetails = async () => {
     try {
@@ -57,37 +71,7 @@ const VendorDetail = () => {
 
       if (vendorError) throw vendorError;
 
-      const { data: reviewsData, error: reviewsError } = await supabase
-        .from("reviews")
-        .select(`
-          id,
-          rating,
-          comment,
-          created_at,
-          user_id
-        `)
-        .eq("vendor_id", vendorId)
-        .order("created_at", { ascending: false });
-
-      if (reviewsError) throw reviewsError;
-
-      const reviewsWithUsers = await Promise.all(
-        (reviewsData || []).map(async (review) => {
-          const { data: userData } = await supabase
-            .from("profiles")
-            .select("full_name")
-            .eq("id", review.user_id)
-            .single();
-
-          return {
-            ...review,
-            user: userData || { full_name: "Anonymous" },
-          };
-        })
-      );
-
       setVendor(vendorData);
-      setReviews(reviewsWithUsers);
     } catch (error) {
       toast({
         variant: "destructive",
@@ -190,43 +174,60 @@ const VendorDetail = () => {
               <h3 className="text-lg font-semibold mb-2">О нас</h3>
               <p className="text-muted-foreground">{vendor.description}</p>
             </div>
+
+            {vendor.portfolio_images && vendor.portfolio_images.length > 0 && (
+              <div>
+                <h3 className="text-lg font-semibold mb-3">Портфолио</h3>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {vendor.portfolio_images.map((image, index) => (
+                    <img
+                      key={index}
+                      src={image}
+                      alt={`Portfolio ${index + 1}`}
+                      className="w-full h-48 object-cover rounded-lg"
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>Отзывы</CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle>Отзывы ({vendor.total_reviews})</CardTitle>
+              {userCompletedBookings.length > 0 && (
+                <Dialog open={reviewDialogOpen} onOpenChange={setReviewDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button variant="outline">
+                      <MessageSquare className="w-4 h-4 mr-2" />
+                      Оставить отзыв
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Оставить отзыв</DialogTitle>
+                    </DialogHeader>
+                    <ReviewForm
+                      vendorId={vendor.id}
+                      bookingId={userCompletedBookings[0]}
+                      onSuccess={() => {
+                        setReviewDialogOpen(false);
+                        setReviewRefreshTrigger(prev => prev + 1);
+                        fetchVendorDetails();
+                      }}
+                    />
+                  </DialogContent>
+                </Dialog>
+              )}
+            </div>
           </CardHeader>
-          <CardContent className="space-y-4">
-            {reviews.length === 0 ? (
-              <p className="text-muted-foreground">Пока нет отзывов</p>
-            ) : (
-              reviews.map((review) => (
-                <div key={review.id} className="border-b pb-4 last:border-0">
-                  <div className="flex items-start gap-4">
-                    <Avatar>
-                      <AvatarFallback>
-                        {review.user.full_name.charAt(0).toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1 space-y-2">
-                      <div className="flex items-center justify-between">
-                        <p className="font-semibold">{review.user.full_name}</p>
-                        <div className="flex items-center gap-1">
-                          {Array.from({ length: review.rating }).map((_, i) => (
-                            <Star key={i} className="w-4 h-4 fill-primary text-primary" />
-                          ))}
-                        </div>
-                      </div>
-                      <p className="text-muted-foreground">{review.comment}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {new Date(review.created_at).toLocaleDateString("ru-RU")}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))
-            )}
+          <CardContent>
+            <ReviewsList 
+              vendorId={vendor.id} 
+              refreshTrigger={reviewRefreshTrigger}
+            />
           </CardContent>
         </Card>
       </div>

@@ -1,73 +1,191 @@
-# Welcome to your Lovable project
+# 🎊 WeddingTech UZ - AI-Powered Wedding Platform
 
-## Project info
+**Первая в Узбекистане и СНГ AI-платформа для планирования свадеб**
 
-**URL**: https://lovable.dev/projects/6092f4a2-7d47-4c19-b20c-ae122ed6925f
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Status](https://img.shields.io/badge/status-in%20development-yellow)
+![License](https://img.shields.io/badge/license-MIT-green)
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
+## 🌟 О Проекте
 
-**Use Lovable**
+**WeddingTech UZ** — революционная платформа, которая позволяет парам увидеть свою будущую свадьбу ещё до её проведения благодаря передовым AI-технологиям.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/6092f4a2-7d47-4c19-b20c-ae122ed6925f) and start prompting.
+### ✨ Ключевые Инновации
 
-Changes made via Lovable will be committed automatically to this repo.
+- **🎨 AI Wedding Visualizer** - Реалистичная 3D визуализация будущей свадьбы
+- **💌 AI Invitation Creator** - Автоматическое создание видео-приглашений
+- **👗 Virtual Try-On** - Виртуальная примерка свадебных нарядов
+- **💰 FinTech Solutions** - Escrow платежи, реестр подарков, рассрочка
+- **📊 Smart Planner** - AI-рекомендации по бюджету и timeline
+- **🏪 Vendor Marketplace** - 1500+ верифицированных поставщиков
 
-**Use your preferred IDE**
+---
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 🏗️ Технологический Стек
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Frontend
+- **Framework**: React 18.3 + Vite
+- **Language**: TypeScript
+- **UI Library**: Tailwind CSS + shadcn/ui
+- **State Management**: TanStack Query
+- **Routing**: React Router v6
 
-Follow these steps:
+### Backend (Lovable Cloud)
+- **Database**: PostgreSQL + Prisma ORM
+- **Authentication**: Supabase Auth
+- **Storage**: Supabase Storage
+- **Edge Functions**: Serverless TypeScript functions
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### AI Services (Planned)
+- **Image Generation**: Stable Diffusion / DALL-E 3
+- **Face Mapping**: Face Recognition API
+- **Video Generation**: Runway ML / Sora
+- **Text Generation**: GPT-4 / Gemini
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+---
 
-# Step 3: Install the necessary dependencies.
-npm i
+## 🚀 Быстрый Старт
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+### Требования
+- Node.js >= 20.0.0
+- pnpm >= 9.0.0
+
+### Установка
+
+```bash
+# Клонировать репозиторий
+git clone https://github.com/yourusername/wedding_lovable.git
+cd wedding_lovable
+
+# Установить зависимости
+pnpm install
+
+# Запустить dev сервер
+pnpm dev
 ```
 
-**Edit a file directly in GitHub**
+Приложение будет доступно по адресу: `http://localhost:8080`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+---
 
-**Use GitHub Codespaces**
+## 📦 Структура Проекта
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```
+wedding_lovable/
+├── src/
+│   ├── components/        # React компоненты
+│   │   ├── ui/           # shadcn/ui компоненты
+│   │   ├── landing/      # Landing page компоненты
+│   │   ├── marketplace/  # Vendor marketplace
+│   │   └── planner/      # Wedding planner
+│   ├── pages/            # Страницы приложения
+│   ├── hooks/            # Custom React hooks
+│   ├── lib/              # Утилиты и хелперы
+│   ├── types/            # TypeScript типы
+│   └── assets/           # Статические файлы
+├── public/               # Публичные файлы
+└── docs/                 # Документация
+```
 
-## What technologies are used for this project?
+---
 
-This project is built with:
+## 🎯 Roadmap
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### Phase 0: Foundation ✅
+- [x] Project setup
+- [x] Design system
+- [x] Landing page
 
-## How can I deploy this project?
+### Phase 1: Core Features (In Progress)
+- [ ] User authentication
+- [ ] Vendor marketplace
+- [ ] Wedding planner
+- [ ] Budget calculator
 
-Simply open [Lovable](https://lovable.dev/projects/6092f4a2-7d47-4c19-b20c-ae122ed6925f) and click on Share -> Publish.
+### Phase 2: AI Features
+- [ ] AI Wedding Visualizer
+- [ ] AI Invitation Creator
+- [ ] Virtual Try-On
 
-## Can I connect a custom domain to my Lovable project?
+### Phase 3: FinTech
+- [ ] Escrow payments
+- [ ] Gift registry
+- [ ] Installment plans
 
-Yes, you can!
+### Phase 4: Mobile
+- [ ] React Native app
+- [ ] iOS & Android
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+---
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## 👥 Для Кого Эта Платформа
+
+### 💑 Для Пар
+- Визуализация свадьбы с AI
+- Планирование бюджета
+- Поиск поставщиков
+- Создание приглашений
+- Управление гостями
+
+### 🎭 Для Поставщиков
+- Профессиональное портфолио
+- Lead generation
+- Booking система
+- Аналитика бизнеса
+- Безопасные платежи
+
+---
+
+## 📊 Рынок
+
+### Узбекистан
+- **305,082** свадеб в год
+- **$15,000-30,000** средний бюджет
+- **$6.1 млрд** объём рынка
+- **300-1000** гостей на свадьбе
+
+### Целевые рынки
+- 🇺🇿 Узбекистан (Primary)
+- 🇰🇿 Казахстан (Secondary)
+- 🇹🇯 Таджикистан (Tertiary)
+
+---
+
+## 🤝 Вклад в Проект
+
+Мы приветствуем contributions! Пожалуйста:
+
+1. Fork проект
+2. Создайте feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit изменения (`git commit -m 'Add AmazingFeature'`)
+4. Push в branch (`git push origin feature/AmazingFeature`)
+5. Откройте Pull Request
+
+---
+
+## 📝 Лицензия
+
+Этот проект лицензирован под MIT License - см. [LICENSE](LICENSE) файл.
+
+---
+
+## 📞 Контакты
+
+**WeddingTech UZ Team**
+- Website: [weddingtech.uz](https://weddingtech.uz)
+- Email: info@weddingtech.uz
+- Telegram: @weddingtechuz
+
+---
+
+## 🙏 Благодарности
+
+- [Lovable](https://lovable.dev) - За платформу разработки
+- [shadcn/ui](https://ui.shadcn.com) - За UI компоненты
+- [Tailwind CSS](https://tailwindcss.com) - За CSS framework
+
+---
+
+**Made with ❤️ in Uzbekistan**

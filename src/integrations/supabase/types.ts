@@ -71,6 +71,79 @@ export type Database = {
           },
         ]
       }
+      budget_items: {
+        Row: {
+          actual_amount: number | null
+          booking_id: string | null
+          category: Database["public"]["Enums"]["budget_category_type"]
+          created_at: string
+          due_date: string | null
+          id: string
+          item_name: string
+          notes: string | null
+          paid_amount: number | null
+          payment_status: string | null
+          planned_amount: number
+          updated_at: string
+          vendor_id: string | null
+          wedding_plan_id: string
+        }
+        Insert: {
+          actual_amount?: number | null
+          booking_id?: string | null
+          category: Database["public"]["Enums"]["budget_category_type"]
+          created_at?: string
+          due_date?: string | null
+          id?: string
+          item_name: string
+          notes?: string | null
+          paid_amount?: number | null
+          payment_status?: string | null
+          planned_amount?: number
+          updated_at?: string
+          vendor_id?: string | null
+          wedding_plan_id: string
+        }
+        Update: {
+          actual_amount?: number | null
+          booking_id?: string | null
+          category?: Database["public"]["Enums"]["budget_category_type"]
+          created_at?: string
+          due_date?: string | null
+          id?: string
+          item_name?: string
+          notes?: string | null
+          paid_amount?: number | null
+          payment_status?: string | null
+          planned_amount?: number
+          updated_at?: string
+          vendor_id?: string | null
+          wedding_plan_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "budget_items_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "budget_items_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "budget_items_wedding_plan_id_fkey"
+            columns: ["wedding_plan_id"]
+            isOneToOne: false
+            referencedRelation: "wedding_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       guest_invitations: {
         Row: {
           created_at: string
@@ -547,10 +620,33 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      calculate_wedding_budget_totals: {
+        Args: { plan_id: string }
+        Returns: {
+          total_actual: number
+          total_paid: number
+          total_planned: number
+        }[]
+      }
     }
     Enums: {
       booking_status: "pending" | "confirmed" | "cancelled" | "completed"
+      budget_category_type:
+        | "venue"
+        | "catering"
+        | "photography"
+        | "videography"
+        | "flowers"
+        | "decoration"
+        | "music"
+        | "attire"
+        | "makeup"
+        | "invitations"
+        | "transportation"
+        | "gifts"
+        | "rings"
+        | "honeymoon"
+        | "other"
       payment_status: "pending" | "paid" | "refunded" | "failed"
       user_role: "couple" | "vendor" | "admin"
       vendor_category:
@@ -693,6 +789,23 @@ export const Constants = {
   public: {
     Enums: {
       booking_status: ["pending", "confirmed", "cancelled", "completed"],
+      budget_category_type: [
+        "venue",
+        "catering",
+        "photography",
+        "videography",
+        "flowers",
+        "decoration",
+        "music",
+        "attire",
+        "makeup",
+        "invitations",
+        "transportation",
+        "gifts",
+        "rings",
+        "honeymoon",
+        "other",
+      ],
       payment_status: ["pending", "paid", "refunded", "failed"],
       user_role: ["couple", "vendor", "admin"],
       vendor_category: [

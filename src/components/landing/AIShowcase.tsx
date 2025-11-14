@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sparkles, Video, Image as ImageIcon, Wand2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import aiVisualizerImage from "@/assets/ai-visualizer.jpg";
 import invitationImage from "@/assets/invitation-creator.jpg";
 import marketplaceImage from "@/assets/marketplace.jpg";
@@ -13,6 +14,7 @@ const showcaseItems = [
     image: aiVisualizerImage,
     icon: Sparkles,
     badge: "Революционная функция",
+    link: "/ai-visualizer",
     features: [
       "20+ стилей свадеб",
       "Реалистичная вставка лиц",
@@ -27,6 +29,7 @@ const showcaseItems = [
     image: invitationImage,
     icon: Video,
     badge: "Экономия времени",
+    link: "/ai-invitations",
     features: [
       "Видео-приглашения",
       "20+ шаблонов",
@@ -41,6 +44,7 @@ const showcaseItems = [
     image: marketplaceImage,
     icon: ImageIcon,
     badge: "1500+ поставщиков",
+    link: "/marketplace",
     features: [
       "Верифицированные вендоры",
       "Реальные отзывы",
@@ -51,6 +55,8 @@ const showcaseItems = [
 ];
 
 export const AIShowcase = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -110,7 +116,11 @@ export const AIShowcase = () => {
                   ))}
                 </ul>
 
-                <Button size="lg" className="shadow-elegant">
+                <Button 
+                  size="lg" 
+                  className="shadow-elegant"
+                  onClick={() => navigate(item.link)}
+                >
                   Попробовать сейчас
                   <item.icon className="ml-2 w-5 h-5" />
                 </Button>

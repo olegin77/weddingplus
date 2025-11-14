@@ -1,31 +1,32 @@
 import { Heart } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const footerLinks = {
   product: {
     title: "Продукт",
     links: [
-      { label: "AI Визуализатор", href: "#" },
-      { label: "Создатель Приглашений", href: "#" },
-      { label: "Маркетплейс", href: "#" },
-      { label: "Планировщик", href: "#" },
+      { label: "AI Визуализатор", href: "/ai-visualizer" },
+      { label: "Создатель Приглашений", href: "/ai-invitations" },
+      { label: "Маркетплейс", href: "/marketplace" },
+      { label: "Планировщик", href: "/planner" },
     ],
   },
   company: {
     title: "Компания",
     links: [
-      { label: "О нас", href: "#" },
-      { label: "Блог", href: "#" },
-      { label: "Карьера", href: "#" },
-      { label: "Контакты", href: "#" },
+      { label: "О нас", href: "/" },
+      { label: "Блог", href: "/" },
+      { label: "Карьера", href: "/" },
+      { label: "Контакты", href: "/" },
     ],
   },
   resources: {
     title: "Ресурсы",
     links: [
-      { label: "Помощь", href: "#" },
-      { label: "FAQ", href: "#" },
-      { label: "Политика", href: "#" },
-      { label: "Условия", href: "#" },
+      { label: "Помощь", href: "/dashboard" },
+      { label: "FAQ", href: "/" },
+      { label: "Политика", href: "/" },
+      { label: "Условия", href: "/" },
     ],
   },
 };
@@ -56,12 +57,12 @@ export const Footer = () => {
               <ul className="space-y-2">
                 {section.links.map((link, idx) => (
                   <li key={idx}>
-                    <a
-                      href={link.href}
+                    <Link
+                      to={link.href}
                       className="text-muted-foreground hover:text-foreground transition-colors"
                     >
                       {link.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>

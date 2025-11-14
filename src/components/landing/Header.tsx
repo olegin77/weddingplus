@@ -1,11 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Heart, Menu, X, Download } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
 
 export const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
   const navigation = [
@@ -41,14 +43,14 @@ export const Header = () => {
           {/* Actions */}
           <div className="hidden md:flex items-center gap-2">
             <LanguageSwitcher />
-            <Button variant="outline" onClick={() => window.location.href = '/install'}>
+            <Button variant="outline" onClick={() => navigate('/install')}>
               <Download className="w-4 h-4 mr-2" />
               {t('nav.install')}
             </Button>
-            <Button variant="ghost" onClick={() => window.location.href = '/auth'}>
+            <Button variant="ghost" onClick={() => navigate('/auth')}>
               {t('nav.signIn')}
             </Button>
-            <Button onClick={() => window.location.href = '/auth'}>
+            <Button onClick={() => navigate('/auth')}>
               {t('hero.cta')}
             </Button>
           </div>
@@ -85,7 +87,7 @@ export const Header = () => {
                 <Button 
                   variant="outline" 
                   className="w-full"
-                  onClick={() => window.location.href = '/install'}
+                  onClick={() => navigate('/install')}
                 >
                   <Download className="w-4 h-4 mr-2" />
                   {t('nav.install')}
@@ -93,13 +95,13 @@ export const Header = () => {
                 <Button 
                   variant="ghost" 
                   className="w-full"
-                  onClick={() => window.location.href = '/auth'}
+                  onClick={() => navigate('/auth')}
                 >
                   {t('nav.signIn')}
                 </Button>
                 <Button 
                   className="w-full"
-                  onClick={() => window.location.href = '/auth'}
+                  onClick={() => navigate('/auth')}
                 >
                   {t('hero.cta')}
                 </Button>

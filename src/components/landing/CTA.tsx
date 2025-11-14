@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sparkles, ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export const CTA = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -38,6 +41,7 @@ export const CTA = () => {
                   size="lg"
                   variant="secondary"
                   className="h-14 px-8 whitespace-nowrap hover:scale-105 transition-transform"
+                  onClick={() => navigate('/auth')}
                 >
                   Начать
                   <ArrowRight className="ml-2 w-5 h-5" />

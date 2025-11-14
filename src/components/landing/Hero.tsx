@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Sparkles, Heart, ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import heroImage from "@/assets/hero-wedding.jpg";
 
 export const Hero = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image with Overlay */}
@@ -50,7 +53,7 @@ export const Hero = () => {
             <Button
               size="lg"
               className="text-lg h-14 px-8 shadow-elegant hover:shadow-xl transition-all"
-              onClick={() => window.location.href = '/auth'}
+              onClick={() => navigate('/auth')}
             >
               Начать планирование
               <ArrowRight className="ml-2 w-5 h-5" />
@@ -60,7 +63,7 @@ export const Hero = () => {
               size="lg"
               variant="outline"
               className="text-lg h-14 px-8 border-2 hover:bg-accent"
-              onClick={() => window.location.href = '#features'}
+              onClick={() => navigate('/ai-visualizer')}
             >
               Посмотреть примеры
             </Button>

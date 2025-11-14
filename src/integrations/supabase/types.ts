@@ -415,6 +415,142 @@ export type Database = {
           },
         ]
       }
+      seating_charts: {
+        Row: {
+          background_color: string | null
+          created_at: string
+          id: string
+          name: string
+          updated_at: string
+          venue_height: number
+          venue_width: number
+          wedding_plan_id: string
+        }
+        Insert: {
+          background_color?: string | null
+          created_at?: string
+          id?: string
+          name?: string
+          updated_at?: string
+          venue_height?: number
+          venue_width?: number
+          wedding_plan_id: string
+        }
+        Update: {
+          background_color?: string | null
+          created_at?: string
+          id?: string
+          name?: string
+          updated_at?: string
+          venue_height?: number
+          venue_width?: number
+          wedding_plan_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "seating_charts_wedding_plan_id_fkey"
+            columns: ["wedding_plan_id"]
+            isOneToOne: false
+            referencedRelation: "wedding_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      seating_tables: {
+        Row: {
+          capacity: number
+          color: string | null
+          created_at: string
+          height: number
+          id: string
+          position_x: number
+          position_y: number
+          rotation: number
+          seating_chart_id: string
+          shape: string
+          table_number: number
+          updated_at: string
+          width: number
+        }
+        Insert: {
+          capacity?: number
+          color?: string | null
+          created_at?: string
+          height?: number
+          id?: string
+          position_x?: number
+          position_y?: number
+          rotation?: number
+          seating_chart_id: string
+          shape?: string
+          table_number: number
+          updated_at?: string
+          width?: number
+        }
+        Update: {
+          capacity?: number
+          color?: string | null
+          created_at?: string
+          height?: number
+          id?: string
+          position_x?: number
+          position_y?: number
+          rotation?: number
+          seating_chart_id?: string
+          shape?: string
+          table_number?: number
+          updated_at?: string
+          width?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "seating_tables_seating_chart_id_fkey"
+            columns: ["seating_chart_id"]
+            isOneToOne: false
+            referencedRelation: "seating_charts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      table_assignments: {
+        Row: {
+          created_at: string
+          guest_id: string
+          id: string
+          seat_number: number | null
+          seating_table_id: string
+        }
+        Insert: {
+          created_at?: string
+          guest_id: string
+          id?: string
+          seat_number?: number | null
+          seating_table_id: string
+        }
+        Update: {
+          created_at?: string
+          guest_id?: string
+          id?: string
+          seat_number?: number | null
+          seating_table_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "table_assignments_guest_id_fkey"
+            columns: ["guest_id"]
+            isOneToOne: false
+            referencedRelation: "guests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "table_assignments_seating_table_id_fkey"
+            columns: ["seating_table_id"]
+            isOneToOne: false
+            referencedRelation: "seating_tables"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       vendor_profiles: {
         Row: {
           business_name: string

@@ -12,8 +12,41 @@
 ### Planned
 - Timeline Visual Editor
 - Gift Registry с QR-кодами
-- Seating Chart Generator
 - Contract Management
+- Email Automation
+
+---
+
+## [0.16.0] - 2025-01-14
+
+### Added - Seating Chart Generator 🎯
+
+- **Database Schema**
+  - Created seating_charts table with venue dimensions
+  - Created seating_tables table for table placement
+  - Created table_assignments for guest-to-table mapping
+  - RLS policies for secure data access
+  
+- **Canvas Editor**
+  - Fabric.js v6 integration for drag & drop
+  - Multiple table shapes: round, rectangle, square
+  - Real-time position, rotation, and size updates
+  - Visual capacity indicators on tables
+  - PNG export functionality
+  
+- **Guest Management**
+  - Interactive guest assignment interface
+  - Capacity tracking per table
+  - Unassigned guests dashboard
+  - Quick unassign functionality
+  - Integration with existing guest list
+
+- **Technical**
+  - Added fabric@^6.5.1 dependency
+  - Created SeatingChartCanvas component
+  - Created GuestAssignment component  
+  - New route: /seating-chart
+  - Auto-save with temp ID handling
 
 ---
 

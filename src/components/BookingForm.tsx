@@ -5,7 +5,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
+import PaymentSelector from "./PaymentSelector";
 
 interface BookingFormProps {
   vendorId: string;
@@ -16,6 +18,8 @@ export const BookingForm = ({ vendorId, onSuccess }: BookingFormProps) => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [weddingPlans, setWeddingPlans] = useState<any[]>([]);
+  const [showPayment, setShowPayment] = useState(false);
+  const [createdBookingId, setCreatedBookingId] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     wedding_plan_id: "",
     booking_date: "",
@@ -49,7 +53,7 @@ export const BookingForm = ({ vendorId, onSuccess }: BookingFormProps) => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
 
-      const { error } = await supabase.from("bookings").insert({
+      const { data: booking, error } = await supabase.from("bookings").insert({
         vendor_id: vendorId,
         couple_user_id: user.id,
         wedding_plan_id: formData.wedding_plan_id,
@@ -58,16 +62,17 @@ export const BookingForm = ({ vendorId, onSuccess }: BookingFormProps) => {
         notes: formData.notes,
         status: "pending",
         payment_status: "pending",
-      });
+      }).select().single();
 
       if (error) throw error;
 
       toast({
-        title: "Успешно!",
-        description: "Запрос на бронирование отправлен",
+        title: "Бронирование создано",
+        description: "Теперь выберите способ оплаты",
       });
 
-      if (onSuccess) onSuccess();
+      setCreatedBookingId(booking.id);
+      setShowPayment(true);
     } catch (error) {
       toast({
         variant: "destructive",
@@ -80,7 +85,8 @@ export const BookingForm = ({ vendorId, onSuccess }: BookingFormProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <>
+      <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor="wedding_plan">Свадебный план</Label>
         <Select
@@ -136,8 +142,27 @@ export const BookingForm = ({ vendorId, onSuccess }: BookingFormProps) => {
       </div>
 
       <Button type="submit" className="w-full" disabled={loading}>
-        {loading ? "Отправка..." : "Отправить запрос"}
+        {loading ? "Отправка..." : "Создать бронирование"}
       </Button>
     </form>
+
+    <Dialog open={showPayment} onOpenChange={setShowPayment}>
+      <DialogContent className="max-w-2xl">
+        <DialogHeader>
+          <DialogTitle>Оплата бронирования</DialogTitle>
+        </DialogHeader>
+        {createdBookingId && (
+          <PaymentSelector
+            bookingId={createdBookingId}
+            amount={parseFloat(formData.price)}
+            onSuccess={() => {
+              setShowPayment(false);
+              onSuccess?.();
+            }}
+          />
+        )}
+      </DialogContent>
+    </Dialog>
+  </>
   );
 };

@@ -10,9 +10,86 @@
 ## [Unreleased]
 
 ### Planned
-- Payment integration (Phase 5)
-- Real-time notifications (Phase 6)
-- Mobile app (Phase 7)
+- Advanced features (Phase 7)
+- Mobile app (Phase 8)
+
+---
+
+## [0.6.0] - 2025-11-14
+
+### Added - Uzbek Payment Integration
+- **Payment Processing System**
+  - Support for 4 local payment providers:
+    - Payme integration with checkout URL
+    - Click payment gateway
+    - Uzum payment system
+    - Apelsin payment service
+  - Currency in Uzbek Som (UZS)
+  - Payment status tracking (pending → processing → completed)
+  - Transaction history
+  
+- **payments Database Table**
+  - Payment records with booking references
+  - Provider transaction IDs
+  - Status tracking
+  - Metadata storage (JSONB)
+  - RLS policies for security
+  - Indexes for performance
+  
+- **Edge Functions**
+  - `process-payment` - Payment initialization
+    - User authentication verification
+    - Booking ownership validation
+    - Payment record creation
+    - Provider-specific URL generation
+    - Return URL support
+  - `payment-webhook` - Payment callbacks
+    - Provider-specific webhook parsing
+    - Status updates
+    - Booking payment status sync
+    - Public endpoint (no JWT)
+    
+- **PaymentSelector Component**
+  - Visual payment method cards
+  - Provider logos and descriptions
+  - Amount display in UZS format
+  - Loading states
+  - One-click payment initiation
+  - Gateway redirect handling
+  
+- **BookingForm Enhancements**
+  - Two-step booking process
+  - Payment dialog integration
+  - Booking creation first
+  - Payment selection second
+  - Success callbacks
+  
+- **PaymentSuccess Page (/payment-success)**
+  - Success confirmation UI
+  - Transaction ID display
+  - Return to dashboard link
+  - Protected route
+
+### Database Changes
+- Created `payments` table with full schema
+- Added RLS policies for payment security
+- Users can view own payments
+- Vendors can view payments for their bookings
+- Added indexes for booking_id and provider_transaction_id
+- Updated trigger for payments.updated_at
+
+### Changed
+- Updated App.tsx with PaymentSuccess route
+- Enhanced BookingForm with payment flow
+- Modified config.toml for new edge functions
+- Updated documentation (PROGRESS.md)
+
+### Security
+- JWT verification enabled for process-payment
+- JWT disabled for payment-webhook (public callback)
+- RLS policies prevent unauthorized payment access
+- Booking ownership verification
+- Provider transaction ID tracking
 
 ---
 

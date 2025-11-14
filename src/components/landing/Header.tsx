@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Heart, Menu, X } from "lucide-react";
+import { Heart, Menu, X, Download } from "lucide-react";
 import { useState } from "react";
 
 export const Header = () => {
@@ -37,6 +37,10 @@ export const Header = () => {
 
           {/* Actions */}
           <div className="hidden md:flex items-center gap-4">
+            <Button variant="outline" onClick={() => window.location.href = '/install'}>
+              <Download className="w-4 h-4 mr-2" />
+              Установить
+            </Button>
             <Button variant="ghost" onClick={() => window.location.href = '/auth'}>
               Войти
             </Button>
@@ -73,6 +77,14 @@ export const Header = () => {
                 </a>
               ))}
               <div className="flex flex-col gap-2 pt-4 border-t border-border/50">
+                <Button 
+                  variant="outline" 
+                  className="w-full"
+                  onClick={() => window.location.href = '/install'}
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  Установить
+                </Button>
                 <Button 
                   variant="ghost" 
                   className="w-full"

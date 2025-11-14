@@ -10,8 +10,90 @@
 ## [Unreleased]
 
 ### Planned
-- Mobile optimizations (Phase 8)
-- PWA features (Phase 9)
+- Final polish and optimizations (Phase 9)
+- Reviews and ratings system
+- Calendar integration
+
+---
+
+## [0.8.0] - 2025-11-14
+
+### Added - PWA (Progressive Web App)
+
+- **PWA Infrastructure**
+  - Installed and configured vite-plugin-pwa
+  - Service Worker with Workbox
+  - Automatic updates on new versions
+  - Offline-first architecture
+  
+- **Web App Manifest**
+  - App name: WeddingTech UZ
+  - Short name: WeddingTech
+  - Theme color: #f43f5e (rose gold)
+  - Background color: #ffffff
+  - Display mode: standalone
+  - Orientation: portrait
+  - Scope and start URL configured
+  - Icons for all sizes (192x192, 512x512)
+  - Maskable icon support
+  
+- **PWA Icons**
+  - Generated icon-512.png (high quality)
+  - Generated icon-192.png (standard size)
+  - Rose gold gradient background
+  - Wedding rings with heart design
+  - Suitable for all platforms
+  - Purpose: any and maskable
+  
+- **Mobile Meta Tags**
+  - viewport-fit=cover for notch devices
+  - apple-mobile-web-app-capable
+  - apple-mobile-web-app-status-bar-style (black-translucent)
+  - apple-mobile-web-app-title
+  - apple-touch-icon link
+  - theme-color for Android
+  
+- **Install Page (/install)**
+  - Detects if app already installed
+  - Platform-specific instructions:
+    - iOS: Step-by-step Safari guide
+    - Android: One-click install button
+  - beforeinstallprompt event handling
+  - Deferred prompt for install
+  - Benefits showcase:
+    - Offline functionality
+    - Fast launch from home screen
+    - Fullscreen experience
+    - Push notifications ready
+  
+- **Offline Capabilities**
+  - Service Worker caches:
+    - All static assets (JS, CSS, HTML)
+    - Icons and images (PNG, SVG, JPG, WebP)
+  - Supabase API caching:
+    - NetworkFirst strategy
+    - 24-hour cache expiration
+    - Max 50 cached entries
+  - Offline viewing:
+    - Wedding plans
+    - Bookings
+    - Guest lists
+    - Marketplace vendors
+    - Profile data
+
+### Changed
+- Updated vite.config.ts with PWA plugin
+- Enhanced index.html with mobile meta tags
+- Added Download/Install button to Header (desktop & mobile)
+- Updated App.tsx with /install route
+- Improved mobile navigation
+
+### Technical
+- Cache strategy: NetworkFirst for API calls
+- Cache name: supabase-cache
+- Auto-registration of service worker
+- Include assets: favicon, robots.txt, icons
+- Glob patterns for comprehensive caching
 
 ---
 

@@ -10,9 +10,64 @@
 ## [Unreleased]
 
 ### Planned
-- Marketing website enhancements
-- Advanced analytics dashboard
-- SMS notifications
+- AI Invitation Creator
+- Timeline Visual Editor
+- Gift Registry с QR-кодами
+- Seating Chart Generator
+
+---
+
+## [0.14.0] - 2025-11-14
+
+### Added - AI Wedding Visualizer 🎨 (ГЛАВНАЯ ФИЧА!)
+
+- **Database Schema**
+  - Created wedding_visualizations table
+  - Style, quality, prompt tracking
+  - Base64 image storage
+  - RLS policies for couples
+
+- **Edge Function: generate-wedding-visualization**
+  - Lovable AI integration (gemini-2.5-flash-image-preview)
+  - 6 wedding styles: Traditional Uzbek, Modern, Royal, Garden, Romantic, Rustic
+  - Quality options: low/medium/high
+  - Rate limiting (429/402) handling
+
+- **AIWeddingVisualizer Component**
+  - Style selection dropdown
+  - Quality control
+  - Real-time AI generation
+  - Gallery view with delete
+  - Error handling
+
+- **New Page: /ai-visualizer**
+  - Wedding plan verification
+  - Auto-create dialog
+  - Protected route
+
+---
+
+## [0.13.0] - 2025-11-14
+
+### Added - Budget Tracker 💰
+
+- **Database Schema**
+  - budget_items table with 15 categories
+  - Plan/actual/paid tracking
+  - Payment status
+  - Due dates
+
+- **Components**
+  - BudgetTracker: Main manager
+  - BudgetChart: Pie & bar charts
+  - BudgetItemDialog: Editor
+  - BudgetCategoryCard: Display
+
+- **Features**
+  - Plan vs Actual comparison
+  - Budget alerts (90% warning)
+  - Visual charts
+  - Category breakdown
 
 ---
 

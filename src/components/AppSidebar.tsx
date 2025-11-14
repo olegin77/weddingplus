@@ -45,6 +45,7 @@ export function AppSidebar() {
     { title: t('nav.marketplace'), url: "/marketplace", icon: ShoppingBag },
     { title: t('nav.planner'), url: "/planner", icon: Calendar },
     { title: t('nav.aiAssistant'), url: "/ai-assistant", icon: Sparkles },
+    { title: "AI Визуализатор", url: "/ai-visualizer", icon: Sparkles },
     { title: t('nav.profile'), url: "/profile", icon: User },
     { title: t('nav.settings'), url: "/settings", icon: Settings },
   ];

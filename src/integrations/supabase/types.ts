@@ -508,6 +508,53 @@ export type Database = {
         }
         Relationships: []
       }
+      wedding_visualizations: {
+        Row: {
+          couple_photo_url: string | null
+          created_at: string
+          id: string
+          image_url: string
+          partner_photo_url: string | null
+          prompt: string
+          quality: string | null
+          style: string
+          updated_at: string
+          wedding_plan_id: string
+        }
+        Insert: {
+          couple_photo_url?: string | null
+          created_at?: string
+          id?: string
+          image_url: string
+          partner_photo_url?: string | null
+          prompt: string
+          quality?: string | null
+          style: string
+          updated_at?: string
+          wedding_plan_id: string
+        }
+        Update: {
+          couple_photo_url?: string | null
+          created_at?: string
+          id?: string
+          image_url?: string
+          partner_photo_url?: string | null
+          prompt?: string
+          quality?: string | null
+          style?: string
+          updated_at?: string
+          wedding_plan_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_wedding_plan"
+            columns: ["wedding_plan_id"]
+            isOneToOne: false
+            referencedRelation: "wedding_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       wedding_websites: {
         Row: {
           created_at: string

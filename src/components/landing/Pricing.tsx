@@ -21,8 +21,7 @@ const plans = [
   },
   {
     name: "Премиум",
-    price: "4 900 ₽",
-    period: "/месяц",
+    price: "Связаться с нами",
     description: "Для полноценного планирования",
     features: [
       "Все из базового плана",
@@ -38,8 +37,7 @@ const plans = [
   },
   {
     name: "Свадебный",
-    price: "19 900 ₽",
-    period: "/разовый",
+    price: "Связаться с нами",
     description: "Полный пакет для вашей свадьбы",
     features: [
       "Все из премиум плана",
@@ -101,11 +99,6 @@ export const Pricing = () => {
                 </CardDescription>
                 <div className="mt-4">
                   <span className="text-4xl font-bold">{plan.price}</span>
-                  {plan.period && (
-                    <span className="text-muted-foreground ml-1">
-                      {plan.period}
-                    </span>
-                  )}
                 </div>
               </CardHeader>
 

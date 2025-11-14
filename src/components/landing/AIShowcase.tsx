@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sparkles, Video, Image as ImageIcon, Wand2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { useEffect, useState } from "react";
 import aiVisualizerImage from "@/assets/ai-visualizer.jpg";
 import invitationImage from "@/assets/invitation-creator.jpg";
 import marketplaceImage from "@/assets/marketplace.jpg";
@@ -56,6 +58,21 @@ const showcaseItems = [
 
 export const AIShowcase = () => {
   const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setIsAuthenticated(!!session);
+    });
+  }, []);
+
+  const handleNavigate = (link: string) => {
+    if (isAuthenticated) {
+      navigate(link);
+    } else {
+      navigate('/auth');
+    }
+  };
 
   return (
     <section className="py-24">
@@ -119,7 +136,7 @@ export const AIShowcase = () => {
                 <Button 
                   size="lg" 
                   className="shadow-elegant"
-                  onClick={() => navigate(item.link)}
+                  onClick={() => handleNavigate(item.link)}
                 >
                   Попробовать сейчас
                   <item.icon className="ml-2 w-5 h-5" />

@@ -145,7 +145,30 @@
 
 ---
 
-## 🔄 Phase 5: Payment Integration (Следующая)
+## ✅ Phase 5: Real-time Notifications (60%)
+
+### Real-time System:
+- [x] **Supabase Realtime** enabled for bookings
+- [x] **NotificationToast** component for instant updates
+- [x] Toast notifications for:
+  - New bookings (vendors)
+  - Booking confirmations (couples)
+  - Booking cancellations (both)
+- [x] **notification_preferences** table
+  - Email notifications toggle
+  - Push notifications settings
+  - Booking updates preferences
+  - Vendor messages settings
+
+### Integration:
+- [x] Added NotificationToast to App.tsx
+- [x] Real-time channel subscription
+- [x] Auto-dismiss notifications (5s)
+- [x] Vendor name fetching in notifications
+
+---
+
+## 🔄 Phase 6: Payment Integration (Следующая)
 
 ### Pending Tasks:
 - [ ] Stripe integration

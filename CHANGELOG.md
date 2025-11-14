@@ -18,7 +18,38 @@
 
 ## [0.5.0] - 2025-11-14
 
-### Added
+### Added - Real-time Notifications
+- **NotificationToast Component**
+  - Real-time booking update notifications
+  - Toast messages for new bookings
+  - Status change notifications (confirmed/cancelled)
+  - Vendor name display in notifications
+  - Auto-dismiss after 5 seconds
+  - Integrated with Supabase Realtime
+
+- **Notification Preferences System**
+  - Created `notification_preferences` table
+  - Email notifications toggle
+  - Push notifications toggle  
+  - Booking updates settings
+  - Vendor messages preferences
+  - Full RLS policies for user privacy
+
+### Database Changes
+- Enabled Realtime for `bookings` table
+- Added publication to supabase_realtime
+- Created notification_preferences table with triggers
+
+### Changed
+- Integrated NotificationToast into main App component
+- Enabled auto-confirm email for faster testing
+- Updated App.tsx with real-time notification system
+
+---
+
+## [0.4.5] - 2025-11-14
+
+### Added - AI Features
 - **Lovable AI Integration**
   - Enabled Lovable AI Gateway with Gemini 2.5 Flash
   - Auto-configured LOVABLE_API_KEY secret

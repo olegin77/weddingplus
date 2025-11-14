@@ -124,6 +124,39 @@ export type Database = {
           },
         ]
       }
+      notification_preferences: {
+        Row: {
+          booking_updates: boolean | null
+          created_at: string | null
+          email_notifications: boolean | null
+          id: string
+          push_notifications: boolean | null
+          updated_at: string | null
+          user_id: string
+          vendor_messages: boolean | null
+        }
+        Insert: {
+          booking_updates?: boolean | null
+          created_at?: string | null
+          email_notifications?: boolean | null
+          id?: string
+          push_notifications?: boolean | null
+          updated_at?: string | null
+          user_id: string
+          vendor_messages?: boolean | null
+        }
+        Update: {
+          booking_updates?: boolean | null
+          created_at?: string | null
+          email_notifications?: boolean | null
+          id?: string
+          push_notifications?: boolean | null
+          updated_at?: string | null
+          user_id?: string
+          vendor_messages?: boolean | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null

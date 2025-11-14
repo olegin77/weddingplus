@@ -8,7 +8,8 @@ import {
   LogOut,
   Briefcase,
   Sparkles,
-  Mail
+  Mail,
+  LayoutGrid
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -48,6 +49,7 @@ export function AppSidebar() {
     { title: t('nav.aiAssistant'), url: "/ai-assistant", icon: Sparkles },
     { title: "AI Визуализатор", url: "/ai-visualizer", icon: Sparkles },
     { title: "AI Приглашения", url: "/ai-invitations", icon: Mail },
+    { title: "Схема рассадки", url: "/seating-chart", icon: LayoutGrid },
     { title: t('nav.profile'), url: "/profile", icon: User },
     { title: t('nav.settings'), url: "/settings", icon: Settings },
   ];

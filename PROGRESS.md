@@ -950,6 +950,56 @@ WeddingTech UZ полностью функциональная платформ�
 
 ---
 
+## Phase 16: Seating Chart Generator ✅
+
+### Database Schema
+- [x] **seating_charts** table
+  - Links to wedding_plan_id
+  - Venue dimensions (width, height)
+  - Background color customization
+  - RLS policies for couples
+- [x] **seating_tables** table
+  - Table number, shape (round/rectangle/square)
+  - Position (x, y), dimensions, rotation
+  - Capacity tracking
+  - Color customization
+  - RLS policies
+- [x] **table_assignments** table
+  - Links guests to tables
+  - Seat number tracking
+  - Unique constraint per guest/table
+  - RLS policies
+
+### Frontend Components
+- [x] **SeatingChartCanvas** component
+  - Fabric.js v6 canvas integration
+  - Drag & drop table placement
+  - Multiple table shapes
+  - Real-time position updates
+  - Rotation and resize controls
+  - PNG export functionality
+- [x] **GuestAssignment** component
+  - Guest-to-table assignment interface
+  - Capacity tracking per table
+  - Unassigned guests list
+  - Remove assignments
+  - Real-time updates
+
+### Features
+- [x] Interactive drag & drop canvas
+- [x] Create tables with different shapes
+- [x] Assign guests to tables
+- [x] Visual capacity tracking
+- [x] Export seating plan as image
+- [x] Auto-save functionality
+- [x] Responsive design
+- [x] Integration with existing guest list
+
+### Route
+- /seating-chart
+
+---
+
 ## 📊 Statistics
 
 - **Lines of Code:** ~14,000+

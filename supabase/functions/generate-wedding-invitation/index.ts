@@ -93,7 +93,7 @@ serve(async (req) => {
     Professional design, high quality, elegant typography, centered layout, 
     invitation card format (portrait orientation), wedding theme, ultra high resolution.`;
 
-    console.log("Generating invitation with prompt:", prompt);
+    console.log("Generating invitation with template:", template);
 
     // Call Lovable AI to generate image
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");

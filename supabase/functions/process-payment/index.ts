@@ -38,7 +38,7 @@ Deno.serve(async (req) => {
 
     const { bookingId, amount, provider, returnUrl }: PaymentRequest = await req.json()
 
-    console.log('Processing payment:', { bookingId, amount, provider, user: user.id })
+    console.log('Processing payment:', { provider, hasBookingId: !!bookingId });
 
     // Verify booking belongs to user
     const { data: booking, error: bookingError } = await supabase
@@ -109,7 +109,7 @@ Deno.serve(async (req) => {
       })
       .eq('id', payment.id)
 
-    console.log('Payment URL generated:', paymentUrl)
+    console.log('Payment URL generated for provider:', provider);
 
     return new Response(
       JSON.stringify({

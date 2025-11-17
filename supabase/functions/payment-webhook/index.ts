@@ -19,7 +19,11 @@ Deno.serve(async (req) => {
     const body = await req.json()
     const provider = new URL(req.url).searchParams.get('provider')
 
-    console.log('Payment webhook received:', { provider, body })
+    console.log('Payment webhook received:', { 
+      provider, 
+      hasParams: !!body.params,
+      method: body.method 
+    });
 
     let paymentId: string | null = null
     let status: string = 'failed'
@@ -92,7 +96,7 @@ Deno.serve(async (req) => {
         .update({ payment_status: 'paid' })
         .eq('id', payment.booking_id)
 
-      console.log('Payment completed, booking updated:', payment.booking_id)
+      console.log('Payment completed, booking updated');
     }
 
     return new Response(

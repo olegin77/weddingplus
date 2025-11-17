@@ -38,6 +38,26 @@ Deno.serve(async (req) => {
 
     const { bookingId, amount, provider, returnUrl }: PaymentRequest = await req.json()
 
+    // Validate provider
+    const ALLOWED_PROVIDERS = ['payme', 'click', 'uzum', 'apelsin'];
+    if (!ALLOWED_PROVIDERS.includes(provider)) {
+      throw new Error('Invalid payment provider');
+    }
+
+    // Validate returnUrl format if provided
+    if (returnUrl) {
+      try {
+        const url = new URL(returnUrl);
+        // Only allow same origin or lovable.app domains
+        const allowedDomains = ['lovable.app', 'lovable.dev'];
+        if (!allowedDomains.some(domain => url.hostname.endsWith(domain))) {
+          throw new Error('Invalid return URL domain');
+        }
+      } catch {
+        throw new Error('Invalid return URL format');
+      }
+    }
+
     console.log('Processing payment:', { provider, hasBookingId: !!bookingId });
 
     // Verify booking belongs to user
@@ -50,6 +70,12 @@ Deno.serve(async (req) => {
 
     if (bookingError || !booking) {
       throw new Error('Booking not found or unauthorized')
+    }
+
+    // Validate amount matches booking price (allow 0.01 tolerance for floating point)
+    const bookingPrice = Number(booking.price);
+    if (Math.abs(amount - bookingPrice) > 0.01) {
+      throw new Error(`Payment amount (${amount}) does not match booking price (${bookingPrice})`);
     }
 
     // Create payment record

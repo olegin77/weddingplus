@@ -13,11 +13,13 @@ import { InvitationManager } from "@/components/InvitationManager";
 import { WeddingWebsiteBuilder } from "@/components/WeddingWebsiteBuilder";
 import { BudgetTracker } from "@/components/budget/BudgetTracker";
 import { SmartVendorRecommendations } from "@/components/SmartVendorRecommendations";
+import { WeddingPlanProgress } from "@/components/WeddingPlanProgress";
 import type { WeddingMatchParams } from "@/lib/matching-engine";
 
 const Planner = () => {
   const [activeTab, setActiveTab] = useState("checklist");
   const [weddingPlan, setWeddingPlan] = useState<any>(null);
+  const [bookedVendorsCount, setBookedVendorsCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -37,6 +39,15 @@ const Planner = () => {
 
       if (!error && data) {
         setWeddingPlan(data);
+        
+        // Fetch booked vendors count
+        const { data: bookings } = await supabase
+          .from("bookings")
+          .select("id")
+          .eq("wedding_plan_id", data.id)
+          .in("status", ["confirmed", "completed"]);
+        
+        setBookedVendorsCount(bookings?.length || 0);
       }
     } catch (error) {
       console.error("Error fetching wedding plan:", error);
@@ -92,17 +103,12 @@ const Planner = () => {
           />
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Общий прогресс</CardTitle>
-            <CardDescription>
-              Вы выполнили {completedTasks} из {checklistItems.length} задач
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Progress value={progress} className="h-3" />
-          </CardContent>
-        </Card>
+        {/* Wedding Plan Progress Card */}
+        <WeddingPlanProgress 
+          weddingPlan={weddingPlan}
+          bookedVendorsCount={bookedVendorsCount}
+          totalVendorsNeeded={8}
+        />
 
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-6">

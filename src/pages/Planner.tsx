@@ -14,6 +14,7 @@ import { WeddingWebsiteBuilder } from "@/components/WeddingWebsiteBuilder";
 import { BudgetTracker } from "@/components/budget/BudgetTracker";
 import { SmartVendorRecommendations } from "@/components/SmartVendorRecommendations";
 import { WeddingPlanProgress } from "@/components/WeddingPlanProgress";
+import { useMilestones } from "@/hooks/useMilestones";
 import type { WeddingMatchParams } from "@/lib/matching-engine";
 
 const Planner = () => {
@@ -21,6 +22,11 @@ const Planner = () => {
   const [weddingPlan, setWeddingPlan] = useState<any>(null);
   const [bookedVendorsCount, setBookedVendorsCount] = useState(0);
   const [loading, setLoading] = useState(true);
+
+  const totalVendorsNeeded = 8;
+
+  // Milestone tracking with confetti animations
+  useMilestones(weddingPlan, bookedVendorsCount, totalVendorsNeeded);
 
   useEffect(() => {
     fetchWeddingPlan();
@@ -107,7 +113,7 @@ const Planner = () => {
         <WeddingPlanProgress 
           weddingPlan={weddingPlan}
           bookedVendorsCount={bookedVendorsCount}
-          totalVendorsNeeded={8}
+          totalVendorsNeeded={totalVendorsNeeded}
         />
 
         <Tabs value={activeTab} onValueChange={setActiveTab}>

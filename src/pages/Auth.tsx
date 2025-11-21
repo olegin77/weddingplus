@@ -65,12 +65,52 @@ const Auth = () => {
           title: "Добро пожаловать!",
           description: "Вы успешно вошли в систему",
         });
-        navigate("/");
+        
+        // Check if user needs onboarding
+        await redirectAfterAuth(data.user.id);
       }
     } catch (err) {
       setError("Произошла ошибка при входе");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const redirectAfterAuth = async (userId: string) => {
+    try {
+      // Check user role
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", userId)
+        .single();
+
+      // Vendors go to dashboard
+      if (profile?.role === "vendor") {
+        navigate("/vendor-dashboard");
+        return;
+      }
+
+      // Check if couple has a wedding plan
+      if (profile?.role === "couple") {
+        const { data: plans } = await supabase
+          .from("wedding_plans")
+          .select("id")
+          .eq("couple_user_id", userId)
+          .limit(1);
+
+        if (!plans || plans.length === 0) {
+          // No wedding plan - redirect to onboarding
+          navigate("/onboarding");
+          return;
+        }
+      }
+
+      // Default redirect
+      navigate("/");
+    } catch (error) {
+      console.error("Error checking user data:", error);
+      navigate("/");
     }
   };
 
@@ -119,12 +159,14 @@ const Auth = () => {
         return;
       }
 
-      if (data.session) {
+      if (data.session && data.user) {
         toast({
           title: "Регистрация успешна!",
           description: "Добро пожаловать в WeddingTech UZ",
         });
-        navigate("/");
+        
+        // Redirect based on role and wedding plan
+        await redirectAfterAuth(data.user.id);
       }
     } catch (err) {
       setError("Произошла ошибка при регистрации");

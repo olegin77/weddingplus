@@ -215,79 +215,87 @@ export default function SeatingChart() {
 
     setSaving(true);
     try {
-      // Delete existing tables
-      await supabase
+      // Separate new tables (temp) from existing tables
+      const existingTables = tables.filter(t => !t.id.startsWith("temp-"));
+      const newTables = tables.filter(t => t.id.startsWith("temp-"));
+
+      // Get current table IDs from database to find deleted ones
+      const { data: dbTables } = await supabase
         .from("seating_tables")
-        .delete()
+        .select("id")
         .eq("seating_chart_id", seatingChartId);
 
-      // Insert new tables
-      const tablesToInsert = tables
-        .filter(t => !t.id.startsWith("temp-"))
-        .map(t => ({
-          seating_chart_id: seatingChartId,
-          table_number: t.tableNumber,
-          shape: t.shape,
-          capacity: t.capacity,
-          position_x: t.x,
-          position_y: t.y,
-          width: t.width,
-          height: t.height,
-          rotation: t.rotation,
-          color: t.color,
-        }));
+      const currentDbIds = new Set(dbTables?.map(t => t.id) || []);
+      const localIds = new Set(existingTables.map(t => t.id));
 
-      const tempTables = tables.filter(t => t.id.startsWith("temp-"));
-      
-      if (tempTables.length > 0) {
-        const tempTablesData = tempTables.map(t => ({
-          seating_chart_id: seatingChartId,
-          table_number: t.tableNumber,
-          shape: t.shape,
-          capacity: t.capacity,
-          position_x: t.x,
-          position_y: t.y,
-          width: t.width,
-          height: t.height,
-          rotation: t.rotation,
-          color: t.color,
-        }));
-
-        const { data: newTables, error: insertError } = await supabase
+      // Delete tables that were removed locally
+      const tablesToDelete = [...currentDbIds].filter(id => !localIds.has(id));
+      if (tablesToDelete.length > 0) {
+        await supabase
           .from("seating_tables")
-          .insert(tempTablesData)
+          .delete()
+          .in("id", tablesToDelete);
+      }
+
+      // Update existing tables
+      for (const table of existingTables) {
+        await supabase
+          .from("seating_tables")
+          .update({
+            table_number: table.tableNumber,
+            shape: table.shape,
+            capacity: table.capacity,
+            position_x: table.x,
+            position_y: table.y,
+            width: table.width,
+            height: table.height,
+            rotation: table.rotation,
+            color: table.color,
+          })
+          .eq("id", table.id);
+      }
+
+      // Insert new tables
+      if (newTables.length > 0) {
+        const newTablesData = newTables.map(t => ({
+          seating_chart_id: seatingChartId,
+          table_number: t.tableNumber,
+          shape: t.shape,
+          capacity: t.capacity,
+          position_x: t.x,
+          position_y: t.y,
+          width: t.width,
+          height: t.height,
+          rotation: t.rotation,
+          color: t.color,
+        }));
+
+        const { data: insertedTables, error: insertError } = await supabase
+          .from("seating_tables")
+          .insert(newTablesData)
           .select();
 
         if (insertError) throw insertError;
 
-        // Update temp IDs with real IDs
-        const updatedTables = tables.map(t => {
-          if (t.id.startsWith("temp-")) {
-            const newTable = newTables?.find(nt => nt.table_number === t.tableNumber);
-            if (newTable) {
-              return { ...t, id: newTable.id };
+        // Update local state with real IDs
+        if (insertedTables) {
+          const updatedTables = tables.map(t => {
+            if (t.id.startsWith("temp-")) {
+              const inserted = insertedTables.find(it => it.table_number === t.tableNumber);
+              if (inserted) {
+                return { ...t, id: inserted.id };
+              }
             }
-          }
-          return t;
-        });
-        setTables(updatedTables);
-      }
-
-      if (tablesToInsert.length > 0) {
-        const { error: insertError } = await supabase
-          .from("seating_tables")
-          .insert(tablesToInsert);
-
-        if (insertError) throw insertError;
+            return t;
+          });
+          setTables(updatedTables);
+        }
       }
 
       toast({
         title: "Сохранено! ✅",
         description: "План рассадки успешно сохранён",
       });
-
-      // Reload
-      loadSeatingChart();
     } catch (error) {
       console.error("Error saving seating chart:", error);
       toast({

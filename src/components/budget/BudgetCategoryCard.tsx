@@ -27,6 +27,7 @@ interface BudgetCategoryCardProps {
   category: string;
   label: string;
   data: CategoryData;
+  weddingPlanId?: string;
   onEdit: (item: BudgetItem) => void;
   onDelete: (itemId: string) => void;
 }
@@ -37,7 +38,7 @@ const paymentStatusLabels: Record<string, { label: string; variant: "default" | 
   paid: { label: "Оплачено", variant: "default" },
 };
 
-export function BudgetCategoryCard({ category, label, data, onEdit, onDelete }: BudgetCategoryCardProps) {
+export function BudgetCategoryCard({ category, label, data, weddingPlanId, onEdit, onDelete }: BudgetCategoryCardProps) {
   const overBudget = data.actual > data.planned;
   const paidPercent = data.actual > 0 ? (data.paid / data.actual) * 100 : 0;
 
@@ -47,7 +48,7 @@ export function BudgetCategoryCard({ category, label, data, onEdit, onDelete }: 
       <div className="flex items-center justify-between">
           <CardTitle className="text-lg">{label}</CardTitle>
           <div className="flex items-center gap-2">
-            <SmartVendorDrawer category={category} maxPrice={data.planned} />
+            <SmartVendorDrawer category={category} maxPrice={data.planned} weddingPlanId={weddingPlanId} />
             <div className="text-sm text-muted-foreground">
               {data.items.length} {data.items.length === 1 ? "статья" : "статей"}
             </div>

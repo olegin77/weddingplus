@@ -316,6 +316,7 @@ export function BudgetTracker({ weddingPlanId, totalBudget }: BudgetTrackerProps
             category={category.category}
             label={categoryLabels[category.category]}
             data={category}
+            weddingPlanId={weddingPlanId}
             onEdit={handleEdit}
             onDelete={handleDelete}
           />

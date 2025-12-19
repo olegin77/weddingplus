@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Download, Plus, Trash2, Save } from "lucide-react";
+import { Download, Plus, Trash2, Save, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface SeatingTable {
@@ -25,6 +25,7 @@ interface SeatingChartCanvasProps {
   tables: SeatingTable[];
   onTablesUpdate: (tables: SeatingTable[]) => void;
   onSave: () => void;
+  saving?: boolean;
   venueWidth?: number;
   venueHeight?: number;
 }
@@ -33,6 +34,7 @@ export function SeatingChartCanvas({
   tables, 
   onTablesUpdate, 
   onSave,
+  saving = false,
   venueWidth = 1000,
   venueHeight = 800
 }: SeatingChartCanvasProps) {
@@ -326,10 +328,18 @@ export function SeatingChartCanvas({
             Экспорт PNG
           </Button>
 
-          <Button onClick={onSave}>
-            <Save className="w-4 h-4 mr-2" />
-            Сохранить
-          </Button>
+          <div className="flex items-center gap-2">
+            {saving && (
+              <span className="flex items-center gap-1 text-sm text-muted-foreground">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Сохранение...
+              </span>
+            )}
+            <Button onClick={onSave} disabled={saving}>
+              <Save className="w-4 h-4 mr-2" />
+              Сохранить
+            </Button>
+          </div>
         </div>
       </Card>
 

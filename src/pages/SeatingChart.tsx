@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { DashboardLayout } from "@/components/DashboardLayout";
@@ -48,6 +48,10 @@ export default function SeatingChart() {
   const [tables, setTables] = useState<SeatingTable[]>([]);
   const [guests, setGuests] = useState<Guest[]>([]);
   const [assignments, setAssignments] = useState<Assignment[]>([]);
+  
+  const autoSaveTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const isInitialLoadRef = useRef(true);
+  const saveRef = useRef<() => Promise<void>>();
 
   useEffect(() => {
     checkWeddingPlan();
@@ -210,6 +214,36 @@ export default function SeatingChart() {
     }
   };
 
+  // Auto-save with debounce when tables change
+  const handleTablesUpdate = useCallback((newTables: SeatingTable[]) => {
+    setTables(newTables);
+    
+    // Skip auto-save on initial load
+    if (isInitialLoadRef.current) {
+      isInitialLoadRef.current = false;
+      return;
+    }
+
+    // Clear previous timer
+    if (autoSaveTimerRef.current) {
+      clearTimeout(autoSaveTimerRef.current);
+    }
+
+    // Set new debounced auto-save timer (1.5 seconds)
+    autoSaveTimerRef.current = setTimeout(() => {
+      saveRef.current?.();
+    }, 1500);
+  }, []);
+
+  // Cleanup timer on unmount
+  useEffect(() => {
+    return () => {
+      if (autoSaveTimerRef.current) {
+        clearTimeout(autoSaveTimerRef.current);
+      }
+    };
+  }, []);
+
   const handleSave = async () => {
     if (!seatingChartId) return;
 
@@ -308,6 +342,11 @@ export default function SeatingChart() {
     }
   };
 
+  // Keep saveRef updated for debounced auto-save
+  useEffect(() => {
+    saveRef.current = handleSave;
+  });
+
   const handleAssignGuest = async (guestId: string, tableId: string) => {
     try {
       const { error } = await supabase
@@ -402,8 +441,9 @@ export default function SeatingChart() {
               <TabsContent value="canvas">
                 <SeatingChartCanvas
                   tables={tables}
-                  onTablesUpdate={setTables}
+                  onTablesUpdate={handleTablesUpdate}
                   onSave={handleSave}
+                  saving={saving}
                 />
               </TabsContent>
 

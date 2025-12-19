@@ -109,7 +109,10 @@ export function SeatingChartCanvas({
       originY: "center",
     });
 
+    // Used to keep objects stable across syncs (including when temp IDs are replaced by DB IDs)
     (group as any).tableId = table.id;
+    (group as any).tableNumber = table.tableNumber;
+
     return group;
   }, []);
 
@@ -188,7 +191,8 @@ export function SeatingChartCanvas({
 
     // Add or update tables
     tables.forEach((table) => {
-      const existingObj = canvas.getObjects().find((obj: any) => obj.tableId === table.id);
+      const objects = canvas.getObjects() as any[];
+      const existingObj = objects.find((obj) => obj.tableId === table.id);
 
       if (existingObj) {
         if (!isUpdatingRef.current) {
@@ -204,10 +208,27 @@ export function SeatingChartCanvas({
             existingObj.setCoords();
           }
         }
-      } else {
-        const fabricTable = createFabricTable(table);
-        canvas.add(fabricTable);
+        return;
       }
+
+      // If the table just got saved, its temp ID may have been replaced by a real DB ID.
+      // Reuse the existing canvas object (by tableNumber) to prevent it "disappearing".
+      const objWithSameNumber = objects.find((obj) => obj.tableNumber === table.tableNumber);
+      if (objWithSameNumber) {
+        objWithSameNumber.tableId = table.id;
+        if (!isUpdatingRef.current) {
+          objWithSameNumber.set({
+            left: table.x,
+            top: table.y,
+            angle: table.rotation,
+          });
+          objWithSameNumber.setCoords();
+        }
+        return;
+      }
+
+      const fabricTable = createFabricTable(table);
+      canvas.add(fabricTable);
     });
 
     canvas.requestRenderAll();

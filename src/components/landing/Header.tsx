@@ -11,7 +11,7 @@ export const Header = () => {
   const { t } = useTranslation();
 
   const navigation = [
-    { name: t('nav.home'), href: "features" },
+    { name: t('nav.home'), href: "top" },
     { name: t('marketplace.title'), href: "/marketplace" },
     { name: "Цены", href: "pricing" },
     { name: "О нас", href: "about" },
@@ -22,9 +22,16 @@ export const Header = () => {
       navigate(sectionId);
       return;
     }
+    if (sectionId === 'top') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
+      const headerOffset = 80;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.scrollY - headerOffset;
+      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
     }
   };
 

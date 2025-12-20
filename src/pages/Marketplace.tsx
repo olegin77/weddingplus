@@ -14,13 +14,29 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 
 const ITEMS_PER_PAGE = 12;
 
+// Тематические изображения для категорий
+const CATEGORY_IMAGES: Record<string, string> = {
+  photographer: 'https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=600&h=300&fit=crop',
+  videographer: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=600&h=300&fit=crop',
+  decorator: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600&h=300&fit=crop',
+  florist: 'https://images.unsplash.com/photo-1561128290-b28dc6aedba3?w=600&h=300&fit=crop',
+  music: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=600&h=300&fit=crop',
+  venue: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600&h=300&fit=crop',
+  caterer: 'https://images.unsplash.com/photo-1555244162-803834f70033?w=600&h=300&fit=crop',
+  transport: 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=600&h=300&fit=crop',
+  makeup: 'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=600&h=300&fit=crop',
+  clothing: 'https://images.unsplash.com/photo-1594552072238-b8a33785b261?w=600&h=300&fit=crop',
+  other: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600&h=300&fit=crop',
+};
+
+// Описания для демо-поставщиков
 const DEMO_VENDORS = [
-  { id: 'demo-1', business_name: 'Royal Palace Venue', category: 'venue', location: 'Ташкент', price_range_min: 15000000, price_range_max: 60000000, rating: 4.8, total_reviews: 124, verified: true, isDemo: true },
-  { id: 'demo-2', business_name: 'Garden Bliss Venue', category: 'venue', location: 'Самарканд', price_range_min: 10000000, price_range_max: 35000000, rating: 4.6, total_reviews: 78, verified: true, isDemo: true },
-  { id: 'demo-3', business_name: 'UzPhoto Studio', category: 'photographer', location: 'Ташкент', price_range_min: 5000000, price_range_max: 15000000, rating: 4.9, total_reviews: 210, verified: true, isDemo: true },
-  { id: 'demo-4', business_name: 'Sam Video Pro', category: 'videographer', location: 'Самарканд', price_range_min: 7000000, price_range_max: 18000000, rating: 4.7, total_reviews: 95, verified: true, isDemo: true },
-  { id: 'demo-5', business_name: 'Flora Boutique', category: 'florist', location: 'Бухара', price_range_min: 3000000, price_range_max: 10000000, rating: 4.5, total_reviews: 62, verified: true, isDemo: true },
-  { id: 'demo-6', business_name: 'Melody Band', category: 'music', location: 'Ташкент', price_range_min: 6000000, price_range_max: 20000000, rating: 4.7, total_reviews: 140, verified: true, isDemo: true },
+  { id: 'demo-1', business_name: 'Royal Palace Venue', category: 'venue', location: 'Ташкент', price_range_min: 15000000, price_range_max: 60000000, rating: 4.8, total_reviews: 124, verified: true, isDemo: true, description: 'Роскошный банкетный зал с панорамными окнами и изысканным интерьером. Вместимость до 500 гостей.' },
+  { id: 'demo-2', business_name: 'Garden Bliss Venue', category: 'venue', location: 'Самарканд', price_range_min: 10000000, price_range_max: 35000000, rating: 4.6, total_reviews: 78, verified: true, isDemo: true, description: 'Живописная площадка с садом и фонтанами. Идеально для романтической свадьбы на природе.' },
+  { id: 'demo-3', business_name: 'UzPhoto Studio', category: 'photographer', location: 'Ташкент', price_range_min: 5000000, price_range_max: 15000000, rating: 4.9, total_reviews: 210, verified: true, isDemo: true, description: 'Профессиональная свадебная фотография с 10-летним опытом. Создаём незабываемые моменты.' },
+  { id: 'demo-4', business_name: 'Sam Video Pro', category: 'videographer', location: 'Самарканд', price_range_min: 7000000, price_range_max: 18000000, rating: 4.7, total_reviews: 95, verified: true, isDemo: true, description: 'Кинематографичная свадебная видеосъёмка с использованием дронов и современного оборудования.' },
+  { id: 'demo-5', business_name: 'Flora Boutique', category: 'florist', location: 'Бухара', price_range_min: 3000000, price_range_max: 10000000, rating: 4.5, total_reviews: 62, verified: true, isDemo: true, description: 'Свежие цветы и авторские композиции для вашего особенного дня. Доставка по всему Узбекистану.' },
+  { id: 'demo-6', business_name: 'Melody Band', category: 'music', location: 'Ташкент', price_range_min: 6000000, price_range_max: 20000000, rating: 4.7, total_reviews: 140, verified: true, isDemo: true, description: 'Живая музыка на любой вкус: от классики до современных хитов. Создаём атмосферу праздника!' },
 ];
 
 const Marketplace = () => {
@@ -315,51 +331,68 @@ const Marketplace = () => {
                 {paginatedVendors.map((vendor) => (
                   <Card 
                     key={vendor.id} 
-                    className="hover:shadow-lg transition-shadow cursor-pointer"
+                    className="hover:shadow-lg transition-shadow cursor-pointer overflow-hidden"
                     onClick={() => navigate(`/marketplace/${vendor.id}`)}
                   >
-                    <CardHeader>
-                      <div className="flex items-start justify-between">
-                        <div className="space-y-1 flex-1">
-                          <CardTitle className="text-xl">{vendor.business_name}</CardTitle>
-                          <CardDescription className="flex items-center gap-2">
-                            <Badge variant="outline">{vendor.category}</Badge>
-                            {vendor.verified && <Badge variant="default">Проверен</Badge>}
-                          </CardDescription>
-                        </div>
-                        {!vendor.isDemo && (
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={(e) => toggleFavorite(vendor.id, e)}
-                            className="shrink-0"
-                          >
-                            <Heart 
-                              className={`w-5 h-5 ${
-                                favorites.has(vendor.id) 
-                                  ? 'fill-primary text-primary' 
-                                  : 'text-muted-foreground'
-                              }`} 
-                            />
-                          </Button>
-                        )}
+                    {/* Изображение поставщика */}
+                    <div className="relative h-40 w-full overflow-hidden">
+                      <img 
+                        src={vendor.portfolio_images?.[0] || CATEGORY_IMAGES[vendor.category] || CATEGORY_IMAGES.other} 
+                        alt={vendor.business_name}
+                        className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                      />
+                      {vendor.verified && (
+                        <Badge variant="default" className="absolute top-3 left-3">
+                          Проверен
+                        </Badge>
+                      )}
+                      {!vendor.isDemo && (
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={(e) => toggleFavorite(vendor.id, e)}
+                          className="absolute top-3 right-3 bg-background/80 backdrop-blur-sm hover:bg-background"
+                        >
+                          <Heart 
+                            className={`w-5 h-5 ${
+                              favorites.has(vendor.id) 
+                                ? 'fill-primary text-primary' 
+                                : 'text-muted-foreground'
+                            }`} 
+                          />
+                        </Button>
+                      )}
+                    </div>
+                    
+                    <CardHeader className="pb-2">
+                      <div className="space-y-1">
+                        <CardTitle className="text-xl">{vendor.business_name}</CardTitle>
+                        <CardDescription className="flex items-center gap-2">
+                          <Badge variant="outline">{vendor.category}</Badge>
+                          <span className="flex items-center gap-1 text-xs">
+                            <MapPin className="w-3 h-3" />
+                            {vendor.location}
+                          </span>
+                        </CardDescription>
                       </div>
                     </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="flex items-center gap-2 text-muted-foreground">
-                        <MapPin className="w-4 h-4" />
-                        <span className="text-sm">{vendor.location}</span>
-                      </div>
+                    <CardContent className="space-y-3">
+                      {/* Описание */}
+                      {vendor.description && (
+                        <p className="text-sm text-muted-foreground line-clamp-2">
+                          {vendor.description}
+                        </p>
+                      )}
                       
                       <div className="flex items-center gap-2">
-                        <Star className="w-5 h-5 fill-primary text-primary" />
-                        <span className="font-semibold">{vendor.rating}</span>
-                        <span className="text-sm text-muted-foreground">
+                        <Star className="w-4 h-4 fill-primary text-primary" />
+                        <span className="font-semibold text-sm">{vendor.rating}</span>
+                        <span className="text-xs text-muted-foreground">
                           ({vendor.total_reviews} отзывов)
                         </span>
                       </div>
 
-                      <div className="flex items-center justify-between pt-4 border-t">
+                      <div className="flex items-center justify-between pt-3 border-t">
                         <div className="text-sm font-medium">
                           {vendor.price_range_min?.toLocaleString()} - {vendor.price_range_max?.toLocaleString()} сум
                         </div>

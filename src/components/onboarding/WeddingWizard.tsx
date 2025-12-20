@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,12 +8,14 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { CalendarIcon, MapPin, Check, Heart, ArrowRight, ArrowLeft, Users, Wallet, Utensils, Music, Camera, Sparkles, Car, Clock } from "lucide-react";
+import { CalendarIcon, MapPin, Check, Heart, ArrowRight, ArrowLeft, Users, Wallet, Utensils, Music, Camera, Sparkles, Car, Clock, DollarSign, RefreshCw } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useExchangeRate, uzsToUsd, usdToUzs, formatCurrency } from "@/hooks/useExchangeRate";
 
 const TOTAL_STEPS = 12;
 
@@ -104,6 +106,9 @@ export default function WeddingWizard() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [currency, setCurrency] = useState<"UZS" | "USD">("UZS");
+  const { usdRate, loading: rateLoading, date: rateDate } = useExchangeRate();
+  
   const [formData, setFormData] = useState({
     // Step 1: Date & Location
     date: undefined as Date | undefined,
@@ -112,8 +117,8 @@ export default function WeddingWizard() {
     // Step 2: Guests
     guests: [150],
     
-    // Step 3: Budget
-    budgetTotal: [50000000],
+    // Step 3: Budget (stored in UZS)
+    budgetTotal: [100000000],
     
     // Step 4: Budget Breakdown (priorities)
     categoryPriorities: {} as Record<string, 'high' | 'medium' | 'low'>,
@@ -150,6 +155,12 @@ export default function WeddingWizard() {
     endTime: "23:00",
   });
 
+  // Budget limits based on currency
+  const budgetConfig = {
+    UZS: { min: 10000000, max: 5000000000, step: 10000000, presets: [100000000, 300000000, 500000000, 1000000000] },
+    USD: { min: 1000, max: 400000, step: 1000, presets: [10000, 25000, 50000, 100000] },
+  };
+
   const handleNext = () => setStep(step + 1);
   const handleBack = () => setStep(step - 1);
 
@@ -183,12 +194,15 @@ export default function WeddingWizard() {
           return;
         }
 
+        // Always save budget in UZS
+        const budgetInUzs = getBudgetInUzs();
+
         const { error } = await supabase.from("wedding_plans").insert({
           couple_user_id: user.id,
           wedding_date: formData.date ? format(formData.date, "yyyy-MM-dd") : null,
           venue_location: formData.city,
           estimated_guests: formData.guests[0],
-          budget_total: formData.budgetTotal[0],
+          budget_total: budgetInUzs,
           style_preferences: [formData.vibe],
           theme: formData.vibe,
           venue_type_preference: formData.venueType,
@@ -311,30 +325,96 @@ export default function WeddingWizard() {
     </div>
   );
 
-  const renderStep3 = () => (
-    <div className="space-y-8 animate-in fade-in slide-in-from-right-4">
-      <div className="text-center">
-        <Wallet className="w-12 h-12 mx-auto text-primary mb-4" />
-        <p className="text-3xl font-bold text-primary">
-          {formData.budgetTotal[0].toLocaleString()} сум
-        </p>
-        <p className="text-muted-foreground">общий бюджет</p>
+  const handleCurrencySwitch = (checked: boolean) => {
+    const newCurrency = checked ? "USD" : "UZS";
+    const currentBudget = formData.budgetTotal[0];
+    
+    let newBudget: number;
+    if (newCurrency === "USD") {
+      // Convert from UZS to USD
+      newBudget = uzsToUsd(currentBudget, usdRate);
+    } else {
+      // Convert from USD to UZS
+      newBudget = usdToUzs(currentBudget, usdRate);
+    }
+    
+    setCurrency(newCurrency);
+    setFormData({ ...formData, budgetTotal: [newBudget] });
+  };
+
+  const getBudgetInUzs = (): number => {
+    if (currency === "USD") {
+      return usdToUzs(formData.budgetTotal[0], usdRate);
+    }
+    return formData.budgetTotal[0];
+  };
+
+  const renderStep3 = () => {
+    const config = budgetConfig[currency];
+    const displayBudget = formData.budgetTotal[0];
+    
+    return (
+      <div className="space-y-6 animate-in fade-in slide-in-from-right-4">
+        {/* Currency Toggle */}
+        <div className="flex items-center justify-center gap-4 p-3 bg-muted/50 rounded-lg">
+          <span className={cn("font-medium", currency === "UZS" && "text-primary")}>UZS</span>
+          <Switch
+            checked={currency === "USD"}
+            onCheckedChange={handleCurrencySwitch}
+            disabled={rateLoading}
+          />
+          <span className={cn("font-medium", currency === "USD" && "text-primary")}>USD</span>
+          {!rateLoading && rateDate && (
+            <Badge variant="outline" className="ml-2 text-xs">
+              1$ = {usdRate.toLocaleString()} сум
+            </Badge>
+          )}
+        </div>
+
+        <div className="text-center">
+          <Wallet className="w-12 h-12 mx-auto text-primary mb-4" />
+          <p className="text-3xl font-bold text-primary">
+            {formatCurrency(displayBudget, currency)}
+          </p>
+          <p className="text-muted-foreground">общий бюджет</p>
+          {currency === "USD" && (
+            <p className="text-sm text-muted-foreground mt-1">
+              ≈ {usdToUzs(displayBudget, usdRate).toLocaleString()} сум
+            </p>
+          )}
+        </div>
+
+        <Slider
+          value={formData.budgetTotal}
+          onValueChange={(val) => setFormData({ ...formData, budgetTotal: val })}
+          min={config.min}
+          max={config.max}
+          step={config.step}
+          className="py-4"
+        />
+
+        <div className="flex justify-between text-xs text-muted-foreground">
+          <span>{formatCurrency(config.min, currency)}</span>
+          <span>{formatCurrency(config.max / 2, currency)}</span>
+          <span>{formatCurrency(config.max, currency)}</span>
+        </div>
+
+        {/* Quick Budget Presets */}
+        <div className="grid grid-cols-4 gap-2">
+          {config.presets.map((preset) => (
+            <Button
+              key={preset}
+              variant={formData.budgetTotal[0] === preset ? "default" : "outline"}
+              size="sm"
+              onClick={() => setFormData({ ...formData, budgetTotal: [preset] })}
+            >
+              {currency === "USD" ? `$${(preset / 1000)}k` : `${preset / 1000000} млн`}
+            </Button>
+          ))}
+        </div>
       </div>
-      <Slider
-        value={formData.budgetTotal}
-        onValueChange={(val) => setFormData({ ...formData, budgetTotal: val })}
-        min={10000000}
-        max={500000000}
-        step={5000000}
-        className="py-4"
-      />
-      <div className="flex justify-between text-xs text-muted-foreground">
-        <span>10 млн</span>
-        <span>250 млн</span>
-        <span>500 млн</span>
-      </div>
-    </div>
-  );
+    );
+  };
 
   const renderStep4 = () => (
     <div className="space-y-4 animate-in fade-in slide-in-from-right-4">

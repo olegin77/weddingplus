@@ -10,7 +10,9 @@ import {
   Sparkles,
   Mail,
   LayoutGrid,
-  Star
+  Star,
+  Globe,
+  Shield
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -42,6 +44,7 @@ export function AppSidebar() {
   const { t } = useTranslation();
   const collapsed = state === "collapsed";
   const [userRole, setUserRole] = useState<string>("couple");
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const coupleMenuItems = [
     { title: t('nav.dashboard'), url: "/dashboard", icon: Home },
@@ -72,14 +75,20 @@ export function AppSidebar() {
   const fetchUserRole = async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
-      const { data } = await supabase
+      // Fetch profile role
+      const { data: profileData } = await supabase
         .from("profiles")
         .select("role")
         .eq("id", user.id)
         .single();
-      if (data) {
-        setUserRole(data.role);
+      if (profileData) {
+        setUserRole(profileData.role);
       }
+      
+      // Check if user is admin via user_roles table
+      const { data: adminCheck } = await supabase
+        .rpc("has_role", { _user_id: user.id, _role: "admin" });
+      setIsAdmin(adminCheck || false);
     }
   };
 
@@ -111,7 +120,26 @@ export function AppSidebar() {
         </div>
       </SidebarHeader>
 
-      <SidebarContent>
+        {/* Home Link */}
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <NavLink
+                    to="/"
+                    className="hover:bg-accent"
+                    activeClassName="bg-accent text-primary font-medium"
+                  >
+                    <Globe className="h-4 w-4" />
+                    {!collapsed && <span>На главную</span>}
+                  </NavLink>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
         <SidebarGroup>
           <SidebarGroupLabel>{t('nav.home')}</SidebarGroupLabel>
           <SidebarGroupContent>
@@ -133,7 +161,29 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-      </SidebarContent>
+
+        {/* Admin Section */}
+        {isAdmin && (
+          <SidebarGroup>
+            <SidebarGroupLabel>Администрирование</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild>
+                    <NavLink
+                      to="/admin"
+                      className="hover:bg-accent"
+                      activeClassName="bg-accent text-primary font-medium"
+                    >
+                      <Shield className="h-4 w-4" />
+                      {!collapsed && <span>Админ-панель</span>}
+                    </NavLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
 
       <SidebarFooter>
         <div className="flex flex-col gap-2">

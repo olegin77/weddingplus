@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { DashboardLayout } from "@/components/DashboardLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Calendar, DollarSign, Users, ShoppingBag, Sparkles } from "lucide-react";
+import { Calendar, DollarSign, Users, ShoppingBag, Sparkles, Star } from "lucide-react";
 import { CreateWeddingPlanDialog } from "@/components/CreateWeddingPlanDialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
@@ -157,13 +157,17 @@ const Dashboard = () => {
               <CreateWeddingPlanDialog onSuccess={fetchDashboardData} />
             ) : (
               <>
+                <Button className="w-full" variant="outline" onClick={() => navigate("/recommendations")}>
+                  <Star className="mr-2 h-4 w-4" />
+                  Рекомендации
+                </Button>
                 <Button className="w-full" variant="outline" onClick={() => navigate("/planner")}>
                   <Calendar className="mr-2 h-4 w-4" />
                   Мой план
                 </Button>
                 <Button className="w-full" variant="outline" onClick={() => navigate("/marketplace")}>
                   <ShoppingBag className="mr-2 h-4 w-4" />
-                  Найти поставщиков
+                  Маркетплейс
                 </Button>
                 <Button className="w-full" variant="outline" onClick={() => navigate("/ai-assistant")}>
                   <Sparkles className="mr-2 h-4 w-4" />

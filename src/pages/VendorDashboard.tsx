@@ -5,9 +5,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookingManagement } from "@/components/vendor/BookingManagement";
 import { PortfolioManagement } from "@/components/vendor/PortfolioManagement";
+import { VendorProfileForm } from "@/components/vendor/VendorProfileForm";
 import { DollarSign, Calendar, Star, TrendingUp } from "lucide-react";
 
 const VendorDashboard = () => {
+  const [vendorProfile, setVendorProfile] = useState<any>(null);
   const [stats, setStats] = useState({
     totalBookings: 0,
     pendingBookings: 0,
@@ -25,13 +27,15 @@ const VendorDashboard = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      const { data: vendorProfile } = await supabase
+      const { data: profile } = await supabase
         .from("vendor_profiles")
         .select("*")
         .eq("user_id", user.id)
         .maybeSingle();
 
-      if (!vendorProfile) {
+      setVendorProfile(profile);
+
+      if (!profile) {
         setLoading(false);
         return;
       }
@@ -39,7 +43,7 @@ const VendorDashboard = () => {
       const { data: bookingsData } = await supabase
         .from("bookings")
         .select("*")
-        .eq("vendor_id", vendorProfile.id);
+        .eq("vendor_id", profile.id);
 
       const totalRevenue = bookingsData?.reduce((sum, b) => {
         if (b.status === "confirmed" || b.status === "completed") {
@@ -52,7 +56,7 @@ const VendorDashboard = () => {
         totalBookings: bookingsData?.length || 0,
         pendingBookings: bookingsData?.filter((b) => b.status === "pending").length || 0,
         revenue: totalRevenue,
-        rating: vendorProfile.rating || 0,
+        rating: profile.rating || 0,
       });
     } catch (error) {
       console.error("Error fetching stats:", error);
@@ -122,11 +126,19 @@ const VendorDashboard = () => {
             <Tabs defaultValue="bookings">
               <TabsList>
                 <TabsTrigger value="bookings">Бронирования</TabsTrigger>
-                <TabsTrigger value="portfolio">Профиль и Портфолио</TabsTrigger>
+                <TabsTrigger value="profile">Профиль</TabsTrigger>
+                <TabsTrigger value="portfolio">Портфолио</TabsTrigger>
               </TabsList>
 
               <TabsContent value="bookings">
                 <BookingManagement />
+              </TabsContent>
+
+              <TabsContent value="profile">
+                <VendorProfileForm 
+                  existingProfile={vendorProfile} 
+                  onSuccess={fetchStats} 
+                />
               </TabsContent>
 
               <TabsContent value="portfolio">

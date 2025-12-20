@@ -9,7 +9,8 @@ import {
   Briefcase,
   Sparkles,
   Mail,
-  LayoutGrid
+  LayoutGrid,
+  Star
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -44,6 +45,7 @@ export function AppSidebar() {
 
   const coupleMenuItems = [
     { title: t('nav.dashboard'), url: "/dashboard", icon: Home },
+    { title: "Рекомендации", url: "/recommendations", icon: Star },
     { title: t('nav.marketplace'), url: "/marketplace", icon: ShoppingBag },
     { title: t('nav.planner'), url: "/planner", icon: Calendar },
     { title: t('nav.aiAssistant'), url: "/ai-assistant", icon: Sparkles },

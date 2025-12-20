@@ -650,15 +650,27 @@ export type Database = {
         Row: {
           attributes: Json | null
           business_name: string
+          capacity_max: number | null
+          capacity_min: number | null
           category: Database["public"]["Enums"]["vendor_category"]
           created_at: string
+          cuisine_types: string[] | null
           description: string | null
+          dietary_options: string[] | null
+          equipment_included: boolean | null
+          experience_years: number | null
+          has_parking: boolean | null
           id: string
           languages: string[] | null
           location: string | null
+          max_guests: number | null
+          min_guests: number | null
+          music_genres: string[] | null
+          outdoor_available: boolean | null
           portfolio_images: string[] | null
           price_range_max: number | null
           price_range_min: number | null
+          provides_staff: boolean | null
           rating: number | null
           service_area: string[] | null
           starting_price: number | null
@@ -671,15 +683,27 @@ export type Database = {
         Insert: {
           attributes?: Json | null
           business_name: string
+          capacity_max?: number | null
+          capacity_min?: number | null
           category: Database["public"]["Enums"]["vendor_category"]
           created_at?: string
+          cuisine_types?: string[] | null
           description?: string | null
+          dietary_options?: string[] | null
+          equipment_included?: boolean | null
+          experience_years?: number | null
+          has_parking?: boolean | null
           id?: string
           languages?: string[] | null
           location?: string | null
+          max_guests?: number | null
+          min_guests?: number | null
+          music_genres?: string[] | null
+          outdoor_available?: boolean | null
           portfolio_images?: string[] | null
           price_range_max?: number | null
           price_range_min?: number | null
+          provides_staff?: boolean | null
           rating?: number | null
           service_area?: string[] | null
           starting_price?: number | null
@@ -692,15 +716,27 @@ export type Database = {
         Update: {
           attributes?: Json | null
           business_name?: string
+          capacity_max?: number | null
+          capacity_min?: number | null
           category?: Database["public"]["Enums"]["vendor_category"]
           created_at?: string
+          cuisine_types?: string[] | null
           description?: string | null
+          dietary_options?: string[] | null
+          equipment_included?: boolean | null
+          experience_years?: number | null
+          has_parking?: boolean | null
           id?: string
           languages?: string[] | null
           location?: string | null
+          max_guests?: number | null
+          min_guests?: number | null
+          music_genres?: string[] | null
+          outdoor_available?: boolean | null
           portfolio_images?: string[] | null
           price_range_max?: number | null
           price_range_min?: number | null
+          provides_staff?: boolean | null
           rating?: number | null
           service_area?: string[] | null
           starting_price?: number | null
@@ -812,51 +848,84 @@ export type Database = {
       }
       wedding_plans: {
         Row: {
+          budget_breakdown: Json | null
           budget_spent: number | null
           budget_total: number | null
+          category_priorities: Json | null
+          ceremony_type: string | null
           couple_user_id: string
           created_at: string
+          cuisine_preferences: string[] | null
+          dietary_requirements: string[] | null
           estimated_guests: number | null
           id: string
+          music_preferences: string[] | null
           notes: string | null
+          outdoor_preference: boolean | null
+          parking_needed: boolean | null
           priorities: Json | null
+          program_preferences: string[] | null
           style_preferences: string[] | null
           style_reference_images: string[] | null
           theme: string | null
+          time_preferences: Json | null
           updated_at: string
           venue_location: string | null
+          venue_type_preference: string | null
           wedding_date: string | null
         }
         Insert: {
+          budget_breakdown?: Json | null
           budget_spent?: number | null
           budget_total?: number | null
+          category_priorities?: Json | null
+          ceremony_type?: string | null
           couple_user_id: string
           created_at?: string
+          cuisine_preferences?: string[] | null
+          dietary_requirements?: string[] | null
           estimated_guests?: number | null
           id?: string
+          music_preferences?: string[] | null
           notes?: string | null
+          outdoor_preference?: boolean | null
+          parking_needed?: boolean | null
           priorities?: Json | null
+          program_preferences?: string[] | null
           style_preferences?: string[] | null
           style_reference_images?: string[] | null
           theme?: string | null
+          time_preferences?: Json | null
           updated_at?: string
           venue_location?: string | null
+          venue_type_preference?: string | null
           wedding_date?: string | null
         }
         Update: {
+          budget_breakdown?: Json | null
           budget_spent?: number | null
           budget_total?: number | null
+          category_priorities?: Json | null
+          ceremony_type?: string | null
           couple_user_id?: string
           created_at?: string
+          cuisine_preferences?: string[] | null
+          dietary_requirements?: string[] | null
           estimated_guests?: number | null
           id?: string
+          music_preferences?: string[] | null
           notes?: string | null
+          outdoor_preference?: boolean | null
+          parking_needed?: boolean | null
           priorities?: Json | null
+          program_preferences?: string[] | null
           style_preferences?: string[] | null
           style_reference_images?: string[] | null
           theme?: string | null
+          time_preferences?: Json | null
           updated_at?: string
           venue_location?: string | null
+          venue_type_preference?: string | null
           wedding_date?: string | null
         }
         Relationships: []

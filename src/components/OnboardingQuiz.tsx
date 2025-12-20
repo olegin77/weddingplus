@@ -7,11 +7,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
+import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Calendar, Users, Wallet, Heart, Camera, Utensils, Music, Palette, MapPin, ArrowRight, ArrowLeft, Check, Sparkles } from "lucide-react";
+import { Calendar, Users, Wallet, Heart, Camera, Utensils, Music, Palette, MapPin, ArrowRight, ArrowLeft, Check, Sparkles, DollarSign } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
+import { useExchangeRate, uzsToUsd, usdToUzs, formatCurrency } from "@/hooks/useExchangeRate";
 
 const weddingStyles = [
   {
@@ -76,7 +79,7 @@ const locations = [
 ];
 
 const schema = z.object({
-  budget_total: z.number().min(5000000, "Минимальный бюджет 5,000,000 сум"),
+  budget_total: z.number().min(1000, "Минимальный бюджет $1,000 или 10,000,000 сум"),
   estimated_guests: z.number().min(10, "Минимум 10 гостей").max(1000, "Максимум 1000 гостей"),
   wedding_date: z.string().optional(),
   venue_location: z.string().min(2, "Укажите город"),
@@ -98,6 +101,8 @@ interface OnboardingQuizProps {
 export const OnboardingQuiz = ({ onComplete }: OnboardingQuizProps) => {
   const { t } = useTranslation();
   const [step, setStep] = useState(1);
+  const [currency, setCurrency] = useState<"UZS" | "USD">("UZS");
+  const { usdRate, loading: rateLoading, date: rateDate } = useExchangeRate();
   const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
   const [priorities, setPriorities] = useState<{
     photography: "low" | "medium" | "high";
@@ -113,6 +118,12 @@ export const OnboardingQuiz = ({ onComplete }: OnboardingQuizProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const totalSteps = 4;
 
+  // Budget config based on currency
+  const budgetConfig = {
+    UZS: { min: 10000000, max: 5000000000, step: 10000000, presets: [100000000, 300000000, 500000000, 1000000000] },
+    USD: { min: 1000, max: 400000, step: 1000, presets: [10000, 25000, 50000, 100000] },
+  };
+
   const {
     register,
     handleSubmit,
@@ -122,7 +133,7 @@ export const OnboardingQuiz = ({ onComplete }: OnboardingQuizProps) => {
   } = useForm<OnboardingFormData>({
     resolver: zodResolver(schema),
     defaultValues: {
-      budget_total: 50000000,
+      budget_total: 100000000,
       estimated_guests: 100,
       venue_location: "",
       style_preferences: [],
@@ -154,6 +165,30 @@ export const OnboardingQuiz = ({ onComplete }: OnboardingQuizProps) => {
     setValue("priorities", newPriorities);
   };
 
+  // Currency switching handler
+  const handleCurrencySwitch = (checked: boolean) => {
+    const newCurrency = checked ? "USD" : "UZS";
+    const currentBudget = budget || 100000000;
+    
+    let newBudget: number;
+    if (newCurrency === "USD") {
+      newBudget = uzsToUsd(currentBudget, usdRate);
+    } else {
+      newBudget = usdToUzs(currentBudget, usdRate);
+    }
+    
+    setCurrency(newCurrency);
+    setValue("budget_total", newBudget);
+  };
+
+  // Get budget in UZS for saving
+  const getBudgetInUzs = (): number => {
+    if (currency === "USD") {
+      return usdToUzs(budget || 0, usdRate);
+    }
+    return budget || 0;
+  };
+
   const onSubmit = async (data: OnboardingFormData) => {
     setIsSubmitting(true);
     try {
@@ -164,11 +199,14 @@ export const OnboardingQuiz = ({ onComplete }: OnboardingQuizProps) => {
         return;
       }
 
+      // Always save budget in UZS
+      const budgetInUzs = getBudgetInUzs();
+
       const { data: weddingPlan, error } = await supabase
         .from("wedding_plans")
         .insert({
           couple_user_id: user.id,
-          budget_total: data.budget_total,
+          budget_total: budgetInUzs,
           estimated_guests: data.estimated_guests,
           wedding_date: data.wedding_date || null,
           venue_location: data.venue_location,
@@ -191,13 +229,10 @@ export const OnboardingQuiz = ({ onComplete }: OnboardingQuizProps) => {
     }
   };
 
-  const formatBudget = (value: number) => {
-    return new Intl.NumberFormat("ru-RU").format(value) + " сум";
-  };
-
   const canProceed = () => {
+    const minBudget = currency === "USD" ? 1000 : 10000000;
     switch (step) {
-      case 1: return budget >= 5000000 && guests >= 10;
+      case 1: return budget >= minBudget && guests >= 10;
       case 2: return location.length >= 2;
       case 3: return selectedStyles.length > 0;
       case 4: return true;
@@ -206,6 +241,8 @@ export const OnboardingQuiz = ({ onComplete }: OnboardingQuizProps) => {
   };
 
   const renderStep = () => {
+    const config = budgetConfig[currency];
+    
     switch (step) {
       case 1:
         return (
@@ -220,27 +257,57 @@ export const OnboardingQuiz = ({ onComplete }: OnboardingQuizProps) => {
 
             <div className="space-y-6">
               <div className="space-y-4">
-                <Label className="flex items-center gap-2 text-base">
-                  <Wallet className="w-4 h-4" />
-                  Общий бюджет
-                </Label>
+                {/* Currency Toggle */}
+                <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                  <Label className="flex items-center gap-2 text-base">
+                    <Wallet className="w-4 h-4" />
+                    Общий бюджет
+                  </Label>
+                  <div className="flex items-center gap-3">
+                    <span className={cn("text-sm font-medium", currency === "UZS" && "text-primary")}>UZS</span>
+                    <Switch
+                      checked={currency === "USD"}
+                      onCheckedChange={handleCurrencySwitch}
+                      disabled={rateLoading}
+                    />
+                    <span className={cn("text-sm font-medium", currency === "USD" && "text-primary")}>USD</span>
+                  </div>
+                </div>
+
+                {/* Exchange rate info */}
+                {!rateLoading && (
+                  <div className="text-center">
+                    <Badge variant="outline" className="text-xs">
+                      Курс ЦБ: 1$ = {usdRate.toLocaleString()} сум
+                    </Badge>
+                  </div>
+                )}
+
                 <div className="text-center py-2">
-                  <span className="text-3xl font-bold text-primary">{formatBudget(budget || 50000000)}</span>
+                  <span className="text-3xl font-bold text-primary">
+                    {formatCurrency(budget || config.presets[0], currency)}
+                  </span>
+                  {currency === "USD" && (
+                    <p className="text-sm text-muted-foreground mt-1">
+                      ≈ {usdToUzs(budget || config.presets[0], usdRate).toLocaleString()} сум
+                    </p>
+                  )}
                 </div>
                 <Slider
-                  value={[budget || 50000000]}
+                  value={[budget || config.presets[0]]}
                   onValueChange={(value) => setValue("budget_total", value[0])}
-                  min={5000000}
-                  max={500000000}
-                  step={5000000}
+                  min={config.min}
+                  max={config.max}
+                  step={config.step}
                   className="py-2"
                 />
                 <div className="flex justify-between text-sm text-muted-foreground">
-                  <span>5 млн</span>
-                  <span>500 млн</span>
+                  <span>{formatCurrency(config.min, currency)}</span>
+                  <span>{formatCurrency(config.max / 2, currency)}</span>
+                  <span>{formatCurrency(config.max, currency)}</span>
                 </div>
-                <div className="grid grid-cols-3 gap-2">
-                  {[50000000, 100000000, 200000000].map((preset) => (
+                <div className="grid grid-cols-4 gap-2">
+                  {config.presets.map((preset) => (
                     <Button
                       key={preset}
                       type="button"
@@ -248,7 +315,9 @@ export const OnboardingQuiz = ({ onComplete }: OnboardingQuizProps) => {
                       size="sm"
                       onClick={() => setValue("budget_total", preset)}
                     >
-                      {new Intl.NumberFormat("ru-RU", { notation: "compact" }).format(preset)}
+                      {currency === "USD" 
+                        ? `$${(preset / 1000).toFixed(0)}k` 
+                        : `${(preset / 1000000).toFixed(0)} млн`}
                     </Button>
                   ))}
                 </div>
@@ -457,7 +526,7 @@ export const OnboardingQuiz = ({ onComplete }: OnboardingQuizProps) => {
                 <div className="grid grid-cols-2 gap-2 text-sm">
                   <div className="flex items-center gap-2">
                     <Wallet className="w-4 h-4 text-muted-foreground" />
-                    <span>{formatBudget(budget || 0)}</span>
+                    <span>{formatCurrency(getBudgetInUzs(), "UZS")}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Users className="w-4 h-4 text-muted-foreground" />

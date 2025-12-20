@@ -154,41 +154,66 @@ export const SmartVendorRecommendations = ({
           const vendor = vendors[index];
           if (!vendor) return null;
 
+          // Тематические изображения для категорий
+          const categoryImages: Record<VendorCategory, string> = {
+            photographer: 'https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=400&h=250&fit=crop',
+            videographer: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=400&h=250&fit=crop',
+            decorator: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&h=250&fit=crop',
+            florist: 'https://images.unsplash.com/photo-1561128290-b28dc6aedba3?w=400&h=250&fit=crop',
+            music: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=400&h=250&fit=crop',
+            venue: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=400&h=250&fit=crop',
+            caterer: 'https://images.unsplash.com/photo-1555244162-803834f70033?w=400&h=250&fit=crop',
+            transport: 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=400&h=250&fit=crop',
+            makeup: 'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=400&h=250&fit=crop',
+            clothing: 'https://images.unsplash.com/photo-1594552072238-b8a33785b261?w=400&h=250&fit=crop',
+            other: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=400&h=250&fit=crop',
+          };
+          
+          const vendorImage = vendor.portfolio_images?.[0] || categoryImages[category];
+
           return (
             <div
               key={vendor.id}
-              className="border rounded-lg p-4 hover:border-primary transition-colors cursor-pointer"
-              onClick={() => navigate(`/vendor/${vendor.id}`)}
+              className="border rounded-lg overflow-hidden hover:border-primary transition-colors cursor-pointer"
+              onClick={() => navigate(`/marketplace/${vendor.id}`)}
             >
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
+              {/* Изображение поставщика */}
+              <div className="relative h-32 w-full">
+                <img 
+                  src={vendorImage} 
+                  alt={vendor.business_name}
+                  className="w-full h-full object-cover"
+                />
+                {index === 0 && (
+                  <Badge variant="default" className="absolute top-2 left-2 bg-primary">
+                    Лучший выбор
+                  </Badge>
+                )}
+              </div>
+              
+              <div className="p-4">
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex-1">
                     <h3 className="font-semibold text-lg">
                       {vendor.business_name}
                     </h3>
-                    {index === 0 && (
-                      <Badge variant="default" className="bg-primary">
-                        Лучший выбор
-                      </Badge>
-                    )}
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                      <span>{vendor.rating || 'Нет оценок'}</span>
+                      {vendor.total_reviews > 0 && (
+                        <span>({vendor.total_reviews} отзывов)</span>
+                      )}
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                    <span>{vendor.rating || 'Нет оценок'}</span>
-                    {vendor.total_reviews > 0 && (
-                      <span>({vendor.total_reviews} отзывов)</span>
-                    )}
-                  </div>
-                </div>
-                <div className="text-right">
-                  <div className="text-sm text-muted-foreground">от</div>
-                  <div className="text-lg font-semibold text-primary">
-                    {vendor.starting_price
-                      ? `${vendor.starting_price.toLocaleString()} сум`
-                      : 'По запросу'}
+                  <div className="text-right">
+                    <div className="text-sm text-muted-foreground">от</div>
+                    <div className="text-lg font-semibold text-primary">
+                      {vendor.starting_price
+                        ? `${vendor.starting_price.toLocaleString()} сум`
+                        : 'По запросу'}
+                    </div>
                   </div>
                 </div>
-              </div>
 
               {/* Match Score */}
               <div className="mb-3">
@@ -234,6 +259,7 @@ export const SmartVendorRecommendations = ({
               <Button className="w-full mt-4" variant="outline">
                 Подробнее и забронировать
               </Button>
+              </div>
             </div>
           );
         })}

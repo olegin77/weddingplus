@@ -28,7 +28,7 @@ const Marketplace = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedLocation, setSelectedLocation] = useState<string>("all");
   const [minRating, setMinRating] = useState<number>(0);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 100000]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 100000000]);
   const [sortBy, setSortBy] = useState<string>("rating");
   const [vendors, setVendors] = useState<any[]>([]);
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
@@ -266,13 +266,13 @@ const Marketplace = () => {
 
                   <div className="space-y-2">
                     <label className="text-sm font-medium">
-                      Цена: ${priceRange[0]} - ${priceRange[1]}
+                      Цена: {priceRange[0].toLocaleString()} - {priceRange[1].toLocaleString()} сум
                     </label>
                     <Slider
                       value={priceRange}
                       onValueChange={(value) => setPriceRange(value as [number, number])}
-                      max={100000}
-                      step={1000}
+                      max={100000000}
+                      step={1000000}
                       className="w-full"
                     />
                   </div>
@@ -339,7 +339,7 @@ const Marketplace = () => {
 
                       <div className="flex items-center justify-between pt-4 border-t">
                         <div className="text-sm font-medium">
-                          ${vendor.price_range_min} - ${vendor.price_range_max}
+                          {vendor.price_range_min?.toLocaleString()} - {vendor.price_range_max?.toLocaleString()} сум
                         </div>
                         <Button size="sm">
                           Подробнее

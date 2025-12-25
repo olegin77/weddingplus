@@ -14,19 +14,19 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 
 const ITEMS_PER_PAGE = 12;
 
-// Тематические изображения для категорий
+// Тематические изображения для категорий (надёжные источники)
 const CATEGORY_IMAGES: Record<string, string> = {
-  photographer: 'https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=600&h=300&fit=crop',
-  videographer: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=600&h=300&fit=crop',
-  decorator: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600&h=300&fit=crop',
-  florist: 'https://images.unsplash.com/photo-1561128290-b28dc6aedba3?w=600&h=300&fit=crop',
-  music: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=600&h=300&fit=crop',
-  venue: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600&h=300&fit=crop',
-  caterer: 'https://images.unsplash.com/photo-1555244162-803834f70033?w=600&h=300&fit=crop',
-  transport: 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=600&h=300&fit=crop',
-  makeup: 'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=600&h=300&fit=crop',
-  clothing: 'https://images.unsplash.com/photo-1594552072238-b8a33785b261?w=600&h=300&fit=crop',
-  other: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600&h=300&fit=crop',
+  photographer: 'https://images.pexels.com/photos/3014856/pexels-photo-3014856.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop',
+  videographer: 'https://images.pexels.com/photos/2608517/pexels-photo-2608517.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop',
+  decorator: 'https://images.pexels.com/photos/1616113/pexels-photo-1616113.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop',
+  florist: 'https://images.pexels.com/photos/931177/pexels-photo-931177.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop',
+  music: 'https://images.pexels.com/photos/1763075/pexels-photo-1763075.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop',
+  venue: 'https://images.pexels.com/photos/169198/pexels-photo-169198.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop',
+  caterer: 'https://images.pexels.com/photos/587741/pexels-photo-587741.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop',
+  transport: 'https://images.pexels.com/photos/1545743/pexels-photo-1545743.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop',
+  makeup: 'https://images.pexels.com/photos/2113855/pexels-photo-2113855.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop',
+  clothing: 'https://images.pexels.com/photos/291759/pexels-photo-291759.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop',
+  other: 'https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop',
 };
 
 // Описания для демо-поставщиков

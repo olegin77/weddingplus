@@ -7,10 +7,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Star, MapPin, ArrowLeft, Calendar, MessageSquare } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookingForm } from "@/components/BookingForm";
 import ReviewForm from "@/components/ReviewForm";
 import ReviewsList from "@/components/ReviewsList";
+import { ImageGallery } from "@/components/ImageGallery";
 import { useToast } from "@/hooks/use-toast";
 
 interface VendorProfile {
@@ -178,16 +178,10 @@ const VendorDetail = () => {
             {vendor.portfolio_images && vendor.portfolio_images.length > 0 && (
               <div>
                 <h3 className="text-lg font-semibold mb-3">Портфолио</h3>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {vendor.portfolio_images.map((image, index) => (
-                    <img
-                      key={index}
-                      src={image}
-                      alt={`Portfolio ${index + 1}`}
-                      className="w-full h-48 object-cover rounded-lg"
-                    />
-                  ))}
-                </div>
+                <ImageGallery 
+                  images={vendor.portfolio_images} 
+                  alt={`${vendor.business_name} portfolio`} 
+                />
               </div>
             )}
           </CardContent>

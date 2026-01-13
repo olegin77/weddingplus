@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { DashboardLayout } from "@/components/DashboardLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,10 +11,12 @@ import { CreateWeddingPlanDialog } from "@/components/CreateWeddingPlanDialog";
 import ExportPDFButton from "@/components/ExportPDFButton";
 import { InvitationManager } from "@/components/InvitationManager";
 import { WeddingWebsiteBuilder } from "@/components/WeddingWebsiteBuilder";
-import { BudgetTracker } from "@/components/budget/BudgetTracker";
+import { BudgetTracker, type BudgetTrackerRef } from "@/components/budget/BudgetTracker";
 import { SmartVendorRecommendations } from "@/components/SmartVendorRecommendations";
 import { WeddingPlanProgress } from "@/components/WeddingPlanProgress";
 import { useMilestones } from "@/hooks/useMilestones";
+import { AutoPackageSelector } from "@/components/AutoPackageSelector";
+import type { AutoPackageResult } from "@/services/AutoPackageService";
 
 
 const Planner = () => {
@@ -22,8 +24,21 @@ const Planner = () => {
   const [weddingPlan, setWeddingPlan] = useState<any>(null);
   const [bookedVendorsCount, setBookedVendorsCount] = useState(0);
   const [loading, setLoading] = useState(true);
+  const budgetTrackerRef = useRef<BudgetTrackerRef>(null);
 
   const totalVendorsNeeded = 8;
+  
+  // Callback для интеграции AutoPackageSelector с бюджет-трекером
+  const handlePackageSelected = useCallback(async (result: AutoPackageResult) => {
+    if (!result.success || result.vendors.length === 0) return;
+    
+    // Добавляем выбранных вендоров в бюджет-трекер
+    if (budgetTrackerRef.current) {
+      await budgetTrackerRef.current.addItemsFromPackage(result.vendors);
+      // Переключаемся на вкладку бюджета
+      setActiveTab("budget");
+    }
+  }, []);
 
   // Milestone tracking with confetti animations
   useMilestones(weddingPlan, bookedVendorsCount, totalVendorsNeeded);
@@ -117,9 +132,10 @@ const Planner = () => {
         />
 
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-6">
+          <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="checklist">Чек-лист</TabsTrigger>
-            <TabsTrigger value="recommendations">Рекомендации</TabsTrigger>
+            <TabsTrigger value="auto-package">Автоподбор</TabsTrigger>
+            <TabsTrigger value="recommendations">Вендоры</TabsTrigger>
             <TabsTrigger value="budget">Бюджет</TabsTrigger>
             <TabsTrigger value="guests">Гости</TabsTrigger>
             <TabsTrigger value="invitations">Приглашения</TabsTrigger>
@@ -141,6 +157,14 @@ const Planner = () => {
                 ))}
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="auto-package" className="space-y-4">
+            <AutoPackageSelector
+              weddingPlanId={weddingPlan.id}
+              initialBudget={weddingPlan.budget_total}
+              onPackageSelected={handlePackageSelected}
+            />
           </TabsContent>
 
           <TabsContent value="recommendations" className="space-y-4">
@@ -178,6 +202,7 @@ const Planner = () => {
 
           <TabsContent value="budget">
             <BudgetTracker 
+              ref={budgetTrackerRef}
               weddingPlanId={weddingPlan.id} 
               totalBudget={weddingPlan.budget_total || 0}
             />

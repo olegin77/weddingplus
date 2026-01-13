@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, forwardRef, useImperativeHandle } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,10 @@ import { BudgetItemDialog } from "./BudgetItemDialog";
 import { BudgetChart } from "./BudgetChart";
 import { BudgetCategoryCard } from "./BudgetCategoryCard";
 import { useToast } from "@/hooks/use-toast";
+import type { PackageVendorResult } from "@/services/AutoPackageService";
+import type { Database } from "@/integrations/supabase/types";
+
+type BudgetCategoryType = Database["public"]["Enums"]["budget_category_type"];
 
 interface BudgetItem {
   id: string;
@@ -38,6 +42,11 @@ interface BudgetTrackerProps {
   totalBudget: number;
 }
 
+export interface BudgetTrackerRef {
+  addItemsFromPackage: (vendors: PackageVendorResult[]) => Promise<void>;
+  refresh: () => Promise<void>;
+}
+
 const categoryLabels: Record<string, string> = {
   venue: "Площадка",
   catering: "Кейтеринг",
@@ -56,16 +65,28 @@ const categoryLabels: Record<string, string> = {
   other: "Другое",
 };
 
-export function BudgetTracker({ weddingPlanId, totalBudget }: BudgetTrackerProps) {
+// Маппинг vendor_category -> budget_category_type
+const vendorToBudgetCategory: Record<string, BudgetCategoryType> = {
+  venue: "venue",
+  caterer: "catering",
+  photographer: "photography",
+  videographer: "videography",
+  music: "music",
+  decorator: "decoration",
+  florist: "flowers",
+  makeup: "makeup",
+  transport: "transportation",
+  clothing: "attire",
+  other: "other",
+};
+
+export const BudgetTracker = forwardRef<BudgetTrackerRef, BudgetTrackerProps>(
+  function BudgetTracker({ weddingPlanId, totalBudget }, ref) {
   const { toast } = useToast();
   const [items, setItems] = useState<BudgetItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<BudgetItem | null>(null);
-
-  useEffect(() => {
-    fetchBudgetItems();
-  }, [weddingPlanId]);
 
   const fetchBudgetItems = async () => {
     try {
@@ -88,6 +109,60 @@ export function BudgetTracker({ weddingPlanId, totalBudget }: BudgetTrackerProps
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchBudgetItems();
+  }, [weddingPlanId]);
+
+  // Метод для добавления items из AutoPackageSelector
+  const addItemsFromPackage = async (vendors: PackageVendorResult[]) => {
+    try {
+      const itemsToInsert = vendors.map((vendorResult) => {
+        const budgetCategory = vendorToBudgetCategory[vendorResult.vendor.category] || "other";
+        const packageName = vendorResult.selectedPackage?.name || "Услуга";
+        
+        return {
+          wedding_plan_id: weddingPlanId,
+          category: budgetCategory,
+          item_name: `${vendorResult.vendor.business_name} - ${packageName}`,
+          planned_amount: vendorResult.estimatedPrice,
+          actual_amount: vendorResult.estimatedPrice,
+          paid_amount: 0,
+          vendor_id: vendorResult.vendor.id,
+          payment_status: "pending",
+          notes: vendorResult.selectedPackage 
+            ? `Пакет: ${vendorResult.selectedPackage.name}\nВключено: ${vendorResult.selectedPackage.includes.join(", ")}`
+            : null,
+        };
+      });
+
+      const { error } = await supabase
+        .from("budget_items")
+        .insert(itemsToInsert);
+
+      if (error) throw error;
+
+      toast({
+        title: "Добавлено в бюджет",
+        description: `${vendors.length} статей бюджета добавлено из автоподбора`,
+      });
+
+      await fetchBudgetItems();
+    } catch (error) {
+      console.error("Error adding items from package:", error);
+      toast({
+        variant: "destructive",
+        title: "Ошибка",
+        description: "Не удалось добавить статьи в бюджет",
+      });
+    }
+  };
+
+  // Экспортируем методы через ref
+  useImperativeHandle(ref, () => ({
+    addItemsFromPackage,
+    refresh: fetchBudgetItems,
+  }));
 
   const handleDelete = async (itemId: string) => {
     try {
@@ -346,4 +421,4 @@ export function BudgetTracker({ weddingPlanId, totalBudget }: BudgetTrackerProps
       />
     </div>
   );
-}
+});

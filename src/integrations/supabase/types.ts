@@ -648,102 +648,144 @@ export type Database = {
       }
       vendor_profiles: {
         Row: {
+          additional_services: string[] | null
           attributes: Json | null
+          bonuses: string[] | null
           business_name: string
+          cancellation_policy: string | null
           capacity_max: number | null
           capacity_min: number | null
           category: Database["public"]["Enums"]["vendor_category"]
+          certifications: string[] | null
           created_at: string
           cuisine_types: string[] | null
+          delivery_time_days: number | null
+          deposit_percentage: number | null
           description: string | null
           dietary_options: string[] | null
           equipment_included: boolean | null
           experience_years: number | null
           has_parking: boolean | null
           id: string
+          included_items: string[] | null
           languages: string[] | null
           location: string | null
           max_guests: number | null
+          min_booking_hours: number | null
           min_guests: number | null
           music_genres: string[] | null
           outdoor_available: boolean | null
+          packages: Json | null
           portfolio_images: string[] | null
+          price_per_guest: number | null
           price_range_max: number | null
           price_range_min: number | null
           provides_staff: boolean | null
           rating: number | null
           service_area: string[] | null
+          special_features: Json | null
           starting_price: number | null
           styles: string[] | null
+          technical_features: Json | null
           total_reviews: number | null
           updated_at: string
           user_id: string
+          venue_restrictions: Json | null
+          venue_type: string | null
           verified: boolean | null
         }
         Insert: {
+          additional_services?: string[] | null
           attributes?: Json | null
+          bonuses?: string[] | null
           business_name: string
+          cancellation_policy?: string | null
           capacity_max?: number | null
           capacity_min?: number | null
           category: Database["public"]["Enums"]["vendor_category"]
+          certifications?: string[] | null
           created_at?: string
           cuisine_types?: string[] | null
+          delivery_time_days?: number | null
+          deposit_percentage?: number | null
           description?: string | null
           dietary_options?: string[] | null
           equipment_included?: boolean | null
           experience_years?: number | null
           has_parking?: boolean | null
           id?: string
+          included_items?: string[] | null
           languages?: string[] | null
           location?: string | null
           max_guests?: number | null
+          min_booking_hours?: number | null
           min_guests?: number | null
           music_genres?: string[] | null
           outdoor_available?: boolean | null
+          packages?: Json | null
           portfolio_images?: string[] | null
+          price_per_guest?: number | null
           price_range_max?: number | null
           price_range_min?: number | null
           provides_staff?: boolean | null
           rating?: number | null
           service_area?: string[] | null
+          special_features?: Json | null
           starting_price?: number | null
           styles?: string[] | null
+          technical_features?: Json | null
           total_reviews?: number | null
           updated_at?: string
           user_id: string
+          venue_restrictions?: Json | null
+          venue_type?: string | null
           verified?: boolean | null
         }
         Update: {
+          additional_services?: string[] | null
           attributes?: Json | null
+          bonuses?: string[] | null
           business_name?: string
+          cancellation_policy?: string | null
           capacity_max?: number | null
           capacity_min?: number | null
           category?: Database["public"]["Enums"]["vendor_category"]
+          certifications?: string[] | null
           created_at?: string
           cuisine_types?: string[] | null
+          delivery_time_days?: number | null
+          deposit_percentage?: number | null
           description?: string | null
           dietary_options?: string[] | null
           equipment_included?: boolean | null
           experience_years?: number | null
           has_parking?: boolean | null
           id?: string
+          included_items?: string[] | null
           languages?: string[] | null
           location?: string | null
           max_guests?: number | null
+          min_booking_hours?: number | null
           min_guests?: number | null
           music_genres?: string[] | null
           outdoor_available?: boolean | null
+          packages?: Json | null
           portfolio_images?: string[] | null
+          price_per_guest?: number | null
           price_range_max?: number | null
           price_range_min?: number | null
           provides_staff?: boolean | null
           rating?: number | null
           service_area?: string[] | null
+          special_features?: Json | null
           starting_price?: number | null
           styles?: string[] | null
+          technical_features?: Json | null
           total_reviews?: number | null
           updated_at?: string
           user_id?: string
+          venue_restrictions?: Json | null
+          venue_type?: string | null
           verified?: boolean | null
         }
         Relationships: []

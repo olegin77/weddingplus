@@ -1,13 +1,33 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Camera, Save, X } from "lucide-react";
-import ImageUpload from "@/components/ImageUpload";
+import { Camera, Save, Image as ImageIcon, GripVertical, Info } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  rectSortingStrategy,
+} from "@dnd-kit/sortable";
+
+import { SortablePortfolioItem } from "./SortablePortfolioItem";
+import { PortfolioLightbox } from "./PortfolioLightbox";
+import { MultiImageUpload } from "./MultiImageUpload";
 
 export const PortfolioManagement = () => {
   const { toast } = useToast();
@@ -15,6 +35,7 @@ export const PortfolioManagement = () => {
   const [saving, setSaving] = useState(false);
   const [vendorProfile, setVendorProfile] = useState<any>(null);
   const [portfolioImages, setPortfolioImages] = useState<string[]>([]);
+  const [coverImage, setCoverImage] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     business_name: "",
     description: "",
@@ -23,6 +44,22 @@ export const PortfolioManagement = () => {
     price_range_max: "",
     category: "",
   });
+
+  // Lightbox state
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+
+  // DnD sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   useEffect(() => {
     fetchVendorProfile();
@@ -48,6 +85,10 @@ export const PortfolioManagement = () => {
       } else {
         setVendorProfile(data);
         setPortfolioImages(data.portfolio_images || []);
+        // First image is cover by default if not set
+        if (data.portfolio_images && data.portfolio_images.length > 0) {
+          setCoverImage(data.portfolio_images[0]);
+        }
         setFormData({
           business_name: data.business_name || "",
           description: data.description || "",
@@ -118,46 +159,93 @@ export const PortfolioManagement = () => {
     }
   };
 
-  const handlePortfolioImageUpload = async (url: string) => {
-    const updatedImages = [...portfolioImages, url];
-    setPortfolioImages(updatedImages);
+  const updatePortfolioInDB = async (images: string[]) => {
+    if (!vendorProfile) return false;
 
     const { error } = await supabase
       .from("vendor_profiles")
-      .update({ portfolio_images: updatedImages })
+      .update({ portfolio_images: images })
       .eq("id", vendorProfile.id);
 
     if (error) {
       toast({
         variant: "destructive",
         title: "Ошибка",
-        description: "Не удалось добавить изображение",
+        description: "Не удалось обновить портфолио",
       });
-      setPortfolioImages(portfolioImages);
+      return false;
     }
+    return true;
   };
 
-  const handleRemovePortfolioImage = async (url: string) => {
-    const updatedImages = portfolioImages.filter(img => img !== url);
+  const handleImagesUploaded = async (urls: string[]) => {
+    const updatedImages = [...portfolioImages, ...urls];
     setPortfolioImages(updatedImages);
 
-    const { error } = await supabase
-      .from("vendor_profiles")
-      .update({ portfolio_images: updatedImages })
-      .eq("id", vendorProfile.id);
+    if (!coverImage && updatedImages.length > 0) {
+      setCoverImage(updatedImages[0]);
+    }
 
-    if (error) {
-      toast({
-        variant: "destructive",
-        title: "Ошибка",
-        description: "Не удалось удалить изображение",
-      });
-      setPortfolioImages(portfolioImages);
-    } else {
+    await updatePortfolioInDB(updatedImages);
+  };
+
+  const handleRemoveImage = async (url: string) => {
+    const updatedImages = portfolioImages.filter((img) => img !== url);
+    setPortfolioImages(updatedImages);
+
+    // Update cover if removed
+    if (coverImage === url) {
+      setCoverImage(updatedImages.length > 0 ? updatedImages[0] : null);
+    }
+
+    const success = await updatePortfolioInDB(updatedImages);
+    if (success) {
       toast({
         title: "Удалено",
         description: "Изображение удалено из портфолио",
       });
+    } else {
+      setPortfolioImages(portfolioImages);
+    }
+  };
+
+  const handleSetCover = async (url: string) => {
+    // Move cover image to first position
+    const updatedImages = [url, ...portfolioImages.filter((img) => img !== url)];
+    setPortfolioImages(updatedImages);
+    setCoverImage(url);
+
+    const success = await updatePortfolioInDB(updatedImages);
+    if (success) {
+      toast({
+        title: "Обложка обновлена",
+        description: "Изображение установлено как обложка",
+      });
+    }
+  };
+
+  const handlePreviewImage = (url: string) => {
+    const index = portfolioImages.indexOf(url);
+    setLightboxIndex(index >= 0 ? index : 0);
+    setLightboxOpen(true);
+  };
+
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (over && active.id !== over.id) {
+      const oldIndex = portfolioImages.indexOf(active.id as string);
+      const newIndex = portfolioImages.indexOf(over.id as string);
+
+      const newImages = arrayMove(portfolioImages, oldIndex, newIndex);
+      setPortfolioImages(newImages);
+
+      // Update cover if first position changed
+      if (newIndex === 0 || oldIndex === 0) {
+        setCoverImage(newImages[0]);
+      }
+
+      await updatePortfolioInDB(newImages);
     }
   };
 
@@ -248,49 +336,85 @@ export const PortfolioManagement = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle>Портфолио ({portfolioImages.length})</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <ImageIcon className="h-5 w-5" />
+            Портфолио ({portfolioImages.length})
+          </CardTitle>
+          <CardDescription>
+            Перетаскивайте изображения для сортировки. Первое изображение будет обложкой.
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          {/* Existing Portfolio Images */}
-          {portfolioImages.length > 0 && (
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {portfolioImages.map((url, index) => (
-                <div key={index} className="relative group">
-                  <img
-                    src={url}
-                    alt={`Portfolio ${index + 1}`}
-                    className="w-full h-40 object-cover rounded-lg"
-                  />
-                  <Button
-                    variant="destructive"
-                    size="icon"
-                    className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
-                    onClick={() => handleRemovePortfolioImage(url)}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Upload New Image */}
-          {vendorProfile && (
-            <ImageUpload
-              bucket="portfolio"
-              userId={vendorProfile.user_id}
-              onUploadComplete={handlePortfolioImageUpload}
-              maxSize={10}
-            />
-          )}
-
           {!vendorProfile && (
-            <p className="text-sm text-muted-foreground">
-              Сначала сохраните основную информацию профиля
-            </p>
+            <Alert>
+              <Info className="h-4 w-4" />
+              <AlertDescription>
+                Сначала сохраните основную информацию профиля, чтобы загружать изображения.
+              </AlertDescription>
+            </Alert>
+          )}
+
+          {vendorProfile && (
+            <>
+              {/* Upload Zone */}
+              <MultiImageUpload
+                bucket="portfolio"
+                userId={vendorProfile.user_id}
+                onUploadComplete={handleImagesUploaded}
+                maxSize={10}
+                maxFiles={20}
+                existingCount={portfolioImages.length}
+              />
+
+              {/* Sortable Grid */}
+              {portfolioImages.length > 0 && (
+                <DndContext
+                  sensors={sensors}
+                  collisionDetection={closestCenter}
+                  onDragEnd={handleDragEnd}
+                >
+                  <SortableContext
+                    items={portfolioImages}
+                    strategy={rectSortingStrategy}
+                  >
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                      {portfolioImages.map((url, index) => (
+                        <SortablePortfolioItem
+                          key={url}
+                          id={url}
+                          url={url}
+                          index={index}
+                          isCover={url === coverImage}
+                          onRemove={handleRemoveImage}
+                          onPreview={handlePreviewImage}
+                          onSetCover={handleSetCover}
+                        />
+                      ))}
+                    </div>
+                  </SortableContext>
+                </DndContext>
+              )}
+
+              {portfolioImages.length === 0 && (
+                <div className="text-center py-8 text-muted-foreground">
+                  <Camera className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                  <p>Ваше портфолио пока пусто</p>
+                  <p className="text-sm">Загрузите изображения, чтобы показать свои работы</p>
+                </div>
+              )}
+            </>
           )}
         </CardContent>
       </Card>
+
+      {/* Lightbox */}
+      <PortfolioLightbox
+        images={portfolioImages}
+        currentIndex={lightboxIndex}
+        isOpen={lightboxOpen}
+        onClose={() => setLightboxOpen(false)}
+        onNavigate={setLightboxIndex}
+      />
     </div>
   );
 };

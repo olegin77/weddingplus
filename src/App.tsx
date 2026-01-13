@@ -11,6 +11,7 @@ import Dashboard from "./pages/Dashboard";
 import Marketplace from "./pages/Marketplace";
 import VendorDetail from "./pages/VendorDetail";
 import VendorDashboard from "./pages/VendorDashboard";
+import VendorCompare from "./pages/VendorCompare";
 import AIAssistantPage from "./pages/AIAssistantPage";
 import AIVisualizerPage from "./pages/AIVisualizerPage";
 import AIInvitationCreatorPage from "./pages/AIInvitationCreatorPage";
@@ -47,6 +48,7 @@ const App = () => (
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/marketplace" element={<Marketplace />} />
           <Route path="/marketplace/:vendorId" element={<VendorDetail />} />
+          <Route path="/compare" element={<ProtectedRoute><VendorCompare /></ProtectedRoute>} />
           <Route path="/vendor-dashboard" element={<ProtectedRoute><VendorDashboard /></ProtectedRoute>} />
           <Route path="/ai-assistant" element={<ProtectedRoute><AIAssistantPage /></ProtectedRoute>} />
           <Route path="/ai-visualizer" element={<ProtectedRoute><AIVisualizerPage /></ProtectedRoute>} />

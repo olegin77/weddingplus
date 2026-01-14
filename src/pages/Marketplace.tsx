@@ -10,13 +10,15 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Search, Star, MapPin, Heart, SlidersHorizontal, ChevronLeft, ChevronRight, Sparkles, Users, Wallet, Palette } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Search, Star, MapPin, Heart, SlidersHorizontal, ChevronLeft, ChevronRight, Sparkles, Users, Wallet, Palette, GitCompare, Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { MatchScoreBadge } from "@/components/vendor/MatchScoreBadge";
+import { ComparisonFloatingBar } from "@/components/vendor/ComparisonFloatingBar";
+import { useVendorComparison } from "@/hooks/useVendorComparison";
 import { VendorMatchingEngine, type WeddingMatchParams } from "@/lib/matching-engine";
 import type { VendorMatchResult } from "@/types/vendor-attributes";
-
 const ITEMS_PER_PAGE = 12;
 
 // Тематические изображения для категорий (надёжные источники)
@@ -66,6 +68,18 @@ const Marketplace = () => {
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [locations, setLocations] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  
+  // Vendor comparison hook
+  const {
+    comparisonItems,
+    addToComparison,
+    removeFromComparison,
+    isInComparison,
+    clearComparison,
+    goToComparison,
+    canAddToComparison,
+    maxVendors,
+  } = useVendorComparison();
   
   // Smart Matching фильтры
   const [smartMatchingEnabled, setSmartMatchingEnabled] = useState(false);
@@ -691,13 +705,61 @@ const Marketplace = () => {
                         </span>
                       </div>
 
-                      <div className="flex items-center justify-between pt-3 border-t">
-                        <div className="text-sm font-medium">
+                      <div className="flex items-center justify-between pt-3 border-t gap-2">
+                        <div className="text-sm font-medium flex-shrink-0">
                           {vendor.price_range_min?.toLocaleString()} - {vendor.price_range_max?.toLocaleString()} сум
                         </div>
-                        <Button size="sm">
-                          Подробнее
-                        </Button>
+                        <div className="flex items-center gap-2">
+                          {!vendor.isDemo && (
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <Button
+                                    variant={isInComparison(vendor.id) ? "default" : "outline"}
+                                    size="sm"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      if (isInComparison(vendor.id)) {
+                                        removeFromComparison(vendor.id);
+                                      } else {
+                                        addToComparison({
+                                          id: vendor.id,
+                                          category: vendor.category,
+                                          business_name: vendor.business_name,
+                                        });
+                                      }
+                                    }}
+                                    disabled={!isInComparison(vendor.id) && !canAddToComparison(vendor.category)}
+                                    className="gap-1"
+                                  >
+                                    {isInComparison(vendor.id) ? (
+                                      <>
+                                        <Check className="w-4 h-4" />
+                                        <span className="hidden sm:inline">В сравнении</span>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <GitCompare className="w-4 h-4" />
+                                        <span className="hidden sm:inline">Сравнить</span>
+                                      </>
+                                    )}
+                                  </Button>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  {isInComparison(vendor.id) 
+                                    ? "Удалить из сравнения" 
+                                    : canAddToComparison(vendor.category)
+                                      ? "Добавить в сравнение"
+                                      : "Можно сравнивать только вендоров одной категории"
+                                  }
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          )}
+                          <Button size="sm">
+                            Подробнее
+                          </Button>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
@@ -785,6 +847,15 @@ const Marketplace = () => {
             </>
           )}
         </div>
+        
+        {/* Floating Comparison Bar */}
+        <ComparisonFloatingBar
+          items={comparisonItems}
+          onRemove={removeFromComparison}
+          onClear={clearComparison}
+          onCompare={goToComparison}
+          maxVendors={maxVendors}
+        />
       </div>
     </DashboardLayout>
   );

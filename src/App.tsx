@@ -15,6 +15,7 @@ import VendorCompare from "./pages/VendorCompare";
 import AIAssistantPage from "./pages/AIAssistantPage";
 import AIVisualizerPage from "./pages/AIVisualizerPage";
 import AIInvitationCreatorPage from "./pages/AIInvitationCreatorPage";
+import AIVenueDesigner from "./pages/AIVenueDesigner";
 import SeatingChart from "./pages/SeatingChart";
 import Planner from "./pages/Planner";
 import Profile from "./pages/Profile";
@@ -53,6 +54,7 @@ const App = () => (
           <Route path="/ai-assistant" element={<ProtectedRoute><AIAssistantPage /></ProtectedRoute>} />
           <Route path="/ai-visualizer" element={<ProtectedRoute><AIVisualizerPage /></ProtectedRoute>} />
           <Route path="/ai-invitations" element={<ProtectedRoute><AIInvitationCreatorPage /></ProtectedRoute>} />
+          <Route path="/ai-venue-designer" element={<ProtectedRoute><AIVenueDesigner /></ProtectedRoute>} />
           <Route path="/seating-chart" element={<ProtectedRoute><SeatingChart /></ProtectedRoute>} />
           <Route path="/planner" element={<ProtectedRoute><Planner /></ProtectedRoute>} />
           <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />

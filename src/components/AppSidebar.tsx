@@ -9,6 +9,7 @@ import {
   Briefcase,
   Sparkles,
   Mail,
+  Building2,
   LayoutGrid,
   Star,
   Globe,
@@ -53,8 +54,10 @@ export function AppSidebar() {
     { title: t('nav.planner'), url: "/planner", icon: Calendar },
     { title: t('nav.aiAssistant'), url: "/ai-assistant", icon: Sparkles },
     { title: "AI Визуализатор", url: "/ai-visualizer", icon: Sparkles },
+    { title: "AI Дизайнер залов", url: "/ai-venue-designer", icon: Building2 },
     { title: "AI Приглашения", url: "/ai-invitations", icon: Mail },
     { title: "Схема рассадки", url: "/seating-chart", icon: LayoutGrid },
+    { title: t('nav.profile'), url: "/profile", icon: User },
     { title: t('nav.profile'), url: "/profile", icon: User },
     { title: t('nav.settings'), url: "/settings", icon: Settings },
   ];

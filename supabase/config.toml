@@ -11,3 +11,6 @@ verify_jwt = false
 
 [functions.export-wedding-plan-pdf]
 verify_jwt = true
+
+[functions.generate-venue-decor]
+verify_jwt = false

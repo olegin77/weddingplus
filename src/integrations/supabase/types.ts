@@ -838,6 +838,120 @@ export type Database = {
           },
         ]
       }
+      venue_gallery: {
+        Row: {
+          angle: string | null
+          capacity: number | null
+          created_at: string
+          dimensions: Json | null
+          id: string
+          image_url: string
+          lighting_type: string | null
+          room_name: string | null
+          updated_at: string
+          venue_id: string
+        }
+        Insert: {
+          angle?: string | null
+          capacity?: number | null
+          created_at?: string
+          dimensions?: Json | null
+          id?: string
+          image_url: string
+          lighting_type?: string | null
+          room_name?: string | null
+          updated_at?: string
+          venue_id: string
+        }
+        Update: {
+          angle?: string | null
+          capacity?: number | null
+          created_at?: string
+          dimensions?: Json | null
+          id?: string
+          image_url?: string
+          lighting_type?: string | null
+          room_name?: string | null
+          updated_at?: string
+          venue_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "venue_gallery_venue_id_fkey"
+            columns: ["venue_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      venue_visualizations: {
+        Row: {
+          base_image_url: string
+          comparison_group_id: string | null
+          created_at: string
+          decor_elements: Json | null
+          decorator_id: string | null
+          generation_params: Json | null
+          id: string
+          result_image_url: string
+          style: string
+          updated_at: string
+          venue_id: string
+          wedding_plan_id: string | null
+        }
+        Insert: {
+          base_image_url: string
+          comparison_group_id?: string | null
+          created_at?: string
+          decor_elements?: Json | null
+          decorator_id?: string | null
+          generation_params?: Json | null
+          id?: string
+          result_image_url: string
+          style: string
+          updated_at?: string
+          venue_id: string
+          wedding_plan_id?: string | null
+        }
+        Update: {
+          base_image_url?: string
+          comparison_group_id?: string | null
+          created_at?: string
+          decor_elements?: Json | null
+          decorator_id?: string | null
+          generation_params?: Json | null
+          id?: string
+          result_image_url?: string
+          style?: string
+          updated_at?: string
+          venue_id?: string
+          wedding_plan_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "venue_visualizations_decorator_id_fkey"
+            columns: ["decorator_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "venue_visualizations_venue_id_fkey"
+            columns: ["venue_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "venue_visualizations_wedding_plan_id_fkey"
+            columns: ["wedding_plan_id"]
+            isOneToOne: false
+            referencedRelation: "wedding_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       wedding_invitations: {
         Row: {
           couple_names: string

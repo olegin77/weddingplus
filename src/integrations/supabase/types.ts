@@ -14,6 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      achievements: {
+        Row: {
+          category: string | null
+          code: string
+          created_at: string
+          description_en: string | null
+          description_ru: string | null
+          description_uz: string | null
+          icon: string | null
+          id: string
+          name_en: string
+          name_ru: string
+          name_uz: string
+          points: number | null
+          trigger_condition: Json | null
+        }
+        Insert: {
+          category?: string | null
+          code: string
+          created_at?: string
+          description_en?: string | null
+          description_ru?: string | null
+          description_uz?: string | null
+          icon?: string | null
+          id?: string
+          name_en: string
+          name_ru: string
+          name_uz: string
+          points?: number | null
+          trigger_condition?: Json | null
+        }
+        Update: {
+          category?: string | null
+          code?: string
+          created_at?: string
+          description_en?: string | null
+          description_ru?: string | null
+          description_uz?: string | null
+          icon?: string | null
+          id?: string
+          name_en?: string
+          name_ru?: string
+          name_uz?: string
+          points?: number | null
+          trigger_condition?: Json | null
+        }
+        Relationships: []
+      }
       bookings: {
         Row: {
           booking_date: string
@@ -326,6 +374,126 @@ export type Database = {
           },
         ]
       }
+      gift_contributions: {
+        Row: {
+          amount: number
+          contributor_email: string | null
+          contributor_name: string | null
+          created_at: string
+          gift_item_id: string
+          guest_id: string | null
+          id: string
+          is_anonymous: boolean | null
+          message: string | null
+          payment_id: string | null
+          payment_status: string | null
+        }
+        Insert: {
+          amount: number
+          contributor_email?: string | null
+          contributor_name?: string | null
+          created_at?: string
+          gift_item_id: string
+          guest_id?: string | null
+          id?: string
+          is_anonymous?: boolean | null
+          message?: string | null
+          payment_id?: string | null
+          payment_status?: string | null
+        }
+        Update: {
+          amount?: number
+          contributor_email?: string | null
+          contributor_name?: string | null
+          created_at?: string
+          gift_item_id?: string
+          guest_id?: string | null
+          id?: string
+          is_anonymous?: boolean | null
+          message?: string | null
+          payment_id?: string | null
+          payment_status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gift_contributions_gift_item_id_fkey"
+            columns: ["gift_item_id"]
+            isOneToOne: false
+            referencedRelation: "gift_registry_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gift_contributions_guest_id_fkey"
+            columns: ["guest_id"]
+            isOneToOne: false
+            referencedRelation: "guests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gift_contributions_payment_id_fkey"
+            columns: ["payment_id"]
+            isOneToOne: false
+            referencedRelation: "payments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gift_registry_items: {
+        Row: {
+          category: string | null
+          created_at: string
+          current_amount: number
+          description: string | null
+          external_link: string | null
+          id: string
+          image_url: string | null
+          is_purchased: boolean | null
+          item_name: string
+          priority: number | null
+          target_amount: number
+          updated_at: string
+          wedding_plan_id: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          current_amount?: number
+          description?: string | null
+          external_link?: string | null
+          id?: string
+          image_url?: string | null
+          is_purchased?: boolean | null
+          item_name: string
+          priority?: number | null
+          target_amount?: number
+          updated_at?: string
+          wedding_plan_id: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          current_amount?: number
+          description?: string | null
+          external_link?: string | null
+          id?: string
+          image_url?: string | null
+          is_purchased?: boolean | null
+          item_name?: string
+          priority?: number | null
+          target_amount?: number
+          updated_at?: string
+          wedding_plan_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gift_registry_items_wedding_plan_id_fkey"
+            columns: ["wedding_plan_id"]
+            isOneToOne: false
+            referencedRelation: "wedding_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       guest_event_invitations: {
         Row: {
           created_at: string
@@ -590,6 +758,56 @@ export type Database = {
             columns: ["booking_id"]
             isOneToOne: false
             referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      planning_milestones: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          description: string | null
+          id: string
+          is_required: boolean | null
+          milestone_type: string
+          order_index: number | null
+          target_date: string | null
+          title: string
+          updated_at: string
+          wedding_plan_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_required?: boolean | null
+          milestone_type: string
+          order_index?: number | null
+          target_date?: string | null
+          title: string
+          updated_at?: string
+          wedding_plan_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_required?: boolean | null
+          milestone_type?: string
+          order_index?: number | null
+          target_date?: string | null
+          title?: string
+          updated_at?: string
+          wedding_plan_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "planning_milestones_wedding_plan_id_fkey"
+            columns: ["wedding_plan_id"]
+            isOneToOne: false
+            referencedRelation: "wedding_plans"
             referencedColumns: ["id"]
           },
         ]
@@ -1009,6 +1227,48 @@ export type Database = {
             columns: ["telegram_connection_id"]
             isOneToOne: false
             referencedRelation: "telegram_connections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_achievements: {
+        Row: {
+          achievement_id: string
+          earned_at: string
+          id: string
+          metadata: Json | null
+          user_id: string
+          wedding_plan_id: string | null
+        }
+        Insert: {
+          achievement_id: string
+          earned_at?: string
+          id?: string
+          metadata?: Json | null
+          user_id: string
+          wedding_plan_id?: string | null
+        }
+        Update: {
+          achievement_id?: string
+          earned_at?: string
+          id?: string
+          metadata?: Json | null
+          user_id?: string
+          wedding_plan_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_achievements_achievement_id_fkey"
+            columns: ["achievement_id"]
+            isOneToOne: false
+            referencedRelation: "achievements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_achievements_wedding_plan_id_fkey"
+            columns: ["wedding_plan_id"]
+            isOneToOne: false
+            referencedRelation: "wedding_plans"
             referencedColumns: ["id"]
           },
         ]

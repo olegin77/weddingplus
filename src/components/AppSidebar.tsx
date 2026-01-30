@@ -17,8 +17,9 @@ import {
   PartyPopper,
   CreditCard,
   QrCode,
-  MessageCircle,
-  Phone
+  Phone,
+  Gift,
+  Trophy
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -60,6 +61,7 @@ export function AppSidebar() {
     { title: "Мероприятия", url: "/wedding-events", icon: PartyPopper },
     { title: "Платежи", url: "/payments", icon: CreditCard },
     { title: "Коммуникации", url: "/communications", icon: Phone },
+    { title: "Подарки", url: "/gifts", icon: Gift },
     { title: t('nav.aiAssistant'), url: "/ai-assistant", icon: Sparkles },
     { title: "AI Визуализатор", url: "/ai-visualizer", icon: Sparkles },
     { title: "AI Дизайнер залов", url: "/ai-venue-designer", icon: Building2 },

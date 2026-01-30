@@ -271,5 +271,7 @@ export interface VendorMatchResult {
     experience: number;
     categorySpecific: number;
     verification: number;
+    packages?: number;
+    terms?: number;
   };
 }

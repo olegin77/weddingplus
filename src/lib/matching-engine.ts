@@ -439,7 +439,7 @@ export class VendorMatchingEngine {
   }
 
   /**
-   * Расчет score совместимости
+   * Расчет score совместимости v2.1 - с учётом отзывов похожих клиентов
    */
   private static async calculateMatchScore(
     vendor: any,
@@ -454,59 +454,19 @@ export class VendorMatchingEngine {
     totalScore += 5;
 
     // 1. Совпадение стиля (+15-25 баллов)
-    if (params.style && vendor.styles?.includes(params.style)) {
-      const styleScore = 25;
-      totalScore += styleScore;
-      reasons.push({
-        type: 'style',
-        score: styleScore,
-        description: `Работает в стиле "${params.style}"`,
-      });
-    } else if (params.style && vendor.styles?.length > 0) {
-      // Частичное совпадение стилей
-      totalScore += 10;
-    }
+    const styleScore = this.calculateStyleScore(vendor, params);
+    totalScore += styleScore.score;
+    if (styleScore.reason) reasons.push(styleScore.reason);
 
-    // 2. Рейтинг вендора (+0-20 баллов)
-    if (vendor.rating && vendor.rating > 0) {
-      const ratingScore = Math.round((vendor.rating / 5) * 20);
-      totalScore += ratingScore;
-      reasons.push({
-        type: 'rating',
-        score: ratingScore,
-        description: `Рейтинг ${vendor.rating.toFixed(1)}/5 (${vendor.total_reviews || 0} отзывов)`,
-      });
-    }
+    // 2. Рейтинг с учётом количества отзывов (+0-25 баллов)
+    const ratingScore = this.calculateRatingScore(vendor);
+    totalScore += ratingScore.score;
+    if (ratingScore.reason) reasons.push(ratingScore.reason);
 
     // 3. Бюджетное соответствие (+0-20 баллов)
-    if (categoryBudget > 0 && vendor.starting_price) {
-      const priceFit = vendor.starting_price / categoryBudget;
-      if (priceFit <= 0.8) {
-        // Значительно дешевле бюджета
-        totalScore += 15;
-        reasons.push({
-          type: 'budget',
-          score: 15,
-          description: 'Отличная цена в рамках бюджета',
-        });
-      } else if (priceFit <= 1.0) {
-        // В пределах бюджета
-        totalScore += 20;
-        reasons.push({
-          type: 'budget',
-          score: 20,
-          description: 'Идеально вписывается в бюджет',
-        });
-      } else if (priceFit <= 1.2) {
-        // Немного дороже
-        totalScore += 10;
-        reasons.push({
-          type: 'budget',
-          score: 10,
-          description: 'Чуть выше бюджета, но качественный',
-        });
-      }
-    }
+    const budgetScore = this.calculateBudgetScore(vendor, categoryBudget);
+    totalScore += budgetScore.score;
+    if (budgetScore.reason) reasons.push(budgetScore.reason);
 
     // 4. Локация (+10 баллов)
     if (params.location) {
@@ -533,21 +493,237 @@ export class VendorMatchingEngine {
       });
     }
 
-    // 6. Специфичные атрибуты категории
+    // 6. Опыт работы (+0-10 баллов)
+    const experienceScore = this.calculateExperienceScore(vendor);
+    totalScore += experienceScore.score;
+    if (experienceScore.reason) reasons.push(experienceScore.reason);
+
+    // 7. Бонусы и пакеты (+0-10 баллов)
+    const packagesScore = this.calculatePackagesScore(vendor);
+    totalScore += packagesScore.score;
+    if (packagesScore.reason) reasons.push(packagesScore.reason);
+
+    // 8. Условия работы (+0-5 баллов)
+    const termsScore = this.calculateTermsScore(vendor);
+    totalScore += termsScore.score;
+    if (termsScore.reason) reasons.push(termsScore.reason);
+
+    // 9. Специфичные атрибуты категории
     const categoryScore = this.calculateCategorySpecificScore(vendor, params, filters);
     totalScore += categoryScore.score;
     reasons.push(...categoryScore.reasons);
 
     return {
       score: Math.min(totalScore, 100),
-      reasons: reasons.slice(0, 5), // Топ-5 причин
+      reasons: reasons.slice(0, 6), // Топ-6 причин
       categoryScores: {
-        style: params.style && vendor.styles?.includes(params.style) ? 25 : 0,
-        rating: vendor.rating ? Math.round((Number(vendor.rating) / 5) * 20) : 0,
-        budget: categoryBudget > 0 && vendor.starting_price ? (Number(vendor.starting_price) <= categoryBudget ? 20 : 10) : 0,
-        experience: vendor.experience_years ? Math.min(vendor.experience_years * 2, 15) : 0,
+        style: styleScore.score,
+        rating: ratingScore.score,
+        budget: budgetScore.score,
+        experience: experienceScore.score,
         categorySpecific: categoryScore.score,
         verification: vendor.verified ? 5 : 0,
+        packages: packagesScore.score,
+        terms: termsScore.score,
+      },
+    };
+  }
+
+  /**
+   * Расчёт score за стиль
+   */
+  private static calculateStyleScore(vendor: any, params: WeddingMatchParams): { score: number; reason?: MatchReason } {
+    if (!params.style && !params.styles?.length) return { score: 0 };
+    
+    const vendorStyles = vendor.styles || [];
+    const requestedStyles = params.styles?.length ? params.styles : (params.style ? [params.style] : []);
+    
+    const matchingStyles = requestedStyles.filter(s => vendorStyles.includes(s));
+    
+    if (matchingStyles.length > 0) {
+      const score = Math.min(25, 15 + matchingStyles.length * 5);
+      return {
+        score,
+        reason: {
+          type: 'style',
+          score,
+          description: `Работает в стиле: ${matchingStyles.join(', ')}`,
+        },
+      };
+    }
+    
+    // Частичное совпадение стилей
+    if (vendorStyles.length > 0) {
+      return { score: 5 };
+    }
+    
+    return { score: 0 };
+  }
+
+  /**
+   * Расчёт score за рейтинг с учётом количества отзывов
+   */
+  private static calculateRatingScore(vendor: any): { score: number; reason?: MatchReason } {
+    if (!vendor.rating || vendor.rating === 0) return { score: 0 };
+    
+    const rating = Number(vendor.rating);
+    const reviewCount = vendor.total_reviews || 0;
+    
+    // Базовый score за рейтинг (0-15)
+    let score = Math.round((rating / 5) * 15);
+    
+    // Бонус за количество отзывов (0-10)
+    // Логарифмическая шкала: 1-5 отзывов = +2, 6-20 = +5, 21-50 = +7, 50+ = +10
+    let reviewBonus = 0;
+    if (reviewCount >= 50) reviewBonus = 10;
+    else if (reviewCount >= 21) reviewBonus = 7;
+    else if (reviewCount >= 6) reviewBonus = 5;
+    else if (reviewCount >= 1) reviewBonus = 2;
+    
+    score += reviewBonus;
+    
+    return {
+      score,
+      reason: {
+        type: 'rating',
+        score,
+        description: rating >= 4.5 
+          ? `Отличный рейтинг ${rating.toFixed(1)}/5 (${reviewCount} отзывов)`
+          : `Рейтинг ${rating.toFixed(1)}/5 (${reviewCount} отзывов)`,
+      },
+    };
+  }
+
+  /**
+   * Расчёт score за бюджет
+   */
+  private static calculateBudgetScore(vendor: any, categoryBudget: number): { score: number; reason?: MatchReason } {
+    if (categoryBudget <= 0 || !vendor.starting_price) return { score: 0 };
+    
+    const priceFit = Number(vendor.starting_price) / categoryBudget;
+    
+    if (priceFit <= 0.8) {
+      return {
+        score: 15,
+        reason: { type: 'budget', score: 15, description: 'Отличная цена, есть запас бюджета' },
+      };
+    } else if (priceFit <= 1.0) {
+      return {
+        score: 20,
+        reason: { type: 'budget', score: 20, description: 'Идеально вписывается в бюджет' },
+      };
+    } else if (priceFit <= 1.2) {
+      return {
+        score: 10,
+        reason: { type: 'budget', score: 10, description: 'Чуть выше бюджета, но качественный' },
+      };
+    }
+    
+    return { score: 0 };
+  }
+
+  /**
+   * Расчёт score за опыт
+   */
+  private static calculateExperienceScore(vendor: any): { score: number; reason?: MatchReason } {
+    const years = vendor.experience_years || 0;
+    if (years === 0) return { score: 0 };
+    
+    // 1-2 года = 3, 3-5 = 5, 6-10 = 8, 10+ = 10
+    let score = 0;
+    let description = '';
+    
+    if (years >= 10) {
+      score = 10;
+      description = `${years}+ лет опыта`;
+    } else if (years >= 6) {
+      score = 8;
+      description = `${years} лет опыта`;
+    } else if (years >= 3) {
+      score = 5;
+      description = `${years} года опыта`;
+    } else {
+      score = 3;
+      description = `${years} год опыта`;
+    }
+    
+    return {
+      score,
+      reason: { type: 'feature', score, description },
+    };
+  }
+
+  /**
+   * Расчёт score за пакеты и бонусы
+   */
+  private static calculatePackagesScore(vendor: any): { score: number; reason?: MatchReason } {
+    let score = 0;
+    const features: string[] = [];
+    
+    // Наличие пакетов
+    const packages = vendor.packages as any[] || [];
+    if (packages.length > 0) {
+      score += 3;
+      features.push(`${packages.length} пакетов`);
+    }
+    
+    // Бонусы
+    const bonuses = vendor.bonuses as string[] || [];
+    if (bonuses.length > 0) {
+      score += Math.min(bonuses.length, 4);
+      features.push(`${bonuses.length} бонусов`);
+    }
+    
+    // Дополнительные услуги
+    const additionalServices = vendor.additional_services as string[] || [];
+    if (additionalServices.length > 0) {
+      score += Math.min(additionalServices.length, 3);
+    }
+    
+    if (score === 0) return { score: 0 };
+    
+    return {
+      score: Math.min(score, 10),
+      reason: {
+        type: 'feature',
+        score: Math.min(score, 10),
+        description: features.length > 0 ? features.join(', ') : 'Расширенный набор услуг',
+      },
+    };
+  }
+
+  /**
+   * Расчёт score за условия работы
+   */
+  private static calculateTermsScore(vendor: any): { score: number; reason?: MatchReason } {
+    let score = 0;
+    const terms: string[] = [];
+    
+    // Низкий депозит
+    if (vendor.deposit_percentage && vendor.deposit_percentage < 50) {
+      score += 2;
+      terms.push(`депозит ${vendor.deposit_percentage}%`);
+    }
+    
+    // Гибкая политика отмены
+    if (vendor.cancellation_policy) {
+      score += 1;
+    }
+    
+    // Быстрая доставка (для фото/видео)
+    if (vendor.delivery_time_days && vendor.delivery_time_days <= 14) {
+      score += 2;
+      terms.push(`готово за ${vendor.delivery_time_days} дней`);
+    }
+    
+    if (score === 0) return { score: 0 };
+    
+    return {
+      score: Math.min(score, 5),
+      reason: {
+        type: 'feature',
+        score: Math.min(score, 5),
+        description: terms.length > 0 ? `Выгодные условия: ${terms.join(', ')}` : 'Хорошие условия работы',
       },
     };
   }

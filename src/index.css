@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
+/* Design System v2.0 - Wedding Platform
+   All colors MUST be HSL for proper theming
 */
 
 @layer base {
@@ -55,31 +55,28 @@ All colors MUST be HSL.
     /* Gradients */
     --gradient-hero: linear-gradient(135deg, hsl(340 82% 52%) 0%, hsl(340 100% 65%) 100%);
     --gradient-elegant: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(340 100% 98%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(24 30% 98%) 100%);
     
     /* Shadows */
     --shadow-elegant: 0 10px 40px -10px hsl(340 82% 52% / 0.15);
     --shadow-card: 0 4px 20px -2px hsl(340 20% 20% / 0.08);
+    --shadow-hover: 0 8px 30px -4px hsl(340 20% 20% / 0.12);
+    --shadow-btn: 0 4px 14px 0 hsl(340 82% 52% / 0.25);
     
     /* Animations */
     --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: all 0.2s ease-out;
     
     /* Milestone Toast Custom Styles */
     --milestone-glow: 0 0 30px hsl(340 82% 52% / 0.5);
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -127,9 +124,13 @@ All colors MUST be HSL.
     
     --gradient-hero: linear-gradient(135deg, hsl(340 82% 40%) 0%, hsl(340 100% 50%) 100%);
     --gradient-elegant: linear-gradient(180deg, hsl(240 10% 3.9%) 0%, hsl(340 30% 8%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(240 10% 8%) 0%, hsl(240 10% 10%) 100%);
     
     --shadow-elegant: 0 10px 40px -10px hsl(340 82% 20% / 0.4);
     --shadow-card: 0 4px 20px -2px hsl(0 0% 0% / 0.4);
+    --shadow-hover: 0 8px 30px -4px hsl(0 0% 0% / 0.5);
+    --shadow-btn: 0 4px 14px 0 hsl(340 82% 40% / 0.3);
+    
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -147,12 +148,12 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    @apply font-bold;
+    @apply font-bold tracking-tight;
   }
   
   /* Smooth scrolling */
@@ -161,8 +162,57 @@ All colors MUST be HSL.
   }
 }
 
-/* Milestone Toast Animation */
+/* Component Utilities */
 @layer components {
+  /* Cards with hover effect */
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+  }
+  
+  /* Vendor cards */
+  .vendor-card {
+    @apply bg-card rounded-xl overflow-hidden shadow-sm transition-all duration-300;
+    @apply hover:shadow-lg hover:-translate-y-1;
+  }
+  
+  /* Primary gradient button */
+  .btn-gradient {
+    @apply bg-gradient-to-r from-primary to-primary/90;
+    @apply hover:from-primary/90 hover:to-primary;
+    @apply shadow-sm hover:shadow-md transition-all;
+  }
+  
+  /* Match score badge */
+  .match-badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold;
+    @apply bg-gradient-to-r from-primary/10 to-primary/5 text-primary;
+    @apply border border-primary/20;
+  }
+  
+  .match-badge-high {
+    @apply bg-gradient-to-r from-success/20 to-success/10 text-success border-success/30;
+  }
+  
+  .match-badge-medium {
+    @apply bg-gradient-to-r from-warning/20 to-warning/10 text-warning border-warning/30;
+  }
+  
+  /* Section spacing */
+  .section-padding {
+    @apply py-16 md:py-24;
+  }
+  
+  /* Container with mobile padding */
+  .container-mobile {
+    @apply container mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  /* Glass effect */
+  .glass {
+    @apply bg-background/80 backdrop-blur-md border border-border/50;
+  }
+  
+  /* Milestone Toast Animation */
   .milestone-toast {
     @apply border-2 border-primary shadow-lg;
     animation: milestone-bounce 0.6s ease-out, milestone-glow 2s ease-in-out infinite;
@@ -191,5 +241,81 @@ All colors MUST be HSL.
     50% {
       box-shadow: 0 0 30px hsl(var(--primary) / 0.6), 0 0 50px hsl(var(--primary-glow) / 0.4);
     }
+  }
+  
+  /* Floating animation */
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
+  
+  /* Fade in animation */
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .animate-fade-in {
+    animation: fade-in 0.6s ease-out forwards;
+  }
+  
+  /* Pulse subtle animation */
+  @keyframes pulse-subtle {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+  
+  .animate-pulse-subtle {
+    animation: pulse-subtle 2s ease-in-out infinite;
+  }
+}
+
+/* Mobile-first responsive utilities */
+@layer utilities {
+  /* Text balance for better readability */
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Safe area padding for notched devices */
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  /* Touch-friendly tap targets */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
   }
 }

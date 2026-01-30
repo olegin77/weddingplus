@@ -166,11 +166,17 @@ export function MatchScoreBadge({
           <p className="text-sm font-medium text-muted-foreground">Детальная оценка:</p>
           <div className="grid grid-cols-2 gap-2 text-xs">
             <ScoreItem label="Стиль" score={categoryScores.style} max={25} />
-            <ScoreItem label="Рейтинг" score={categoryScores.rating} max={20} />
+            <ScoreItem label="Рейтинг" score={categoryScores.rating} max={25} />
             <ScoreItem label="Бюджет" score={categoryScores.budget} max={20} />
-            <ScoreItem label="Опыт" score={categoryScores.experience} max={15} />
+            <ScoreItem label="Опыт" score={categoryScores.experience} max={10} />
             <ScoreItem label="Специализация" score={categoryScores.categorySpecific} max={25} />
             <ScoreItem label="Верификация" score={categoryScores.verification} max={5} />
+            {categoryScores.packages !== undefined && categoryScores.packages > 0 && (
+              <ScoreItem label="Пакеты" score={categoryScores.packages} max={10} />
+            )}
+            {categoryScores.terms !== undefined && categoryScores.terms > 0 && (
+              <ScoreItem label="Условия" score={categoryScores.terms} max={5} />
+            )}
           </div>
         </div>
       )}

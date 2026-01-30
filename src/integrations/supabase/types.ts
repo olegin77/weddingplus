@@ -144,6 +144,65 @@ export type Database = {
           },
         ]
       }
+      communication_settings: {
+        Row: {
+          auto_reminders_enabled: boolean | null
+          confirmation_message_template: string | null
+          created_at: string
+          id: string
+          reminder_days_before: number[] | null
+          reminder_message_template: string | null
+          sms_enabled: boolean | null
+          telegram_enabled: boolean | null
+          updated_at: string
+          voice_id: string | null
+          voice_language: string | null
+          voice_rsvp_enabled: boolean | null
+          wedding_plan_id: string
+          whatsapp_enabled: boolean | null
+        }
+        Insert: {
+          auto_reminders_enabled?: boolean | null
+          confirmation_message_template?: string | null
+          created_at?: string
+          id?: string
+          reminder_days_before?: number[] | null
+          reminder_message_template?: string | null
+          sms_enabled?: boolean | null
+          telegram_enabled?: boolean | null
+          updated_at?: string
+          voice_id?: string | null
+          voice_language?: string | null
+          voice_rsvp_enabled?: boolean | null
+          wedding_plan_id: string
+          whatsapp_enabled?: boolean | null
+        }
+        Update: {
+          auto_reminders_enabled?: boolean | null
+          confirmation_message_template?: string | null
+          created_at?: string
+          id?: string
+          reminder_days_before?: number[] | null
+          reminder_message_template?: string | null
+          sms_enabled?: boolean | null
+          telegram_enabled?: boolean | null
+          updated_at?: string
+          voice_id?: string | null
+          voice_language?: string | null
+          voice_rsvp_enabled?: boolean | null
+          wedding_plan_id?: string
+          whatsapp_enabled?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "communication_settings_wedding_plan_id_fkey"
+            columns: ["wedding_plan_id"]
+            isOneToOne: true
+            referencedRelation: "wedding_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       escrow_transactions: {
         Row: {
           amount: number
@@ -831,6 +890,129 @@ export type Database = {
           },
         ]
       }
+      telegram_connections: {
+        Row: {
+          bot_token_reference: string | null
+          bot_username: string | null
+          created_at: string
+          id: string
+          is_active: boolean
+          total_messages_sent: number | null
+          total_responses_received: number | null
+          updated_at: string
+          webhook_secret: string
+          wedding_plan_id: string
+        }
+        Insert: {
+          bot_token_reference?: string | null
+          bot_username?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          total_messages_sent?: number | null
+          total_responses_received?: number | null
+          updated_at?: string
+          webhook_secret: string
+          wedding_plan_id: string
+        }
+        Update: {
+          bot_token_reference?: string | null
+          bot_username?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          total_messages_sent?: number | null
+          total_responses_received?: number | null
+          updated_at?: string
+          webhook_secret?: string
+          wedding_plan_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "telegram_connections_wedding_plan_id_fkey"
+            columns: ["wedding_plan_id"]
+            isOneToOne: true
+            referencedRelation: "wedding_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      telegram_rsvp_responses: {
+        Row: {
+          chat_id: number | null
+          created_at: string
+          dietary_notes: string | null
+          guest_id: string | null
+          guest_invitation_id: string | null
+          id: string
+          matched_at: string | null
+          message_id: number | null
+          message_text: string | null
+          plus_ones: number | null
+          rsvp_response: string | null
+          telegram_connection_id: string
+          telegram_first_name: string | null
+          telegram_user_id: number
+          telegram_username: string | null
+        }
+        Insert: {
+          chat_id?: number | null
+          created_at?: string
+          dietary_notes?: string | null
+          guest_id?: string | null
+          guest_invitation_id?: string | null
+          id?: string
+          matched_at?: string | null
+          message_id?: number | null
+          message_text?: string | null
+          plus_ones?: number | null
+          rsvp_response?: string | null
+          telegram_connection_id: string
+          telegram_first_name?: string | null
+          telegram_user_id: number
+          telegram_username?: string | null
+        }
+        Update: {
+          chat_id?: number | null
+          created_at?: string
+          dietary_notes?: string | null
+          guest_id?: string | null
+          guest_invitation_id?: string | null
+          id?: string
+          matched_at?: string | null
+          message_id?: number | null
+          message_text?: string | null
+          plus_ones?: number | null
+          rsvp_response?: string | null
+          telegram_connection_id?: string
+          telegram_first_name?: string | null
+          telegram_user_id?: number
+          telegram_username?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "telegram_rsvp_responses_guest_id_fkey"
+            columns: ["guest_id"]
+            isOneToOne: false
+            referencedRelation: "guests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "telegram_rsvp_responses_guest_invitation_id_fkey"
+            columns: ["guest_invitation_id"]
+            isOneToOne: false
+            referencedRelation: "guest_invitations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "telegram_rsvp_responses_telegram_connection_id_fkey"
+            columns: ["telegram_connection_id"]
+            isOneToOne: false
+            referencedRelation: "telegram_connections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           assigned_at: string | null
@@ -1266,6 +1448,85 @@ export type Database = {
           },
         ]
       }
+      voice_rsvp_sessions: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          dietary_notes: string | null
+          elevenlabs_conversation_id: string | null
+          guest_id: string
+          guest_invitation_id: string
+          id: string
+          plus_ones: number | null
+          rsvp_response: string | null
+          session_token: string
+          special_requests: string | null
+          started_at: string | null
+          status: string
+          transcript: Json | null
+          updated_at: string
+          wedding_plan_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          dietary_notes?: string | null
+          elevenlabs_conversation_id?: string | null
+          guest_id: string
+          guest_invitation_id: string
+          id?: string
+          plus_ones?: number | null
+          rsvp_response?: string | null
+          session_token: string
+          special_requests?: string | null
+          started_at?: string | null
+          status?: string
+          transcript?: Json | null
+          updated_at?: string
+          wedding_plan_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          dietary_notes?: string | null
+          elevenlabs_conversation_id?: string | null
+          guest_id?: string
+          guest_invitation_id?: string
+          id?: string
+          plus_ones?: number | null
+          rsvp_response?: string | null
+          session_token?: string
+          special_requests?: string | null
+          started_at?: string | null
+          status?: string
+          transcript?: Json | null
+          updated_at?: string
+          wedding_plan_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "voice_rsvp_sessions_guest_id_fkey"
+            columns: ["guest_id"]
+            isOneToOne: false
+            referencedRelation: "guests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "voice_rsvp_sessions_guest_invitation_id_fkey"
+            columns: ["guest_invitation_id"]
+            isOneToOne: false
+            referencedRelation: "guest_invitations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "voice_rsvp_sessions_wedding_plan_id_fkey"
+            columns: ["wedding_plan_id"]
+            isOneToOne: false
+            referencedRelation: "wedding_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       wedding_events: {
         Row: {
           budget_allocated: number | null
@@ -1690,6 +1951,7 @@ export type Database = {
         | "rings"
         | "honeymoon"
         | "other"
+      communication_channel: "email" | "sms" | "telegram" | "voice" | "whatsapp"
       escrow_status:
         | "pending"
         | "released"
@@ -1863,6 +2125,7 @@ export const Constants = {
         "honeymoon",
         "other",
       ],
+      communication_channel: ["email", "sms", "telegram", "voice", "whatsapp"],
       escrow_status: [
         "pending",
         "released",

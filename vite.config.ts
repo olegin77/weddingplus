@@ -20,7 +20,7 @@ export default defineConfig(({ mode }) => ({
         name: 'WeddingTech UZ',
         short_name: 'WeddingTech',
         description: 'AI-Powered Wedding Planning Platform in Uzbekistan',
-        theme_color: '#f43f5e',
+        theme_color: '#9CAF88',
         background_color: '#ffffff',
         display: 'standalone',
         orientation: 'portrait',

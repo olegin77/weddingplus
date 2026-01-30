@@ -2,34 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Design System v3.0 - Wedding Platform with iOS Glassmorphism
+/* Design System v4.0 - Wedding Platform with Sage Green Theme
    All colors MUST be HSL for proper theming
+   Color Palette: Sage Green (#9CAF88) with Eucalyptus, Olive, and Cream accents
 */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    --background: 80 20% 98%;
+    --foreground: 150 10% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card-foreground: 150 10% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
+    --popover-foreground: 150 10% 10%;
 
-    /* Wedding theme - elegant rose gold and soft pinks */
-    --primary: 340 82% 52%;
+    /* Wedding theme - elegant sage green and natural tones */
+    --primary: 95 25% 55%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 340 100% 65%;
+    --primary-glow: 95 35% 65%;
 
-    --secondary: 24 55% 88%;
-    --secondary-foreground: 240 10% 3.9%;
+    --secondary: 45 30% 90%;
+    --secondary-foreground: 150 10% 10%;
 
-    --muted: 24 20% 96%;
-    --muted-foreground: 240 3.8% 46.1%;
+    --muted: 80 15% 95%;
+    --muted-foreground: 150 8% 45%;
 
-    --accent: 340 82% 95%;
-    --accent-foreground: 340 82% 52%;
+    --accent: 95 25% 92%;
+    --accent-foreground: 95 35% 40%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
@@ -40,42 +41,43 @@
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 98%;
 
-    --border: 24 20% 92%;
-    --input: 24 20% 92%;
-    --ring: 340 82% 52%;
+    --border: 80 15% 90%;
+    --input: 80 15% 90%;
+    --ring: 95 25% 55%;
 
     --radius: 1rem;
     
-    /* Custom wedding colors */
-    --wedding-rose: 340 82% 52%;
-    --wedding-gold: 24 55% 65%;
-    --wedding-blush: 340 100% 96%;
-    --wedding-champagne: 40 40% 93%;
+    /* Custom wedding colors - Nature palette */
+    --wedding-sage: 95 25% 55%;
+    --wedding-eucalyptus: 160 20% 45%;
+    --wedding-olive: 75 20% 40%;
+    --wedding-cream: 45 40% 95%;
+    --wedding-terracotta: 15 50% 55%;
     
     /* iOS Glassmorphism */
-    --glass-bg: 0 0% 100% / 0.7;
-    --glass-border: 0 0% 100% / 0.3;
-    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
+    --glass-bg: 80 20% 99% / 0.75;
+    --glass-border: 0 0% 100% / 0.4;
+    --glass-shadow: 0 8px 32px 0 rgba(100, 130, 100, 0.08);
     --glass-blur: 20px;
     
-    /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(340 82% 52%) 0%, hsl(340 100% 65%) 100%);
-    --gradient-elegant: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(340 100% 98%) 100%);
-    --gradient-card: linear-gradient(180deg, hsl(0 0% 100% / 0.9) 0%, hsl(24 30% 98% / 0.8) 100%);
-    --gradient-glass: linear-gradient(135deg, hsl(0 0% 100% / 0.8) 0%, hsl(0 0% 100% / 0.4) 100%);
-    --gradient-mesh: radial-gradient(at 40% 20%, hsl(340 82% 52% / 0.1) 0px, transparent 50%),
-                     radial-gradient(at 80% 0%, hsl(340 100% 65% / 0.1) 0px, transparent 50%),
-                     radial-gradient(at 0% 50%, hsl(24 55% 65% / 0.1) 0px, transparent 50%),
-                     radial-gradient(at 80% 50%, hsl(340 82% 95% / 0.2) 0px, transparent 50%),
-                     radial-gradient(at 0% 100%, hsl(40 40% 93% / 0.15) 0px, transparent 50%);
+    /* Gradients - Natural tones */
+    --gradient-hero: linear-gradient(135deg, hsl(95 25% 55%) 0%, hsl(95 35% 65%) 100%);
+    --gradient-elegant: linear-gradient(180deg, hsl(80 20% 99%) 0%, hsl(95 20% 96%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100% / 0.95) 0%, hsl(80 20% 98% / 0.85) 100%);
+    --gradient-glass: linear-gradient(135deg, hsl(0 0% 100% / 0.85) 0%, hsl(95 15% 98% / 0.5) 100%);
+    --gradient-mesh: radial-gradient(at 40% 20%, hsl(95 25% 55% / 0.08) 0px, transparent 50%),
+                     radial-gradient(at 80% 0%, hsl(160 20% 45% / 0.08) 0px, transparent 50%),
+                     radial-gradient(at 0% 50%, hsl(45 40% 70% / 0.1) 0px, transparent 50%),
+                     radial-gradient(at 80% 50%, hsl(95 25% 85% / 0.15) 0px, transparent 50%),
+                     radial-gradient(at 0% 100%, hsl(45 40% 95% / 0.12) 0px, transparent 50%);
     
-    /* Shadows - iOS style */
-    --shadow-elegant: 0 10px 40px -10px hsl(340 82% 52% / 0.15);
-    --shadow-card: 0 4px 24px -4px hsl(340 20% 20% / 0.06), 0 1px 2px -1px hsl(340 20% 20% / 0.04);
-    --shadow-hover: 0 20px 40px -8px hsl(340 20% 20% / 0.12);
-    --shadow-btn: 0 4px 14px 0 hsl(340 82% 52% / 0.25);
-    --shadow-glass: 0 8px 32px 0 hsl(0 0% 0% / 0.04), inset 0 0 0 1px hsl(0 0% 100% / 0.1);
-    --shadow-glow: 0 0 60px -12px hsl(340 82% 52% / 0.4);
+    /* Shadows - iOS style with sage undertones */
+    --shadow-elegant: 0 10px 40px -10px hsl(95 25% 40% / 0.12);
+    --shadow-card: 0 4px 24px -4px hsl(95 15% 30% / 0.06), 0 1px 2px -1px hsl(95 15% 30% / 0.04);
+    --shadow-hover: 0 20px 40px -8px hsl(95 15% 30% / 0.1);
+    --shadow-btn: 0 4px 14px 0 hsl(95 25% 55% / 0.2);
+    --shadow-glass: 0 8px 32px 0 hsl(0 0% 0% / 0.03), inset 0 0 0 1px hsl(0 0% 100% / 0.15);
+    --shadow-glow: 0 0 60px -12px hsl(95 25% 55% / 0.35);
     
     /* Animations */
     --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -83,40 +85,40 @@
     --transition-spring: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     
     /* Milestone Toast Custom Styles */
-    --milestone-glow: 0 0 30px hsl(340 82% 52% / 0.5);
+    --milestone-glow: 0 0 30px hsl(95 25% 55% / 0.4);
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-background: 80 15% 97%;
+    --sidebar-foreground: 150 10% 25%;
+    --sidebar-primary: 95 25% 45%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 80 15% 94%;
+    --sidebar-accent-foreground: 150 10% 20%;
+    --sidebar-border: 80 12% 90%;
+    --sidebar-ring: 95 30% 50%;
   }
 
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
+    --background: 150 10% 6%;
+    --foreground: 80 10% 95%;
 
-    --card: 240 10% 8%;
-    --card-foreground: 0 0% 98%;
+    --card: 150 8% 10%;
+    --card-foreground: 80 10% 95%;
 
-    --popover: 240 10% 8%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 150 8% 10%;
+    --popover-foreground: 80 10% 95%;
 
-    --primary: 340 82% 52%;
+    --primary: 95 30% 50%;
     --primary-foreground: 0 0% 98%;
-    --primary-glow: 340 100% 65%;
+    --primary-glow: 95 40% 60%;
 
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 150 8% 16%;
+    --secondary-foreground: 80 10% 95%;
 
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
+    --muted: 150 8% 16%;
+    --muted-foreground: 80 10% 60%;
 
-    --accent: 340 20% 25%;
-    --accent-foreground: 340 82% 52%;
+    --accent: 95 20% 20%;
+    --accent-foreground: 95 35% 60%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
@@ -127,43 +129,44 @@
     --warning: 38 92% 60%;
     --warning-foreground: 0 0% 98%;
 
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 340 82% 52%;
+    --border: 150 8% 18%;
+    --input: 150 8% 18%;
+    --ring: 95 30% 50%;
     
-    /* Dark mode wedding colors */
-    --wedding-rose: 340 82% 60%;
-    --wedding-gold: 24 55% 70%;
-    --wedding-blush: 340 30% 15%;
-    --wedding-champagne: 40 20% 18%;
+    /* Dark mode wedding colors - Nature palette */
+    --wedding-sage: 95 30% 50%;
+    --wedding-eucalyptus: 160 25% 40%;
+    --wedding-olive: 75 20% 35%;
+    --wedding-cream: 45 20% 20%;
+    --wedding-terracotta: 15 40% 45%;
     
     /* Dark iOS Glassmorphism */
-    --glass-bg: 240 10% 10% / 0.8;
-    --glass-border: 0 0% 100% / 0.1;
-    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    --glass-bg: 150 10% 10% / 0.85;
+    --glass-border: 0 0% 100% / 0.08;
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
     
-    --gradient-hero: linear-gradient(135deg, hsl(340 82% 40%) 0%, hsl(340 100% 50%) 100%);
-    --gradient-elegant: linear-gradient(180deg, hsl(240 10% 3.9%) 0%, hsl(340 30% 8%) 100%);
-    --gradient-card: linear-gradient(180deg, hsl(240 10% 8% / 0.95) 0%, hsl(240 10% 10% / 0.9) 100%);
-    --gradient-glass: linear-gradient(135deg, hsl(240 10% 15% / 0.8) 0%, hsl(240 10% 10% / 0.6) 100%);
-    --gradient-mesh: radial-gradient(at 40% 20%, hsl(340 82% 52% / 0.08) 0px, transparent 50%),
-                     radial-gradient(at 80% 0%, hsl(340 100% 65% / 0.08) 0px, transparent 50%),
-                     radial-gradient(at 0% 50%, hsl(24 55% 65% / 0.06) 0px, transparent 50%);
+    --gradient-hero: linear-gradient(135deg, hsl(95 30% 40%) 0%, hsl(95 40% 50%) 100%);
+    --gradient-elegant: linear-gradient(180deg, hsl(150 10% 6%) 0%, hsl(95 15% 10%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(150 8% 10% / 0.95) 0%, hsl(150 8% 12% / 0.9) 100%);
+    --gradient-glass: linear-gradient(135deg, hsl(150 10% 15% / 0.8) 0%, hsl(150 10% 10% / 0.6) 100%);
+    --gradient-mesh: radial-gradient(at 40% 20%, hsl(95 25% 50% / 0.06) 0px, transparent 50%),
+                     radial-gradient(at 80% 0%, hsl(160 20% 45% / 0.06) 0px, transparent 50%),
+                     radial-gradient(at 0% 50%, hsl(45 30% 50% / 0.05) 0px, transparent 50%);
     
-    --shadow-elegant: 0 10px 40px -10px hsl(340 82% 20% / 0.4);
+    --shadow-elegant: 0 10px 40px -10px hsl(95 20% 15% / 0.4);
     --shadow-card: 0 4px 24px -4px hsl(0 0% 0% / 0.4);
     --shadow-hover: 0 20px 40px -8px hsl(0 0% 0% / 0.5);
-    --shadow-btn: 0 4px 14px 0 hsl(340 82% 40% / 0.3);
+    --shadow-btn: 0 4px 14px 0 hsl(95 30% 40% / 0.3);
     --shadow-glass: 0 8px 32px 0 hsl(0 0% 0% / 0.3), inset 0 0 0 1px hsl(0 0% 100% / 0.05);
     
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-background: 150 8% 8%;
+    --sidebar-foreground: 80 10% 90%;
+    --sidebar-primary: 95 30% 50%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 150 8% 14%;
+    --sidebar-accent-foreground: 80 10% 90%;
+    --sidebar-border: 150 8% 16%;
+    --sidebar-ring: 95 35% 55%;
   }
 }
 

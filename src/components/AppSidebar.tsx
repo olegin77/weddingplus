@@ -13,7 +13,8 @@ import {
   LayoutGrid,
   Star,
   Globe,
-  Shield
+  Shield,
+  PartyPopper
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -52,12 +53,12 @@ export function AppSidebar() {
     { title: "Рекомендации", url: "/recommendations", icon: Star },
     { title: t('nav.marketplace'), url: "/marketplace", icon: ShoppingBag },
     { title: t('nav.planner'), url: "/planner", icon: Calendar },
+    { title: "Мероприятия", url: "/wedding-events", icon: PartyPopper },
     { title: t('nav.aiAssistant'), url: "/ai-assistant", icon: Sparkles },
     { title: "AI Визуализатор", url: "/ai-visualizer", icon: Sparkles },
     { title: "AI Дизайнер залов", url: "/ai-venue-designer", icon: Building2 },
     { title: "AI Приглашения", url: "/ai-invitations", icon: Mail },
     { title: "Схема рассадки", url: "/seating-chart", icon: LayoutGrid },
-    { title: t('nav.profile'), url: "/profile", icon: User },
     { title: t('nav.profile'), url: "/profile", icon: User },
     { title: t('nav.settings'), url: "/settings", icon: Settings },
   ];

@@ -12,6 +12,7 @@ import ExportPDFButton from "@/components/ExportPDFButton";
 import { InvitationManager } from "@/components/InvitationManager";
 import { WeddingWebsiteBuilder } from "@/components/WeddingWebsiteBuilder";
 import { BudgetTracker, type BudgetTrackerRef } from "@/components/budget/BudgetTracker";
+import { TraditionalBudget } from "@/components/budget/TraditionalBudget";
 import { SmartVendorRecommendations } from "@/components/SmartVendorRecommendations";
 import { WeddingPlanProgress } from "@/components/WeddingPlanProgress";
 import { useMilestones } from "@/hooks/useMilestones";
@@ -132,11 +133,12 @@ const Planner = () => {
         />
 
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-7">
+          <TabsList className="grid w-full grid-cols-8">
             <TabsTrigger value="checklist">Чек-лист</TabsTrigger>
             <TabsTrigger value="auto-package">Автоподбор</TabsTrigger>
             <TabsTrigger value="recommendations">Вендоры</TabsTrigger>
             <TabsTrigger value="budget">Бюджет</TabsTrigger>
+            <TabsTrigger value="traditional">Традиции</TabsTrigger>
             <TabsTrigger value="guests">Гости</TabsTrigger>
             <TabsTrigger value="invitations">Приглашения</TabsTrigger>
             <TabsTrigger value="website">Сайт</TabsTrigger>
@@ -206,6 +208,10 @@ const Planner = () => {
               weddingPlanId={weddingPlan.id} 
               totalBudget={weddingPlan.budget_total || 0}
             />
+          </TabsContent>
+
+          <TabsContent value="traditional">
+            <TraditionalBudget />
           </TabsContent>
 
           <TabsContent value="guests">

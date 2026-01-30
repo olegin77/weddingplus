@@ -173,6 +173,63 @@ export type Database = {
           },
         ]
       }
+      guest_event_invitations: {
+        Row: {
+          created_at: string
+          dietary_notes: string | null
+          event_id: string
+          guest_id: string
+          id: string
+          notes: string | null
+          plus_ones: number | null
+          responded_at: string | null
+          rsvp_status: string | null
+          transport_needed: boolean | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          dietary_notes?: string | null
+          event_id: string
+          guest_id: string
+          id?: string
+          notes?: string | null
+          plus_ones?: number | null
+          responded_at?: string | null
+          rsvp_status?: string | null
+          transport_needed?: boolean | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          dietary_notes?: string | null
+          event_id?: string
+          guest_id?: string
+          id?: string
+          notes?: string | null
+          plus_ones?: number | null
+          responded_at?: string | null
+          rsvp_status?: string | null
+          transport_needed?: boolean | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guest_event_invitations_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "wedding_events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "guest_event_invitations_guest_id_fkey"
+            columns: ["guest_id"]
+            isOneToOne: false
+            referencedRelation: "guests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       guest_invitations: {
         Row: {
           created_at: string
@@ -229,44 +286,65 @@ export type Database = {
       }
       guests: {
         Row: {
+          age_group: string | null
           attendance_status: string | null
+          avoid_guests: string[] | null
           created_at: string
           dietary_restrictions: string | null
           email: string | null
           full_name: string
+          guest_side: Database["public"]["Enums"]["wedding_side"] | null
           id: string
+          interests: string[] | null
+          languages: string[] | null
           notes: string | null
           phone: string | null
           plus_one_allowed: boolean | null
           plus_one_name: string | null
+          prefer_guests: string[] | null
+          status: string | null
           updated_at: string
           wedding_plan_id: string
         }
         Insert: {
+          age_group?: string | null
           attendance_status?: string | null
+          avoid_guests?: string[] | null
           created_at?: string
           dietary_restrictions?: string | null
           email?: string | null
           full_name: string
+          guest_side?: Database["public"]["Enums"]["wedding_side"] | null
           id?: string
+          interests?: string[] | null
+          languages?: string[] | null
           notes?: string | null
           phone?: string | null
           plus_one_allowed?: boolean | null
           plus_one_name?: string | null
+          prefer_guests?: string[] | null
+          status?: string | null
           updated_at?: string
           wedding_plan_id: string
         }
         Update: {
+          age_group?: string | null
           attendance_status?: string | null
+          avoid_guests?: string[] | null
           created_at?: string
           dietary_restrictions?: string | null
           email?: string | null
           full_name?: string
+          guest_side?: Database["public"]["Enums"]["wedding_side"] | null
           id?: string
+          interests?: string[] | null
+          languages?: string[] | null
           notes?: string | null
           phone?: string | null
           plus_one_allowed?: boolean | null
           plus_one_name?: string | null
+          prefer_guests?: string[] | null
+          status?: string | null
           updated_at?: string
           wedding_plan_id?: string
         }
@@ -952,6 +1030,65 @@ export type Database = {
           },
         ]
       }
+      wedding_events: {
+        Row: {
+          budget_allocated: number | null
+          created_at: string
+          event_date: string | null
+          event_name: string
+          event_type: Database["public"]["Enums"]["wedding_event_type"]
+          expected_guests: number | null
+          hosted_by: Database["public"]["Enums"]["wedding_side"]
+          id: string
+          is_active: boolean | null
+          notes: string | null
+          updated_at: string
+          venue_address: string | null
+          venue_name: string | null
+          wedding_plan_id: string
+        }
+        Insert: {
+          budget_allocated?: number | null
+          created_at?: string
+          event_date?: string | null
+          event_name: string
+          event_type: Database["public"]["Enums"]["wedding_event_type"]
+          expected_guests?: number | null
+          hosted_by?: Database["public"]["Enums"]["wedding_side"]
+          id?: string
+          is_active?: boolean | null
+          notes?: string | null
+          updated_at?: string
+          venue_address?: string | null
+          venue_name?: string | null
+          wedding_plan_id: string
+        }
+        Update: {
+          budget_allocated?: number | null
+          created_at?: string
+          event_date?: string | null
+          event_name?: string
+          event_type?: Database["public"]["Enums"]["wedding_event_type"]
+          expected_guests?: number | null
+          hosted_by?: Database["public"]["Enums"]["wedding_side"]
+          id?: string
+          is_active?: boolean | null
+          notes?: string | null
+          updated_at?: string
+          venue_address?: string | null
+          venue_name?: string | null
+          wedding_plan_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wedding_events_wedding_plan_id_fkey"
+            columns: ["wedding_plan_id"]
+            isOneToOne: false
+            referencedRelation: "wedding_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       wedding_invitations: {
         Row: {
           couple_names: string
@@ -1004,6 +1141,7 @@ export type Database = {
       }
       wedding_plans: {
         Row: {
+          bride_side_budget: number | null
           budget_breakdown: Json | null
           budget_spent: number | null
           budget_total: number | null
@@ -1014,13 +1152,17 @@ export type Database = {
           cuisine_preferences: string[] | null
           dietary_requirements: string[] | null
           estimated_guests: number | null
+          groom_side_budget: number | null
           id: string
+          kalym_amount: number | null
           music_preferences: string[] | null
           notes: string | null
           outdoor_preference: boolean | null
           parking_needed: boolean | null
+          peshona_amount: number | null
           priorities: Json | null
           program_preferences: string[] | null
+          sarpo_amount: number | null
           style_preferences: string[] | null
           style_reference_images: string[] | null
           theme: string | null
@@ -1031,6 +1173,7 @@ export type Database = {
           wedding_date: string | null
         }
         Insert: {
+          bride_side_budget?: number | null
           budget_breakdown?: Json | null
           budget_spent?: number | null
           budget_total?: number | null
@@ -1041,13 +1184,17 @@ export type Database = {
           cuisine_preferences?: string[] | null
           dietary_requirements?: string[] | null
           estimated_guests?: number | null
+          groom_side_budget?: number | null
           id?: string
+          kalym_amount?: number | null
           music_preferences?: string[] | null
           notes?: string | null
           outdoor_preference?: boolean | null
           parking_needed?: boolean | null
+          peshona_amount?: number | null
           priorities?: Json | null
           program_preferences?: string[] | null
+          sarpo_amount?: number | null
           style_preferences?: string[] | null
           style_reference_images?: string[] | null
           theme?: string | null
@@ -1058,6 +1205,7 @@ export type Database = {
           wedding_date?: string | null
         }
         Update: {
+          bride_side_budget?: number | null
           budget_breakdown?: Json | null
           budget_spent?: number | null
           budget_total?: number | null
@@ -1068,13 +1216,17 @@ export type Database = {
           cuisine_preferences?: string[] | null
           dietary_requirements?: string[] | null
           estimated_guests?: number | null
+          groom_side_budget?: number | null
           id?: string
+          kalym_amount?: number | null
           music_preferences?: string[] | null
           notes?: string | null
           outdoor_preference?: boolean | null
           parking_needed?: boolean | null
+          peshona_amount?: number | null
           priorities?: Json | null
           program_preferences?: string[] | null
+          sarpo_amount?: number | null
           style_preferences?: string[] | null
           style_reference_images?: string[] | null
           theme?: string | null
@@ -1316,6 +1468,13 @@ export type Database = {
         | "clothing"
         | "transport"
         | "other"
+      wedding_event_type:
+        | "nahorgi_osh"
+        | "fotiha"
+        | "nikoh"
+        | "kelin_salom"
+        | "toy"
+      wedding_side: "groom" | "bride" | "both"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1476,6 +1635,14 @@ export const Constants = {
         "transport",
         "other",
       ],
+      wedding_event_type: [
+        "nahorgi_osh",
+        "fotiha",
+        "nikoh",
+        "kelin_salom",
+        "toy",
+      ],
+      wedding_side: ["groom", "bride", "both"],
     },
   },
 } as const

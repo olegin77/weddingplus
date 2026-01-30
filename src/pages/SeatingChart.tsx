@@ -4,9 +4,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { DashboardLayout } from "@/components/DashboardLayout";
 import { SeatingChartCanvas } from "@/components/seating/SeatingChartCanvas";
 import { GuestAssignment } from "@/components/seating/GuestAssignment";
+import { AISeatingOptimizer } from "@/components/seating/AISeatingOptimizer";
+import { GuestRelationshipEditor } from "@/components/seating/GuestRelationshipEditor";
 import { CreateWeddingPlanDialog } from "@/components/CreateWeddingPlanDialog";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, LayoutGrid } from "lucide-react";
+import { Loader2, LayoutGrid, Sparkles, Link2, Users } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -432,11 +434,39 @@ export default function SeatingChart() {
               </CardHeader>
             </Card>
 
-            <Tabs defaultValue="canvas" className="space-y-6">
-              <TabsList className="grid w-full grid-cols-2 max-w-md">
-                <TabsTrigger value="canvas">План зала</TabsTrigger>
-                <TabsTrigger value="guests">Назначение гостей</TabsTrigger>
+            <Tabs defaultValue="ai" className="space-y-6">
+              <TabsList className="grid w-full grid-cols-4 max-w-2xl">
+                <TabsTrigger value="ai" className="flex items-center gap-2">
+                  <Sparkles className="w-4 h-4" />
+                  AI Рассадка
+                </TabsTrigger>
+                <TabsTrigger value="canvas" className="flex items-center gap-2">
+                  <LayoutGrid className="w-4 h-4" />
+                  План зала
+                </TabsTrigger>
+                <TabsTrigger value="guests" className="flex items-center gap-2">
+                  <Users className="w-4 h-4" />
+                  Назначения
+                </TabsTrigger>
+                <TabsTrigger value="relationships" className="flex items-center gap-2">
+                  <Link2 className="w-4 h-4" />
+                  Связи
+                </TabsTrigger>
               </TabsList>
+
+              <TabsContent value="ai">
+                {seatingChartId && (
+                  <AISeatingOptimizer
+                    weddingPlanId={weddingPlanId}
+                    seatingChartId={seatingChartId}
+                    onOptimizationApplied={() => {
+                      if (seatingChartId) {
+                        loadAssignments(seatingChartId, tables);
+                      }
+                    }}
+                  />
+                )}
+              </TabsContent>
 
               <TabsContent value="canvas">
                 <SeatingChartCanvas
@@ -455,6 +485,10 @@ export default function SeatingChart() {
                   onAssign={handleAssignGuest}
                   onUnassign={handleUnassignGuest}
                 />
+              </TabsContent>
+
+              <TabsContent value="relationships">
+                <GuestRelationshipEditor weddingPlanId={weddingPlanId} />
               </TabsContent>
             </Tabs>
           </>

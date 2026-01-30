@@ -14,3 +14,6 @@ verify_jwt = true
 
 [functions.generate-venue-decor]
 verify_jwt = false
+
+[functions.ai-seating-optimizer]
+verify_jwt = true

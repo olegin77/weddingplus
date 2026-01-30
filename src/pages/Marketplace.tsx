@@ -418,68 +418,70 @@ const Marketplace = () => {
   return (
     <DashboardLayout>
       <div className="max-w-7xl mx-auto space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold">Маркетплейс поставщиков</h1>
-          <p className="text-muted-foreground mt-1">
+        <div className="px-1">
+          <h1 className="text-2xl sm:text-3xl font-bold">Маркетплейс поставщиков</h1>
+          <p className="text-sm sm:text-base text-muted-foreground mt-1">
             Найдите идеальных профессионалов для вашей свадьбы
           </p>
         </div>
 
-        <Card>
-          <CardContent className="pt-6 space-y-4">
-            <div className="flex flex-col lg:flex-row gap-4">
+        <Card className="border-0 sm:border shadow-none sm:shadow-sm">
+          <CardContent className="px-2 sm:px-6 pt-4 sm:pt-6 space-y-3 sm:space-y-4">
+            {/* Mobile-optimized search and filter bar */}
+            <div className="flex gap-2">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Поиск поставщиков..."
-                  className="pl-10"
+                  placeholder="Поиск..."
+                  className="pl-10 h-10 text-base"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
               
-              <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="w-full lg:w-[200px]">
-                  <SelectValue placeholder="Сортировка" />
-                </SelectTrigger>
-                <SelectContent>
-                  {smartMatchingEnabled && (
-                    <SelectItem value="smart">
-                      <span className="flex items-center gap-1">
-                        <Sparkles className="w-3 h-3" />
-                        Умный подбор
-                      </span>
-                    </SelectItem>
-                  )}
-                  <SelectItem value="rating">По рейтингу</SelectItem>
-                  <SelectItem value="price_low">Цена: низкая</SelectItem>
-                  <SelectItem value="price_high">Цена: высокая</SelectItem>
-                  <SelectItem value="name">По названию</SelectItem>
-                </SelectContent>
-              </Select>
-
               <Button 
-                variant="outline" 
+                variant={filtersOpen ? "default" : "outline"}
                 onClick={() => setFiltersOpen(!filtersOpen)}
-                className="w-full lg:w-auto"
+                className="h-10 px-3 shrink-0"
+                size="icon"
               >
-                <SlidersHorizontal className="w-4 h-4 mr-2" />
-                Фильтры
+                <SlidersHorizontal className="w-4 h-4" />
               </Button>
             </div>
 
+            {/* Sort dropdown - full width on mobile */}
+            <Select value={sortBy} onValueChange={setSortBy}>
+              <SelectTrigger className="w-full h-10">
+                <SelectValue placeholder="Сортировка" />
+              </SelectTrigger>
+              <SelectContent>
+                {smartMatchingEnabled && (
+                  <SelectItem value="smart">
+                    <span className="flex items-center gap-1">
+                      <Sparkles className="w-3 h-3" />
+                      Умный подбор
+                    </span>
+                  </SelectItem>
+                )}
+                <SelectItem value="rating">По рейтингу</SelectItem>
+                <SelectItem value="price_low">Цена: низкая</SelectItem>
+                <SelectItem value="price_high">Цена: высокая</SelectItem>
+                <SelectItem value="name">По названию</SelectItem>
+              </SelectContent>
+            </Select>
+
             <Collapsible open={filtersOpen} onOpenChange={setFiltersOpen}>
-              <CollapsibleContent className="space-y-4 pt-4 border-t">
-                {/* Smart Matching Toggle */}
-                <div className="flex items-center justify-between p-3 rounded-lg bg-primary/5 border border-primary/20">
-                  <div className="flex items-center gap-3">
-                    <Sparkles className="w-5 h-5 text-primary" />
-                    <div>
-                      <Label className="font-medium">Умный подбор</Label>
-                      <p className="text-xs text-muted-foreground">
+              <CollapsibleContent className="space-y-3 pt-3 border-t">
+                {/* Smart Matching Toggle - mobile optimized */}
+                <div className="flex items-center justify-between p-2.5 sm:p-3 rounded-lg bg-primary/5 border border-primary/20">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-primary shrink-0" />
+                    <div className="min-w-0">
+                      <Label className="font-medium text-sm">Умный подбор</Label>
+                      <p className="text-[10px] sm:text-xs text-muted-foreground truncate">
                         {weddingParams 
-                          ? `Фильтрация по параметрам вашей свадьбы (${weddingParams.guestCount} гостей)`
-                          : 'Создайте план свадьбы для персональных рекомендаций'
+                          ? `${weddingParams.guestCount} гостей`
+                          : 'Создайте план свадьбы'
                         }
                       </p>
                     </div>
@@ -491,34 +493,31 @@ const Marketplace = () => {
                   />
                 </div>
 
-                {/* Smart Matching Filters */}
+                {/* Smart Matching Filters - mobile grid */}
                 {smartMatchingEnabled && (
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-3 rounded-lg bg-muted/50">
-                    <div className="space-y-2">
-                      <Label className="text-sm font-medium flex items-center gap-1">
-                        <Users className="w-4 h-4" />
-                        Количество гостей
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-4 p-2.5 sm:p-3 rounded-lg bg-muted/50">
+                    <div className="space-y-1.5">
+                      <Label className="text-xs font-medium flex items-center gap-1">
+                        <Users className="w-3 h-3" />
+                        Гостей
                       </Label>
-                      <div className="flex items-center gap-2">
-                        <Input
-                          type="number"
-                          value={guestCountFilter || ''}
-                          onChange={(e) => setGuestCountFilter(Number(e.target.value) || 0)}
-                          placeholder="0"
-                          className="w-24"
-                        />
-                        <span className="text-sm text-muted-foreground">человек</span>
-                      </div>
+                      <Input
+                        type="number"
+                        value={guestCountFilter || ''}
+                        onChange={(e) => setGuestCountFilter(Number(e.target.value) || 0)}
+                        placeholder="0"
+                        className="h-8 text-sm"
+                      />
                     </div>
                     
-                    <div className="space-y-2">
-                      <Label className="text-sm font-medium flex items-center gap-1">
-                        <Palette className="w-4 h-4" />
-                        Стиль свадьбы
+                    <div className="space-y-1.5">
+                      <Label className="text-xs font-medium flex items-center gap-1">
+                        <Palette className="w-3 h-3" />
+                        Стиль
                       </Label>
                       <Select value={selectedStyle} onValueChange={setSelectedStyle}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Любой стиль" />
+                        <SelectTrigger className="h-8 text-sm">
+                          <SelectValue placeholder="Любой" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="all">Любой стиль</SelectItem>
@@ -531,29 +530,29 @@ const Marketplace = () => {
                       </Select>
                     </div>
 
-                    <div className="space-y-2">
-                      <Label className="text-sm font-medium flex items-center gap-1">
-                        <Wallet className="w-4 h-4" />
-                        Бюджет: до {(priceRange[1] / 1000000).toFixed(0)} млн
+                    <div className="space-y-1.5 col-span-2 sm:col-span-1">
+                      <Label className="text-xs font-medium flex items-center gap-1">
+                        <Wallet className="w-3 h-3" />
+                        До {(priceRange[1] / 1000000).toFixed(0)} млн
                       </Label>
                       <Slider
                         value={[priceRange[1]]}
                         onValueChange={(value) => setPriceRange([0, value[0]])}
                         max={100000000}
                         step={5000000}
-                        className="w-full"
+                        className="w-full mt-2"
                       />
                     </div>
                   </div>
                 )}
 
-                {/* Standard Filters */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Категория</label>
+                {/* Standard Filters - Mobile optimized grid */}
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 md:grid-cols-4">
+                  <div className="space-y-1.5">
+                    <label className="text-xs sm:text-sm font-medium">Категория</label>
                     <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Все категории" />
+                      <SelectTrigger className="h-9 text-sm">
+                        <SelectValue placeholder="Все" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="all">Все категории</SelectItem>
@@ -571,11 +570,11 @@ const Marketplace = () => {
                     </Select>
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Локация</label>
+                  <div className="space-y-1.5">
+                    <label className="text-xs sm:text-sm font-medium">Локация</label>
                     <Select value={selectedLocation} onValueChange={setSelectedLocation}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Все локации" />
+                      <SelectTrigger className="h-9 text-sm">
+                        <SelectValue placeholder="Все" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="all">Все локации</SelectItem>
@@ -588,30 +587,30 @@ const Marketplace = () => {
                     </Select>
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">
-                      Минимальный рейтинг: {minRating}★
+                  <div className="space-y-1.5 col-span-2 sm:col-span-1">
+                    <label className="text-xs sm:text-sm font-medium">
+                      Рейтинг: {minRating}★
                     </label>
                     <Slider
                       value={[minRating]}
                       onValueChange={(value) => setMinRating(value[0])}
                       max={5}
                       step={0.5}
-                      className="w-full"
+                      className="w-full mt-3"
                     />
                   </div>
 
                   {!smartMatchingEnabled && (
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">
-                        Цена: {priceRange[0].toLocaleString()} - {priceRange[1].toLocaleString()} сум
+                    <div className="space-y-1.5 col-span-2 sm:col-span-1">
+                      <label className="text-xs sm:text-sm font-medium">
+                        Цена: до {(priceRange[1] / 1000000).toFixed(0)} млн
                       </label>
                       <Slider
-                        value={priceRange}
-                        onValueChange={(value) => setPriceRange(value as [number, number])}
+                        value={[priceRange[1]]}
+                        onValueChange={(value) => setPriceRange([0, value[0]])}
                         max={100000000}
-                        step={1000000}
-                        className="w-full"
+                        step={5000000}
+                        className="w-full mt-3"
                       />
                     </div>
                   )}
@@ -634,23 +633,25 @@ const Marketplace = () => {
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Mobile-optimized vendor grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
                 {paginatedVendors.map((vendor) => (
                   <Card 
                     key={vendor.id} 
-                    className="hover:shadow-lg transition-shadow cursor-pointer overflow-hidden"
+                    className="hover:shadow-lg transition-shadow cursor-pointer overflow-hidden active:scale-[0.98]"
                     onClick={() => navigate(`/marketplace/${vendor.id}`)}
                   >
-                    {/* Изображение поставщика */}
-                    <div className="relative h-40 w-full overflow-hidden">
+                    {/* Compact image for mobile */}
+                    <div className="relative h-32 sm:h-40 w-full overflow-hidden">
                       <img 
                         src={vendor.portfolio_images?.[0] || CATEGORY_IMAGES[vendor.category] || CATEGORY_IMAGES.other} 
                         alt={vendor.business_name}
-                        className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                        className="w-full h-full object-cover"
+                        loading="lazy"
                       />
-                      <div className="absolute top-3 left-3 flex gap-2">
+                      <div className="absolute top-2 left-2 flex gap-1.5">
                         {vendor.verified && (
-                          <Badge variant="default">Проверен</Badge>
+                          <Badge variant="default" className="text-[10px] px-1.5 py-0.5">Проверен</Badge>
                         )}
                         {smartMatchingEnabled && matchResults.get(vendor.id) && (
                           <MatchScoreBadge 
@@ -664,10 +665,10 @@ const Marketplace = () => {
                           variant="ghost"
                           size="icon"
                           onClick={(e) => toggleFavorite(vendor.id, e)}
-                          className="absolute top-3 right-3 bg-background/80 backdrop-blur-sm hover:bg-background"
+                          className="absolute top-2 right-2 h-8 w-8 bg-background/80 backdrop-blur-sm hover:bg-background"
                         >
                           <Heart 
-                            className={`w-5 h-5 ${
+                            className={`w-4 h-4 ${
                               favorites.has(vendor.id) 
                                 ? 'fill-primary text-primary' 
                                 : 'text-muted-foreground'
@@ -677,39 +678,38 @@ const Marketplace = () => {
                       )}
                     </div>
                     
-                    <CardHeader className="pb-2">
-                      <div className="space-y-1">
-                        <CardTitle className="text-xl">{vendor.business_name}</CardTitle>
-                        <CardDescription className="flex items-center gap-2">
-                          <Badge variant="outline">{vendor.category}</Badge>
-                          <span className="flex items-center gap-1 text-xs">
+                    {/* Compact card content for mobile */}
+                    <CardHeader className="p-3 sm:p-4 pb-1 sm:pb-2">
+                      <div className="space-y-0.5">
+                        <CardTitle className="text-base sm:text-lg line-clamp-1">{vendor.business_name}</CardTitle>
+                        <CardDescription className="flex items-center gap-1.5 text-xs">
+                          <Badge variant="outline" className="text-[10px] px-1.5">{vendor.category}</Badge>
+                          <span className="flex items-center gap-0.5">
                             <MapPin className="w-3 h-3" />
                             {vendor.location}
                           </span>
                         </CardDescription>
                       </div>
                     </CardHeader>
-                    <CardContent className="space-y-3">
-                      {/* Описание */}
-                      {vendor.description && (
-                        <p className="text-sm text-muted-foreground line-clamp-2">
-                          {vendor.description}
-                        </p>
-                      )}
-                      
-                      <div className="flex items-center gap-2">
-                        <Star className="w-4 h-4 fill-primary text-primary" />
+                    <CardContent className="p-3 sm:p-4 pt-0 space-y-2">
+                      {/* Rating */}
+                      <div className="flex items-center gap-1.5">
+                        <Star className="w-3.5 h-3.5 fill-primary text-primary" />
                         <span className="font-semibold text-sm">{vendor.rating}</span>
                         <span className="text-xs text-muted-foreground">
-                          ({vendor.total_reviews} отзывов)
+                          ({vendor.total_reviews})
                         </span>
                       </div>
 
-                      <div className="flex items-center justify-between pt-3 border-t gap-2">
-                        <div className="text-sm font-medium flex-shrink-0">
-                          {vendor.price_range_min?.toLocaleString()} - {vendor.price_range_max?.toLocaleString()} сум
+                      {/* Price and actions - compact layout */}
+                      <div className="flex items-center justify-between pt-2 border-t gap-1.5">
+                        <div className="text-xs sm:text-sm font-medium truncate flex-1">
+                          {vendor.price_range_min ? 
+                            `от ${(vendor.price_range_min / 1000000).toFixed(1)}M` : 
+                            'По запросу'
+                          }
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1">
                           {!vendor.isDemo && (
                             <TooltipProvider>
                               <Tooltip>
@@ -730,18 +730,12 @@ const Marketplace = () => {
                                       }
                                     }}
                                     disabled={!isInComparison(vendor.id) && !canAddToComparison(vendor.category)}
-                                    className="gap-1"
+                                    className="h-7 px-2"
                                   >
                                     {isInComparison(vendor.id) ? (
-                                      <>
-                                        <Check className="w-4 h-4" />
-                                        <span className="hidden sm:inline">В сравнении</span>
-                                      </>
+                                      <Check className="w-3.5 h-3.5" />
                                     ) : (
-                                      <>
-                                        <GitCompare className="w-4 h-4" />
-                                        <span className="hidden sm:inline">Сравнить</span>
-                                      </>
+                                      <GitCompare className="w-3.5 h-3.5" />
                                     )}
                                   </Button>
                                 </TooltipTrigger>
@@ -750,13 +744,13 @@ const Marketplace = () => {
                                     ? "Удалить из сравнения" 
                                     : canAddToComparison(vendor.category)
                                       ? "Добавить в сравнение"
-                                      : "Можно сравнивать только вендоров одной категории"
+                                      : "Сравнивайте вендоров одной категории"
                                   }
                                 </TooltipContent>
                               </Tooltip>
                             </TooltipProvider>
                           )}
-                          <Button size="sm">
+                          <Button size="sm" className="h-7 px-2 text-xs">
                             Подробнее
                           </Button>
                         </div>

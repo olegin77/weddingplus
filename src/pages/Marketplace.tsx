@@ -638,15 +638,17 @@ const Marketplace = () => {
                 {paginatedVendors.map((vendor) => (
                   <Card 
                     key={vendor.id} 
-                    className="hover:shadow-lg transition-shadow cursor-pointer overflow-hidden active:scale-[0.98]"
-                    onClick={() => navigate(`/marketplace/${vendor.id}`)}
+                    className="hover:shadow-lg transition-shadow overflow-hidden group"
                   >
-                    {/* Compact image for mobile */}
-                    <div className="relative h-32 sm:h-40 w-full overflow-hidden">
+                    {/* Clickable image area for navigation */}
+                    <div 
+                      className="relative h-32 sm:h-40 w-full overflow-hidden cursor-pointer"
+                      onClick={() => navigate(`/marketplace/${vendor.id}`)}
+                    >
                       <img 
                         src={vendor.portfolio_images?.[0] || CATEGORY_IMAGES[vendor.category] || CATEGORY_IMAGES.other} 
                         alt={vendor.business_name}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         loading="lazy"
                       />
                       <div className="absolute top-2 left-2 flex gap-1.5">
@@ -678,30 +680,37 @@ const Marketplace = () => {
                       )}
                     </div>
                     
-                    {/* Compact card content for mobile */}
-                    <CardHeader className="p-3 sm:p-4 pb-1 sm:pb-2">
-                      <div className="space-y-0.5">
-                        <CardTitle className="text-base sm:text-lg line-clamp-1">{vendor.business_name}</CardTitle>
-                        <CardDescription className="flex items-center gap-1.5 text-xs">
-                          <Badge variant="outline" className="text-[10px] px-1.5">{vendor.category}</Badge>
-                          <span className="flex items-center gap-0.5">
-                            <MapPin className="w-3 h-3" />
-                            {vendor.location}
+                    {/* Clickable card content for navigation */}
+                    <div 
+                      className="cursor-pointer"
+                      onClick={() => navigate(`/marketplace/${vendor.id}`)}
+                    >
+                      <CardHeader className="p-3 sm:p-4 pb-1 sm:pb-2">
+                        <div className="space-y-0.5">
+                          <CardTitle className="text-base sm:text-lg line-clamp-1">{vendor.business_name}</CardTitle>
+                          <CardDescription className="flex items-center gap-1.5 text-xs">
+                            <Badge variant="outline" className="text-[10px] px-1.5">{vendor.category}</Badge>
+                            <span className="flex items-center gap-0.5">
+                              <MapPin className="w-3 h-3" />
+                              {vendor.location}
+                            </span>
+                          </CardDescription>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="p-3 sm:p-4 pt-0 space-y-2">
+                        {/* Rating */}
+                        <div className="flex items-center gap-1.5">
+                          <Star className="w-3.5 h-3.5 fill-primary text-primary" />
+                          <span className="font-semibold text-sm">{vendor.rating}</span>
+                          <span className="text-xs text-muted-foreground">
+                            ({vendor.total_reviews})
                           </span>
-                        </CardDescription>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="p-3 sm:p-4 pt-0 space-y-2">
-                      {/* Rating */}
-                      <div className="flex items-center gap-1.5">
-                        <Star className="w-3.5 h-3.5 fill-primary text-primary" />
-                        <span className="font-semibold text-sm">{vendor.rating}</span>
-                        <span className="text-xs text-muted-foreground">
-                          ({vendor.total_reviews})
-                        </span>
-                      </div>
+                        </div>
+                      </CardContent>
+                    </div>
 
-                      {/* Price and actions - compact layout */}
+                    {/* Action buttons - NOT wrapped in navigation click handler */}
+                    <div className="px-3 sm:px-4 pb-3 sm:pb-4">
                       <div className="flex items-center justify-between pt-2 border-t gap-1.5">
                         <div className="text-xs sm:text-sm font-medium truncate flex-1">
                           {vendor.price_range_min ? 
@@ -709,7 +718,7 @@ const Marketplace = () => {
                             'По запросу'
                           }
                         </div>
-                        <div className="flex items-center gap-1">
+                        <div className="flex items-center gap-1.5">
                           {!vendor.isDemo && (
                             <TooltipProvider>
                               <Tooltip>
@@ -717,8 +726,7 @@ const Marketplace = () => {
                                   <Button
                                     variant={isInComparison(vendor.id) ? "default" : "outline"}
                                     size="sm"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
+                                    onClick={() => {
                                       if (isInComparison(vendor.id)) {
                                         removeFromComparison(vendor.id);
                                       } else {
@@ -730,12 +738,12 @@ const Marketplace = () => {
                                       }
                                     }}
                                     disabled={!isInComparison(vendor.id) && !canAddToComparison(vendor.category)}
-                                    className="h-7 px-2"
+                                    className="h-8 w-8 p-0 sm:h-7 sm:w-auto sm:px-2"
                                   >
                                     {isInComparison(vendor.id) ? (
-                                      <Check className="w-3.5 h-3.5" />
+                                      <Check className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
                                     ) : (
-                                      <GitCompare className="w-3.5 h-3.5" />
+                                      <GitCompare className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
                                     )}
                                   </Button>
                                 </TooltipTrigger>
@@ -750,12 +758,16 @@ const Marketplace = () => {
                               </Tooltip>
                             </TooltipProvider>
                           )}
-                          <Button size="sm" className="h-7 px-2 text-xs">
+                          <Button 
+                            size="sm" 
+                            className="h-8 px-3 sm:h-7 sm:px-2 text-xs"
+                            onClick={() => navigate(`/marketplace/${vendor.id}`)}
+                          >
                             Подробнее
                           </Button>
                         </div>
                       </div>
-                    </CardContent>
+                    </div>
                   </Card>
                 ))}
               </div>

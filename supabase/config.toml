@@ -17,3 +17,12 @@ verify_jwt = false
 
 [functions.ai-seating-optimizer]
 verify_jwt = true
+
+[functions.escrow-management]
+verify_jwt = true
+
+[functions.generate-qr-payment]
+verify_jwt = true
+
+[functions.scan-qr-payment]
+verify_jwt = false

@@ -14,7 +14,9 @@ import {
   Star,
   Globe,
   Shield,
-  PartyPopper
+  PartyPopper,
+  CreditCard,
+  QrCode
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -54,6 +56,7 @@ export function AppSidebar() {
     { title: t('nav.marketplace'), url: "/marketplace", icon: ShoppingBag },
     { title: t('nav.planner'), url: "/planner", icon: Calendar },
     { title: "Мероприятия", url: "/wedding-events", icon: PartyPopper },
+    { title: "Платежи", url: "/payments", icon: CreditCard },
     { title: t('nav.aiAssistant'), url: "/ai-assistant", icon: Sparkles },
     { title: "AI Визуализатор", url: "/ai-visualizer", icon: Sparkles },
     { title: "AI Дизайнер залов", url: "/ai-venue-designer", icon: Building2 },
@@ -66,6 +69,7 @@ export function AppSidebar() {
   const vendorMenuItems = [
     { title: t('nav.dashboard'), url: "/dashboard", icon: Home },
     { title: t('vendor.dashboard'), url: "/vendor-dashboard", icon: Briefcase },
+    { title: "Платежи и QR", url: "/payments", icon: QrCode },
     { title: t('nav.profile'), url: "/profile", icon: User },
     { title: t('nav.settings'), url: "/settings", icon: Settings },
   ];

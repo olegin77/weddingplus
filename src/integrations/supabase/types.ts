@@ -144,6 +144,100 @@ export type Database = {
           },
         ]
       }
+      escrow_transactions: {
+        Row: {
+          amount: number
+          booking_id: string
+          couple_user_id: string
+          created_at: string
+          currency: string
+          dispute_notes: string | null
+          dispute_opened_at: string | null
+          dispute_resolved_at: string | null
+          id: string
+          payment_id: string
+          platform_fee: number
+          qr_code_data: string | null
+          qr_expires_at: string | null
+          release_conditions: Json | null
+          released_at: string | null
+          scheduled_release_at: string | null
+          status: Database["public"]["Enums"]["escrow_status"]
+          status_reason: string | null
+          updated_at: string
+          vendor_amount: number
+          vendor_id: string
+        }
+        Insert: {
+          amount: number
+          booking_id: string
+          couple_user_id: string
+          created_at?: string
+          currency?: string
+          dispute_notes?: string | null
+          dispute_opened_at?: string | null
+          dispute_resolved_at?: string | null
+          id?: string
+          payment_id: string
+          platform_fee?: number
+          qr_code_data?: string | null
+          qr_expires_at?: string | null
+          release_conditions?: Json | null
+          released_at?: string | null
+          scheduled_release_at?: string | null
+          status?: Database["public"]["Enums"]["escrow_status"]
+          status_reason?: string | null
+          updated_at?: string
+          vendor_amount: number
+          vendor_id: string
+        }
+        Update: {
+          amount?: number
+          booking_id?: string
+          couple_user_id?: string
+          created_at?: string
+          currency?: string
+          dispute_notes?: string | null
+          dispute_opened_at?: string | null
+          dispute_resolved_at?: string | null
+          id?: string
+          payment_id?: string
+          platform_fee?: number
+          qr_code_data?: string | null
+          qr_expires_at?: string | null
+          release_conditions?: Json | null
+          released_at?: string | null
+          scheduled_release_at?: string | null
+          status?: Database["public"]["Enums"]["escrow_status"]
+          status_reason?: string | null
+          updated_at?: string
+          vendor_amount?: number
+          vendor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "escrow_transactions_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "escrow_transactions_payment_id_fkey"
+            columns: ["payment_id"]
+            isOneToOne: false
+            referencedRelation: "payments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "escrow_transactions_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       favorite_vendors: {
         Row: {
           created_at: string
@@ -474,6 +568,85 @@ export type Database = {
         }
         Relationships: []
       }
+      qr_payment_sessions: {
+        Row: {
+          amount: number
+          booking_id: string | null
+          created_at: string
+          currency: string
+          description: string | null
+          expires_at: string
+          id: string
+          paid_at: string | null
+          payer_phone: string | null
+          payer_user_id: string | null
+          payment_id: string | null
+          qr_image_url: string | null
+          qr_token: string
+          status: string
+          updated_at: string
+          vendor_id: string
+        }
+        Insert: {
+          amount: number
+          booking_id?: string | null
+          created_at?: string
+          currency?: string
+          description?: string | null
+          expires_at: string
+          id?: string
+          paid_at?: string | null
+          payer_phone?: string | null
+          payer_user_id?: string | null
+          payment_id?: string | null
+          qr_image_url?: string | null
+          qr_token: string
+          status?: string
+          updated_at?: string
+          vendor_id: string
+        }
+        Update: {
+          amount?: number
+          booking_id?: string | null
+          created_at?: string
+          currency?: string
+          description?: string | null
+          expires_at?: string
+          id?: string
+          paid_at?: string | null
+          payer_phone?: string | null
+          payer_user_id?: string | null
+          payment_id?: string | null
+          qr_image_url?: string | null
+          qr_token?: string
+          status?: string
+          updated_at?: string
+          vendor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "qr_payment_sessions_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "qr_payment_sessions_payment_id_fkey"
+            columns: ["payment_id"]
+            isOneToOne: false
+            referencedRelation: "payments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "qr_payment_sessions_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reviews: {
         Row: {
           booking_id: string | null
@@ -717,6 +890,69 @@ export type Database = {
           },
           {
             foreignKeyName: "vendor_availability_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vendor_payouts: {
+        Row: {
+          amount: number
+          bank_account_reference: string | null
+          created_at: string
+          currency: string
+          escrow_transaction_id: string | null
+          id: string
+          payout_method: string
+          processed_at: string | null
+          provider_payout_id: string | null
+          status: Database["public"]["Enums"]["payout_status"]
+          status_message: string | null
+          updated_at: string
+          vendor_id: string
+        }
+        Insert: {
+          amount: number
+          bank_account_reference?: string | null
+          created_at?: string
+          currency?: string
+          escrow_transaction_id?: string | null
+          id?: string
+          payout_method: string
+          processed_at?: string | null
+          provider_payout_id?: string | null
+          status?: Database["public"]["Enums"]["payout_status"]
+          status_message?: string | null
+          updated_at?: string
+          vendor_id: string
+        }
+        Update: {
+          amount?: number
+          bank_account_reference?: string | null
+          created_at?: string
+          currency?: string
+          escrow_transaction_id?: string | null
+          id?: string
+          payout_method?: string
+          processed_at?: string | null
+          provider_payout_id?: string | null
+          status?: Database["public"]["Enums"]["payout_status"]
+          status_message?: string | null
+          updated_at?: string
+          vendor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vendor_payouts_escrow_transaction_id_fkey"
+            columns: ["escrow_transaction_id"]
+            isOneToOne: false
+            referencedRelation: "escrow_transactions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vendor_payouts_vendor_id_fkey"
             columns: ["vendor_id"]
             isOneToOne: false
             referencedRelation: "vendor_profiles"
@@ -1454,7 +1690,14 @@ export type Database = {
         | "rings"
         | "honeymoon"
         | "other"
+      escrow_status:
+        | "pending"
+        | "released"
+        | "refunded"
+        | "disputed"
+        | "partial_release"
       payment_status: "pending" | "paid" | "refunded" | "failed"
+      payout_status: "pending" | "processing" | "completed" | "failed"
       user_role: "couple" | "vendor" | "admin"
       vendor_category:
         | "venue"
@@ -1620,7 +1863,15 @@ export const Constants = {
         "honeymoon",
         "other",
       ],
+      escrow_status: [
+        "pending",
+        "released",
+        "refunded",
+        "disputed",
+        "partial_release",
+      ],
       payment_status: ["pending", "paid", "refunded", "failed"],
+      payout_status: ["pending", "processing", "completed", "failed"],
       user_role: ["couple", "vendor", "admin"],
       vendor_category: [
         "venue",

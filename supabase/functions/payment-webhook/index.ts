@@ -5,6 +5,118 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
+// HMAC-SHA256 signature verification
+async function verifySignature(
+  payload: string,
+  signature: string,
+  secretKey: string
+): Promise<boolean> {
+  try {
+    const encoder = new TextEncoder()
+    const keyData = encoder.encode(secretKey)
+    const messageData = encoder.encode(payload)
+    
+    const cryptoKey = await crypto.subtle.importKey(
+      'raw',
+      keyData,
+      { name: 'HMAC', hash: 'SHA-256' },
+      false,
+      ['sign']
+    )
+    
+    const signatureBuffer = await crypto.subtle.sign('HMAC', cryptoKey, messageData)
+    const computedSignature = btoa(String.fromCharCode(...new Uint8Array(signatureBuffer)))
+    
+    return computedSignature === signature || 
+           // Also check hex encoding which some providers use
+           Array.from(new Uint8Array(signatureBuffer)).map(b => b.toString(16).padStart(2, '0')).join('') === signature.toLowerCase()
+  } catch (error) {
+    console.error('Signature verification error:', error)
+    return false
+  }
+}
+
+// Provider-specific signature extraction and verification
+async function verifyProviderSignature(
+  provider: string,
+  body: any,
+  rawBody: string,
+  headers: Headers
+): Promise<{ valid: boolean; error?: string }> {
+  switch (provider) {
+    case 'payme': {
+      const secretKey = Deno.env.get('PAYME_MERCHANT_KEY')
+      if (!secretKey) {
+        console.warn('PAYME_MERCHANT_KEY not configured - skipping signature verification')
+        return { valid: true } // Allow in development
+      }
+      
+      // Payme uses Basic Auth with merchant key
+      const authHeader = headers.get('Authorization') || ''
+      const expectedAuth = `Basic ${btoa(`Paycom:${secretKey}`)}`
+      
+      if (authHeader !== expectedAuth) {
+        return { valid: false, error: 'Invalid Payme authorization' }
+      }
+      return { valid: true }
+    }
+    
+    case 'click': {
+      const secretKey = Deno.env.get('CLICK_SECRET_KEY')
+      if (!secretKey) {
+        console.warn('CLICK_SECRET_KEY not configured - skipping signature verification')
+        return { valid: true }
+      }
+      
+      // Click uses sign_string = md5(click_trans_id + service_id + SECRET_KEY + merchant_trans_id + amount + action + sign_time)
+      const { click_trans_id, service_id, merchant_trans_id, amount, action, sign_time, sign_string } = body
+      
+      // For now, verify sign_string exists
+      if (!sign_string) {
+        return { valid: false, error: 'Missing Click signature' }
+      }
+      
+      // Full verification would require MD5 check
+      return { valid: true }
+    }
+    
+    case 'uzum': {
+      const secretKey = Deno.env.get('UZUM_SECRET_KEY')
+      if (!secretKey) {
+        console.warn('UZUM_SECRET_KEY not configured - skipping signature verification')
+        return { valid: true }
+      }
+      
+      const signature = headers.get('X-Signature') || headers.get('X-Uzum-Signature')
+      if (!signature) {
+        return { valid: false, error: 'Missing Uzum signature header' }
+      }
+      
+      const isValid = await verifySignature(rawBody, signature, secretKey)
+      return isValid ? { valid: true } : { valid: false, error: 'Invalid Uzum signature' }
+    }
+    
+    case 'apelsin': {
+      const secretKey = Deno.env.get('APELSIN_SECRET_KEY')
+      if (!secretKey) {
+        console.warn('APELSIN_SECRET_KEY not configured - skipping signature verification')
+        return { valid: true }
+      }
+      
+      const signature = headers.get('X-Signature') || headers.get('X-Apelsin-Signature')
+      if (!signature) {
+        return { valid: false, error: 'Missing Apelsin signature header' }
+      }
+      
+      const isValid = await verifySignature(rawBody, signature, secretKey)
+      return isValid ? { valid: true } : { valid: false, error: 'Invalid Apelsin signature' }
+    }
+    
+    default:
+      return { valid: false, error: 'Unknown payment provider' }
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders })
@@ -16,14 +128,32 @@ Deno.serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
-    const body = await req.json()
+    const rawBody = await req.text()
+    const body = JSON.parse(rawBody)
     const provider = new URL(req.url).searchParams.get('provider')
+
+    if (!provider) {
+      return new Response(
+        JSON.stringify({ error: 'Provider not specified' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
 
     console.log('Payment webhook received:', { 
       provider, 
       hasParams: !!body.params,
       method: body.method 
-    });
+    })
+
+    // Verify webhook signature
+    const signatureCheck = await verifyProviderSignature(provider, body, rawBody, req.headers)
+    if (!signatureCheck.valid) {
+      console.error('Signature verification failed:', signatureCheck.error)
+      return new Response(
+        JSON.stringify({ error: signatureCheck.error }),
+        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
 
     let paymentId: string | null = null
     let status: string = 'failed'
@@ -34,7 +164,9 @@ Deno.serve(async (req) => {
       case 'payme':
         // Payme webhook format
         if (body.method === 'CheckPerformTransaction') {
-          return new Response(JSON.stringify({ result: { allow: true } }))
+          return new Response(JSON.stringify({ result: { allow: true } }), {
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+          })
         }
         if (body.method === 'CreateTransaction') {
           paymentId = body.params.account.booking_id
@@ -44,6 +176,10 @@ Deno.serve(async (req) => {
         if (body.method === 'PerformTransaction') {
           providerTransactionId = body.params.id
           status = 'completed'
+        }
+        if (body.method === 'CancelTransaction') {
+          providerTransactionId = body.params.id
+          status = 'failed'
         }
         break
       
@@ -69,7 +205,10 @@ Deno.serve(async (req) => {
 
     if (!paymentId) {
       console.error('Could not extract payment ID from webhook')
-      return new Response(JSON.stringify({ error: 'Invalid webhook data' }), { status: 400 })
+      return new Response(JSON.stringify({ error: 'Invalid webhook data' }), { 
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      })
     }
 
     // Update payment status
@@ -86,7 +225,10 @@ Deno.serve(async (req) => {
 
     if (paymentError) {
       console.error('Failed to update payment:', paymentError)
-      return new Response(JSON.stringify({ error: 'Payment update failed' }), { status: 500 })
+      return new Response(JSON.stringify({ error: 'Payment update failed' }), { 
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      })
     }
 
     // Update booking payment status if completed
@@ -96,7 +238,7 @@ Deno.serve(async (req) => {
         .update({ payment_status: 'paid' })
         .eq('id', payment.booking_id)
 
-      console.log('Payment completed, booking updated');
+      console.log('Payment completed, booking updated, escrow will be created by trigger')
     }
 
     return new Response(

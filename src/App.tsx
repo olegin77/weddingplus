@@ -29,6 +29,7 @@ import Onboarding from "./pages/Onboarding";
 import Recommendations from "./pages/Recommendations";
 import Admin from "./pages/Admin";
 import WeddingEvents from "./pages/WeddingEvents";
+import PaymentsDashboard from "./pages/PaymentsDashboard";
 
 const queryClient = new QueryClient();
 
@@ -61,6 +62,7 @@ const App = () => (
           <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
           <Route path="/recommendations" element={<ProtectedRoute><Recommendations /></ProtectedRoute>} />
           <Route path="/wedding-events" element={<ProtectedRoute><WeddingEvents /></ProtectedRoute>} />
+          <Route path="/payments" element={<ProtectedRoute><PaymentsDashboard /></ProtectedRoute>} />
           <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
           <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />

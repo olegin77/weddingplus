@@ -21,10 +21,10 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         <div className="flex-1 flex flex-col min-w-0">
           {/* Glass header with animation */}
           <motion.header 
-            className="h-14 md:h-16 glass-panel border-b-0 flex items-center justify-between px-3 md:px-4 sticky top-0 z-10 safe-top"
-            initial={{ y: -50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="min-h-14 md:min-h-16 glass-panel border-b-0 flex items-center justify-between px-3 md:px-4 sticky top-0 z-10 safe-top"
+            initial={isMobile ? false : { y: -50, opacity: 0 }}
+            animate={isMobile ? undefined : { y: 0, opacity: 1 }}
+            transition={isMobile ? undefined : { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
             <div className="flex items-center gap-3">
               {/* Show sidebar trigger only on desktop */}
@@ -55,10 +55,10 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
           </motion.header>
 
           <motion.main 
-            className={`flex-1 p-4 md:p-6 overflow-x-hidden ${isMobile ? 'pb-24' : ''} safe-bottom`}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
+            className={`flex-1 p-4 md:p-6 overflow-x-hidden ${isMobile ? 'pb-32' : ''} safe-bottom`}
+            initial={isMobile ? false : { opacity: 0, y: 20 }}
+            animate={isMobile ? undefined : { opacity: 1, y: 0 }}
+            transition={isMobile ? undefined : { delay: 0.2, duration: 0.5 }}
           >
             {children}
           </motion.main>

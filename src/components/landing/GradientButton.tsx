@@ -98,38 +98,11 @@ export const GradientButton = memo(({
         />
       )}
       
-      {/* Shimmer effect */}
-      <motion.div
-        className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity"
-        style={{
-          background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)",
-        }}
-        animate={{
-          x: ["-100%", "100%"],
-        }}
-        transition={{
-          duration: 1.2,
-          repeat: Infinity,
-          ease: "easeInOut",
-          repeatDelay: 1,
-        }}
-      />
-      
-      {/* Glow effect */}
+      {/* Static glow effect - only on hover */}
       {variant === "primary" && (
-        <motion.div
-          className="absolute inset-0 -z-10 rounded-2xl"
-          animate={{
-            boxShadow: [
-              "0 0 20px hsl(15 60% 65% / 0.4)",
-              "0 0 40px hsl(45 70% 60% / 0.5)",
-              "0 0 20px hsl(15 60% 65% / 0.4)",
-            ],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: "easeInOut",
+        <div className="absolute inset-0 -z-10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          style={{
+            boxShadow: "0 0 30px hsl(15 60% 65% / 0.4)",
           }}
         />
       )}

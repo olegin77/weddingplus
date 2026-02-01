@@ -57,6 +57,13 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         wedding: {
+          "rose-gold": "hsl(var(--wedding-rose-gold))",
+          champagne: "hsl(var(--wedding-champagne))",
+          burgundy: "hsl(var(--wedding-burgundy))",
+          ivory: "hsl(var(--wedding-ivory))",
+          gold: "hsl(var(--wedding-gold))",
+          charcoal: "hsl(var(--wedding-charcoal))",
+          // Legacy
           sage: "hsl(var(--wedding-sage))",
           eucalyptus: "hsl(var(--wedding-eucalyptus))",
           olive: "hsl(var(--wedding-olive))",
@@ -122,6 +129,33 @@ export default {
             backgroundPosition: "1000px 0",
           },
         },
+        "gradient-shift": {
+          "0%, 100%": {
+            backgroundPosition: "0% 50%",
+          },
+          "50%": {
+            backgroundPosition: "100% 50%",
+          },
+        },
+        "glow-pulse": {
+          "0%, 100%": {
+            boxShadow: "0 0 20px hsl(15 60% 65% / 0.3)",
+          },
+          "50%": {
+            boxShadow: "0 0 40px hsl(45 70% 60% / 0.5), 0 0 60px hsl(15 60% 65% / 0.3)",
+          },
+        },
+        "tilt": {
+          "0%, 100%": {
+            transform: "rotateY(0deg) rotateX(0deg)",
+          },
+          "25%": {
+            transform: "rotateY(2deg) rotateX(2deg)",
+          },
+          "75%": {
+            transform: "rotateY(-2deg) rotateX(-2deg)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -129,14 +163,21 @@ export default {
         "fade-in": "fade-in 0.6s ease-out",
         "float": "float 3s ease-in-out infinite",
         "shimmer": "shimmer 2s linear infinite",
+        "gradient-shift": "gradient-shift 8s ease infinite",
+        "glow-pulse": "glow-pulse 2s ease-in-out infinite",
+        "tilt": "tilt 6s ease-in-out infinite",
       },
       backgroundImage: {
         "gradient-hero": "var(--gradient-hero)",
+        "gradient-luxe": "var(--gradient-luxe)",
+        "gradient-burgundy": "var(--gradient-burgundy)",
         "gradient-elegant": "var(--gradient-elegant)",
       },
       boxShadow: {
         "elegant": "var(--shadow-elegant)",
         "card": "var(--shadow-card)",
+        "gold": "var(--shadow-gold)",
+        "glow": "var(--shadow-glow)",
       },
     },
   },

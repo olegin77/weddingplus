@@ -28,9 +28,8 @@ export const BottomNavigation = () => {
 
   return (
     <motion.nav
-      initial={{ y: 100 }}
-      animate={{ y: 0 }}
-      transition={{ type: "spring", stiffness: 260, damping: 25 }}
+      // Avoid first-paint motion on mobile to prevent perceived "broken" layout.
+      initial={false}
       className="fixed bottom-0 left-0 right-0 z-50 md:hidden"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >

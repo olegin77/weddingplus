@@ -657,30 +657,17 @@
       inset 0 1px 0 hsl(0 0% 100% / 0.25);
   }
   
-  /* Text gradient animation - LUXE version */
+  /* Text gradient - LUXE version (static, no animation) */
   .text-gradient-animated {
     background: linear-gradient(
       135deg,
       hsl(var(--primary)) 0%,
-      hsl(var(--primary-glow)) 25%,
-      hsl(345 45% 45%) 50%,
-      hsl(var(--primary-glow)) 75%,
-      hsl(var(--primary)) 100%
+      hsl(var(--primary-glow)) 50%,
+      hsl(345 45% 45%) 100%
     );
-    background-size: 200% auto;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: text-shimmer 4s linear infinite;
-  }
-  
-  @keyframes text-shimmer {
-    0% {
-      background-position: 0% center;
-    }
-    100% {
-      background-position: 200% center;
-    }
   }
   
   /* Morphing blob animation */

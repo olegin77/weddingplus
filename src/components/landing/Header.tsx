@@ -93,7 +93,7 @@ export const Header = () => {
               </motion.div>
             </motion.div>
             <span className="text-xl font-bold text-gradient-animated">
-              WeddingTech
+              Weddinguz
             </span>
           </motion.div>
 

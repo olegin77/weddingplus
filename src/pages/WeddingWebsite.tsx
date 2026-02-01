@@ -310,7 +310,7 @@ export default function WeddingWebsite() {
       <footer className="py-8 px-4 bg-accent/20 text-center">
         <Heart className="w-8 h-8 mx-auto mb-4 fill-current" style={{ color: themeColor }} />
         <p className="text-muted-foreground">
-          Создано с любовью на WeddingTech UZ
+          Создано с любовью на Weddinguz
         </p>
       </footer>
     </div>

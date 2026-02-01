@@ -17,8 +17,8 @@ export default defineConfig(({ mode }) => ({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'robots.txt', 'icon-192.png', 'icon-512.png'],
       manifest: {
-        name: 'WeddingTech UZ',
-        short_name: 'WeddingTech',
+        name: 'Weddinguz',
+        short_name: 'Weddinguz',
         description: 'AI-Powered Wedding Planning Platform in Uzbekistan',
         theme_color: '#9CAF88',
         background_color: '#ffffff',

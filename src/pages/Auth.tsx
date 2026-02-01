@@ -162,7 +162,7 @@ const Auth = () => {
       if (data.session && data.user) {
         toast({
           title: "Регистрация успешна!",
-          description: "Добро пожаловать в WeddingTech UZ",
+          description: "Добро пожаловать в Weddinguz",
         });
         
         // Redirect based on role and wedding plan
@@ -182,7 +182,7 @@ const Auth = () => {
           <div className="flex justify-center mb-4">
             <Heart className="w-12 h-12 text-primary fill-primary" />
           </div>
-          <CardTitle className="text-2xl">WeddingTech UZ</CardTitle>
+          <CardTitle className="text-2xl">Weddinguz</CardTitle>
           <CardDescription>
             Ваша свадьба мечты начинается здесь
           </CardDescription>

@@ -48,7 +48,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                   <Heart className="w-4 h-4 text-white fill-white" />
                 </div>
                 <span className="font-semibold text-sm bg-gradient-hero bg-clip-text text-transparent">
-                  WeddingTech
+                  Weddinguz
                 </span>
               </motion.div>
             </div>

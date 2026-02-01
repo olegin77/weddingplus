@@ -47,9 +47,9 @@ const Install = () => {
     const { outcome } = await deferredPrompt.userChoice;
 
     if (outcome === 'accepted') {
-      toast({
-        title: "Приложение установлено!",
-        description: "WeddingTech UZ добавлен на главный экран",
+        toast({
+          title: "Приложение установлено!",
+          description: "Weddinguz добавлен на главный экран",
       });
       setIsInstalled(true);
     }
@@ -62,7 +62,7 @@ const Install = () => {
       <div className="max-w-4xl mx-auto space-y-6">
         <div className="text-center space-y-2">
           <Smartphone className="h-16 w-16 mx-auto text-primary" />
-          <h1 className="text-4xl font-bold">Установите WeddingTech UZ</h1>
+          <h1 className="text-4xl font-bold">Установите Weddinguz</h1>
           <p className="text-xl text-muted-foreground">
             Получите лучший опыт работы с приложением
           </p>
@@ -76,7 +76,7 @@ const Install = () => {
                 <CardTitle>Приложение уже установлено</CardTitle>
               </div>
               <CardDescription>
-                WeddingTech UZ успешно установлен на вашем устройстве!
+                Weddinguz успешно установлен на вашем устройстве!
               </CardDescription>
             </CardHeader>
           </Card>

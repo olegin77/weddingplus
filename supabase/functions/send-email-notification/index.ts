@@ -15,7 +15,7 @@ interface EmailRequest {
 const getEmailTemplate = (type: string, data: any) => {
   const templates = {
     booking_confirmed: {
-      subject: '✅ Бронирование подтверждено - WeddingTech UZ',
+      subject: '✅ Бронирование подтверждено - Weddinguz',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #f43f5e;">Ваше бронирование подтверждено!</h2>
@@ -26,12 +26,12 @@ const getEmailTemplate = (type: string, data: any) => {
             <p><strong>Стоимость:</strong> ${data.price.toLocaleString()} UZS</p>
             ${data.notes ? `<p><strong>Примечания:</strong> ${data.notes}</p>` : ''}
           </div>
-          <p>С наилучшими пожеланиями,<br>Команда WeddingTech UZ</p>
+          <p>С наилучшими пожеланиями,<br>Команда Weddinguz</p>
         </div>
       `
     },
     booking_cancelled: {
-      subject: '❌ Бронирование отменено - WeddingTech UZ',
+      subject: '❌ Бронирование отменено - Weddinguz',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #f43f5e;">Бронирование отменено</h2>
@@ -42,12 +42,12 @@ const getEmailTemplate = (type: string, data: any) => {
             <p><strong>Стоимость:</strong> ${data.price.toLocaleString()} UZS</p>
           </div>
           <p>Вы можете найти других поставщиков в нашем маркетплейсе.</p>
-          <p>С уважением,<br>Команда WeddingTech UZ</p>
+          <p>С уважением,<br>Команда Weddinguz</p>
         </div>
       `
     },
     booking_reminder: {
-      subject: '🔔 Напоминание о мероприятии - WeddingTech UZ',
+      subject: '🔔 Напоминание о мероприятии - Weddinguz',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #f43f5e;">Напоминание о предстоящем мероприятии</h2>
@@ -58,12 +58,12 @@ const getEmailTemplate = (type: string, data: any) => {
             <p><strong>Поставщик:</strong> ${data.vendor_name}</p>
           </div>
           <p>Убедитесь, что все готово к важному дню!</p>
-          <p>С наилучшими пожеланиями,<br>Команда WeddingTech UZ</p>
+          <p>С наилучшими пожеланиями,<br>Команда Weddinguz</p>
         </div>
       `
     },
     payment_confirmed: {
-      subject: '💳 Оплата получена - WeddingTech UZ',
+      subject: '💳 Оплата получена - Weddinguz',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #f43f5e;">Оплата успешно получена</h2>
@@ -74,8 +74,8 @@ const getEmailTemplate = (type: string, data: any) => {
             <p><strong>Провайдер:</strong> ${data.provider}</p>
             <p><strong>ID транзакции:</strong> ${data.transaction_id}</p>
           </div>
-          <p>Спасибо за использование WeddingTech UZ!</p>
-          <p>С уважением,<br>Команда WeddingTech UZ</p>
+          <p>Спасибо за использование Weddinguz!</p>
+          <p>С уважением,<br>Команда Weddinguz</p>
         </div>
       `
     }
@@ -139,7 +139,7 @@ Deno.serve(async (req) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        from: 'WeddingTech UZ <notifications@weddingtech.uz>',
+        from: 'Weddinguz <notifications@weddinguz.com>',
         to: [to],
         subject: template.subject,
         html: template.html

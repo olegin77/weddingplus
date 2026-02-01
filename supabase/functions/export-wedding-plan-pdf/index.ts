@@ -104,7 +104,7 @@ const generatePDFHTML = (plan: WeddingPlanData, bookings: any[], guests: any[]) 
 <body>
   <div class="header">
     <h1>🎊 План Свадьбы</h1>
-    <p>WeddingTech UZ</p>
+    <p>Weddinguz</p>
   </div>
 
   <div class="section">
@@ -226,8 +226,8 @@ const generatePDFHTML = (plan: WeddingPlanData, bookings: any[], guests: any[]) 
   ` : ''}
 
   <div class="footer">
-    <p>Создано в WeddingTech UZ • ${new Date().toLocaleDateString('ru-RU')}</p>
-    <p>weddingtech.uz</p>
+    <p>Создано в Weddinguz • ${new Date().toLocaleDateString('ru-RU')}</p>
+    <p>weddinguz.com</p>
   </div>
 </body>
 </html>

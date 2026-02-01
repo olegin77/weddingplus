@@ -295,21 +295,33 @@ export const Hero = () => {
           {/* Animated Title with Split Reveal */}
           <motion.div variants={itemVariants} className="mb-4 sm:mb-6">
             <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold leading-tight">
-              <TextReveal text="Увидьте свою" className="block" delay={0.3} />
-              <TextReveal 
-                text="мечту о свадьбе" 
-                className="block" 
-                delay={0.5} 
-                gradient 
-              />
-              <motion.span 
-                className="block text-foreground/85 mt-2"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1.2, duration: 0.6 }}
-              >
-                ещё до её начала
-              </motion.span>
+              {isMobile ? (
+                // Static text for mobile - no complex animations
+                <>
+                  <span className="block text-gradient-animated">Увидьте свою</span>
+                  <span className="block text-gradient-animated">мечту о свадьбе</span>
+                  <span className="block text-foreground/85 mt-2">ещё до её начала</span>
+                </>
+              ) : (
+                // Animated text for desktop
+                <>
+                  <TextReveal text="Увидьте свою" className="block" delay={0.3} />
+                  <TextReveal 
+                    text="мечту о свадьбе" 
+                    className="block" 
+                    delay={0.5} 
+                    gradient 
+                  />
+                  <motion.span 
+                    className="block text-foreground/85 mt-2"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 1.2, duration: 0.6 }}
+                  >
+                    ещё до её начала
+                  </motion.span>
+                </>
+              )}
             </h1>
           </motion.div>
 

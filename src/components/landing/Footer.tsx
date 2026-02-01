@@ -52,7 +52,7 @@ export const Footer = () => {
                 <Heart className="w-5 h-5 text-white fill-white" />
               </div>
               <span className="text-xl font-bold bg-gradient-hero bg-clip-text text-transparent">
-                WeddingTech UZ
+                Weddinguz
               </span>
             </div>
             <p className="text-muted-foreground mb-6 max-w-sm leading-relaxed">
@@ -97,11 +97,11 @@ export const Footer = () => {
         <div className="pt-8 border-t border-border/50">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             <p className="text-sm text-muted-foreground">
-              © 2025 WeddingTech UZ. Все права защищены.
+              © 2025 Weddinguz. Все права защищены.
             </p>
             <p className="text-sm text-muted-foreground flex items-center gap-1">
               Made with{" "}
-              <Heart className="inline w-4 h-4 text-primary fill-primary animate-pulse" />{" "}
+              <Heart className="inline w-4 h-4 text-primary fill-primary" />{" "}
               in Uzbekistan
             </p>
           </div>

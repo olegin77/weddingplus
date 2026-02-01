@@ -126,9 +126,11 @@ export function AppSidebar() {
     <Sidebar collapsible="icon">
       <SidebarHeader>
         <div className="flex items-center gap-2 px-2 py-4">
-          <Heart className="w-6 h-6 text-primary fill-primary" />
+          <div className="w-8 h-8 rounded-lg gradient-luxe flex items-center justify-center shadow-md">
+            <span className="text-white font-bold text-sm">W</span>
+          </div>
           {!collapsed && (
-            <span className="font-bold text-lg">WeddingTech</span>
+            <span className="font-bold text-lg text-gradient-animated">Weddinguz</span>
           )}
         </div>
       </SidebarHeader>

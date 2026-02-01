@@ -82,18 +82,12 @@ export const Header = () => {
           >
             <motion.div 
               className="w-9 h-9 rounded-xl gradient-luxe flex items-center justify-center shadow-lg"
-              animate={{ 
-                boxShadow: [
-                  "0 0 20px hsl(15 60% 65% / 0.3)",
-                  "0 0 30px hsl(45 70% 60% / 0.5)",
-                  "0 0 20px hsl(15 60% 65% / 0.3)",
-                ],
-              }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring" as const, stiffness: 260, damping: 20 }}
             >
               <motion.div
-                animate={{ rotate: [0, 10, -10, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                whileHover={{ rotate: -8 }}
+                transition={{ type: "spring" as const, stiffness: 260, damping: 20 }}
               >
                 <Heart className="w-5 h-5 text-white fill-white" />
               </motion.div>

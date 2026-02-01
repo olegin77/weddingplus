@@ -25,16 +25,18 @@ export const ScrollIndicator = ({
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 2, duration: 0.6 }}
+        whileHover={{ y: -2 }}
+        whileTap={{ scale: 0.98 }}
       >
         <motion.div
           className="w-6 h-10 rounded-full border-2 border-current p-1 flex justify-center"
-          animate={{ y: [0, 5, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          whileHover={{ y: 3 }}
+          transition={{ type: "spring" as const, stiffness: 260, damping: 20 }}
         >
           <motion.div
             className="w-1.5 h-2.5 rounded-full bg-current"
-            animate={{ y: [0, 8, 0], opacity: [1, 0.3, 1] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            whileHover={{ y: 6, opacity: 0.7 }}
+            transition={{ type: "spring" as const, stiffness: 260, damping: 20 }}
           />
         </motion.div>
         <span className="text-xs font-medium">Scroll</span>
@@ -52,14 +54,14 @@ export const ScrollIndicator = ({
         transition={{ delay: 2, duration: 0.6 }}
       >
         <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          whileHover={{ y: 6 }}
+          transition={{ type: "spring" as const, stiffness: 260, damping: 20 }}
         >
           <ChevronDown className="w-6 h-6" />
         </motion.div>
         <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
+          whileHover={{ y: 6 }}
+          transition={{ type: "spring" as const, stiffness: 260, damping: 20 }}
         >
           <ChevronDown className="w-6 h-6 -mt-3 opacity-50" />
         </motion.div>
@@ -77,10 +79,7 @@ export const ScrollIndicator = ({
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
     >
-      <motion.div
-        animate={{ y: [0, 4, 0] }}
-        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-      >
+      <motion.div whileHover={{ y: 3 }} transition={{ type: "spring" as const, stiffness: 260, damping: 20 }}>
         <ChevronDown className="w-6 h-6" />
       </motion.div>
     </motion.button>

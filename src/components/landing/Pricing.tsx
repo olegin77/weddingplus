@@ -102,17 +102,12 @@ const PlanCard = ({ plan, index }: PlanCardProps) => {
           {plan.highlighted && (
             <>
               <div className="absolute inset-0 sparkle" />
-              <motion.div
-                className="absolute inset-0 rounded-2xl"
-                animate={{
-                  boxShadow: [
-                    "0 0 20px hsl(15 60% 65% / 0.2)",
-                    "0 0 40px hsl(45 70% 60% / 0.4)",
-                    "0 0 20px hsl(15 60% 65% / 0.2)",
-                  ],
-                }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-              />
+               <motion.div
+                 className="absolute inset-0 rounded-2xl opacity-0"
+                 whileHover={{ opacity: 1 }}
+                 transition={{ duration: 0.2 }}
+                 style={{ boxShadow: "0 0 36px hsl(45 70% 60% / 0.25)" }}
+               />
             </>
           )}
 
@@ -140,8 +135,8 @@ const PlanCard = ({ plan, index }: PlanCardProps) => {
               {/* Icon glow */}
               <motion.div
                 className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${plan.gradient} blur-xl opacity-50`}
-                animate={plan.highlighted ? { scale: [1, 1.3, 1], opacity: [0.3, 0.6, 0.3] } : {}}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                whileHover={plan.highlighted ? { scale: 1.12, opacity: 0.55 } : { scale: 1.08, opacity: 0.5 }}
+                transition={{ duration: 0.25 }}
               />
               <plan.icon className="w-8 h-8 text-white relative z-10" />
             </motion.div>
@@ -194,26 +189,11 @@ const PlanCard = ({ plan, index }: PlanCardProps) => {
               }`}
               variant={plan.highlighted ? "default" : "outline"}
             >
-              {/* Shimmer effect */}
-              <motion.div
-                className="absolute inset-0 opacity-0 group-hover:opacity-100"
-                style={{
-                  background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent)",
-                }}
-                animate={{
-                  x: ["-100%", "100%"],
-                }}
-                transition={{
-                  duration: 1,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              />
               <span className="relative z-10 flex items-center gap-2">
                 {plan.price === "Бесплатно" ? "Начать бесплатно" : "Выбрать план"}
                 <motion.span
-                  animate={{ x: [0, 4, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
+                  whileHover={{ x: 4 }}
+                  transition={{ type: "spring" as const, stiffness: 260, damping: 20 }}
                 >
                   <ArrowRight className="w-4 h-4" />
                 </motion.span>
@@ -272,8 +252,8 @@ export const Pricing = () => {
             whileHover={{ scale: 1.05 }}
           >
             <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+              whileHover={{ rotate: 12 }}
+              transition={{ type: "spring" as const, stiffness: 260, damping: 20 }}
             >
               <Gem className="w-4 h-4 text-wedding-gold" />
             </motion.div>
@@ -301,18 +281,12 @@ export const Pricing = () => {
             className="inline-flex items-center gap-4 glass-luxe px-6 py-3 rounded-full text-sm text-muted-foreground"
             whileHover={{ scale: 1.05 }}
           >
-            <motion.span
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
+            <motion.span whileHover={{ scale: 1.15 }} transition={{ type: "spring" as const, stiffness: 260, damping: 20 }}>
               🔒
             </motion.span>
             <span>Безопасные платежи</span>
             <span className="w-1 h-1 rounded-full bg-border" />
-            <motion.span
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-            >
+            <motion.span whileHover={{ scale: 1.15 }} transition={{ type: "spring" as const, stiffness: 260, damping: 20 }}>
               💳
             </motion.span>
             <span>Возврат в течение 14 дней</span>

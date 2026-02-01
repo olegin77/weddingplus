@@ -59,7 +59,7 @@ export const GradientButton = memo(({
     <motion.button
       ref={ref}
       className={`
-        relative overflow-hidden rounded-2xl font-semibold
+        group relative overflow-hidden rounded-2xl font-semibold
         transition-all duration-300 gpu-accelerated
         ${sizeClasses[size]}
         ${variantClasses[variant]}
@@ -100,7 +100,8 @@ export const GradientButton = memo(({
       
       {/* Static glow effect - only on hover */}
       {variant === "primary" && (
-        <div className="absolute inset-0 -z-10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        <div
+          className="absolute inset-0 -z-10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
           style={{
             boxShadow: "0 0 30px hsl(15 60% 65% / 0.4)",
           }}

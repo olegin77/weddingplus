@@ -102,8 +102,8 @@ const FeatureCard = ({ feature, index }: { feature: typeof features[0]; index: n
             {/* Glow effect */}
             <motion.div
               className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${feature.gradient} blur-xl opacity-50`}
-              animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+               whileHover={{ scale: 1.12, opacity: 0.55 }}
+               transition={{ duration: 0.25 }}
             />
             <feature.icon className={`${isLarge ? "w-8 h-8" : "w-7 h-7"} text-white relative z-10`} />
           </motion.div>
@@ -197,8 +197,8 @@ export const Features = () => {
             whileHover={{ scale: 1.05 }}
           >
             <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+              whileHover={{ rotate: 12 }}
+              transition={{ type: "spring" as const, stiffness: 260, damping: 20 }}
             >
               <Wand2 className="w-4 h-4 text-wedding-gold" />
             </motion.div>

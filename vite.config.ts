@@ -67,5 +67,7 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+    // Prevent duplicate React instances - fixes animation stuttering
+    dedupe: ["react", "react-dom", "react/jsx-runtime", "framer-motion"],
   },
 }));

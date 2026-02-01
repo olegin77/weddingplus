@@ -811,4 +811,77 @@
     transform: scaleX(1);
     transform-origin: left;
   }
+
+  /* Performance-optimized animations - use GPU acceleration */
+  
+  /* Gentle float animation - lightweight */
+  .animate-float-gentle {
+    animation: float-gentle 6s ease-in-out infinite;
+    will-change: transform;
+  }
+  
+  @keyframes float-gentle {
+    0%, 100% {
+      transform: translateY(0) translateZ(0);
+    }
+    50% {
+      transform: translateY(-10px) translateZ(0);
+    }
+  }
+  
+  /* Slow blob animation - performance friendly */
+  .animate-blob-slow {
+    animation: blob-slow 20s ease-in-out infinite;
+    will-change: transform;
+  }
+  
+  @keyframes blob-slow {
+    0%, 100% {
+      transform: translate(0, 0) scale(1) translateZ(0);
+    }
+    33% {
+      transform: translate(20px, -20px) scale(1.05) translateZ(0);
+    }
+    66% {
+      transform: translate(-10px, 10px) scale(0.95) translateZ(0);
+    }
+  }
+  
+  /* Slow spin for icons */
+  .animate-spin-slow {
+    animation: spin 8s linear infinite;
+    will-change: transform;
+  }
+  
+  /* Gentle bounce for scroll indicator */
+  .animate-bounce-gentle {
+    animation: bounce-gentle 2s ease-in-out infinite;
+    will-change: transform;
+  }
+  
+  @keyframes bounce-gentle {
+    0%, 100% {
+      transform: translateY(0) translateX(-50%) translateZ(0);
+    }
+    50% {
+      transform: translateY(-8px) translateX(-50%) translateZ(0);
+    }
+  }
+  
+  /* Scroll indicator dot */
+  .animate-scroll-indicator {
+    animation: scroll-indicator 1.5s ease-in-out infinite;
+    will-change: transform, opacity;
+  }
+  
+  @keyframes scroll-indicator {
+    0% {
+      transform: translateY(0) translateZ(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(12px) translateZ(0);
+      opacity: 0;
+    }
+  }
 }

@@ -2,35 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Design System v4.0 - Wedding Platform with Sage Green Theme
+/* Design System v5.0 - LUXE WEDDING PALETTE 2025
+   Rose Gold + Champagne + Burgundy - Premium aesthetic
    All colors MUST be HSL for proper theming
-   Color Palette: Sage Green (#9CAF88) with Eucalyptus, Olive, and Cream accents
 */
 
 @layer base {
   :root {
-    --background: 80 20% 98%;
-    --foreground: 150 10% 10%;
+    --background: 40 30% 98%;
+    --foreground: 220 15% 20%;
 
     --card: 0 0% 100%;
-    --card-foreground: 150 10% 10%;
+    --card-foreground: 220 15% 20%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 150 10% 10%;
+    --popover-foreground: 220 15% 20%;
 
-    /* Wedding theme - elegant sage green and natural tones */
-    --primary: 95 25% 55%;
+    /* LUXE Wedding theme - Rose Gold palette */
+    --primary: 15 60% 65%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 95 35% 65%;
+    --primary-glow: 45 70% 60%;
 
-    --secondary: 45 30% 90%;
-    --secondary-foreground: 150 10% 10%;
+    --secondary: 40 45% 88%;
+    --secondary-foreground: 220 15% 20%;
 
-    --muted: 80 15% 95%;
-    --muted-foreground: 150 8% 45%;
+    --muted: 40 30% 96%;
+    --muted-foreground: 220 10% 45%;
 
-    --accent: 95 25% 92%;
-    --accent-foreground: 95 35% 40%;
+    --accent: 345 45% 35%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
@@ -41,91 +41,100 @@
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 98%;
 
-    --border: 80 15% 90%;
-    --input: 80 15% 90%;
-    --ring: 95 25% 55%;
+    --border: 40 25% 90%;
+    --input: 40 25% 90%;
+    --ring: 15 60% 65%;
 
     --radius: 1rem;
     
-    /* Custom wedding colors - Nature palette */
-    --wedding-sage: 95 25% 55%;
-    --wedding-eucalyptus: 160 20% 45%;
-    --wedding-olive: 75 20% 40%;
-    --wedding-cream: 45 40% 95%;
+    /* LUXE Wedding colors */
+    --wedding-rose-gold: 15 60% 65%;
+    --wedding-champagne: 40 45% 88%;
+    --wedding-burgundy: 345 45% 35%;
+    --wedding-ivory: 40 30% 96%;
+    --wedding-gold: 45 70% 60%;
+    --wedding-charcoal: 220 15% 20%;
+    
+    /* Legacy compatibility */
+    --wedding-sage: 15 60% 65%;
+    --wedding-eucalyptus: 345 45% 35%;
+    --wedding-olive: 345 30% 45%;
+    --wedding-cream: 40 45% 88%;
     --wedding-terracotta: 15 50% 55%;
     
-    /* iOS Glassmorphism */
-    --glass-bg: 80 20% 99% / 0.75;
-    --glass-border: 0 0% 100% / 0.4;
-    --glass-shadow: 0 8px 32px 0 rgba(100, 130, 100, 0.08);
-    --glass-blur: 20px;
+    /* Premium Glassmorphism */
+    --glass-bg: 40 30% 99% / 0.8;
+    --glass-border: 0 0% 100% / 0.5;
+    --glass-shadow: 0 8px 32px 0 rgba(212, 163, 115, 0.08);
+    --glass-blur: 24px;
     
-    /* Gradients - Natural tones */
-    --gradient-hero: linear-gradient(135deg, hsl(95 25% 55%) 0%, hsl(95 35% 65%) 100%);
-    --gradient-elegant: linear-gradient(180deg, hsl(80 20% 99%) 0%, hsl(95 20% 96%) 100%);
-    --gradient-card: linear-gradient(180deg, hsl(0 0% 100% / 0.95) 0%, hsl(80 20% 98% / 0.85) 100%);
-    --gradient-glass: linear-gradient(135deg, hsl(0 0% 100% / 0.85) 0%, hsl(95 15% 98% / 0.5) 100%);
-    --gradient-mesh: radial-gradient(at 40% 20%, hsl(95 25% 55% / 0.08) 0px, transparent 50%),
-                     radial-gradient(at 80% 0%, hsl(160 20% 45% / 0.08) 0px, transparent 50%),
-                     radial-gradient(at 0% 50%, hsl(45 40% 70% / 0.1) 0px, transparent 50%),
-                     radial-gradient(at 80% 50%, hsl(95 25% 85% / 0.15) 0px, transparent 50%),
-                     radial-gradient(at 0% 100%, hsl(45 40% 95% / 0.12) 0px, transparent 50%);
+    /* Luxe Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(15 60% 65%) 0%, hsl(45 70% 60%) 50%, hsl(15 60% 65%) 100%);
+    --gradient-luxe: linear-gradient(135deg, hsl(15 60% 65%) 0%, hsl(45 70% 60%) 100%);
+    --gradient-burgundy: linear-gradient(135deg, hsl(345 45% 35%) 0%, hsl(15 50% 55%) 100%);
+    --gradient-elegant: linear-gradient(180deg, hsl(40 30% 99%) 0%, hsl(40 30% 96%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100% / 0.95) 0%, hsl(40 30% 98% / 0.85) 100%);
+    --gradient-glass: linear-gradient(135deg, hsl(0 0% 100% / 0.9) 0%, hsl(40 30% 98% / 0.6) 100%);
+    --gradient-mesh: radial-gradient(at 40% 20%, hsl(15 60% 65% / 0.08) 0px, transparent 50%),
+                     radial-gradient(at 80% 0%, hsl(45 70% 60% / 0.08) 0px, transparent 50%),
+                     radial-gradient(at 0% 50%, hsl(40 45% 88% / 0.15) 0px, transparent 50%),
+                     radial-gradient(at 80% 50%, hsl(345 45% 35% / 0.06) 0px, transparent 50%),
+                     radial-gradient(at 0% 100%, hsl(40 45% 88% / 0.12) 0px, transparent 50%);
     
-    /* Shadows - iOS style with sage undertones */
-    --shadow-elegant: 0 10px 40px -10px hsl(95 25% 40% / 0.12);
-    --shadow-card: 0 4px 24px -4px hsl(95 15% 30% / 0.06), 0 1px 2px -1px hsl(95 15% 30% / 0.04);
-    --shadow-hover: 0 20px 40px -8px hsl(95 15% 30% / 0.1);
-    --shadow-btn: 0 4px 14px 0 hsl(95 25% 55% / 0.2);
-    --shadow-glass: 0 8px 32px 0 hsl(0 0% 0% / 0.03), inset 0 0 0 1px hsl(0 0% 100% / 0.15);
-    --shadow-glow: 0 0 60px -12px hsl(95 25% 55% / 0.35);
+    /* Premium Shadows */
+    --shadow-elegant: 0 10px 40px -10px hsl(15 60% 50% / 0.15);
+    --shadow-card: 0 4px 24px -4px hsl(15 30% 30% / 0.08), 0 1px 2px -1px hsl(15 30% 30% / 0.04);
+    --shadow-hover: 0 20px 40px -8px hsl(15 30% 30% / 0.12);
+    --shadow-btn: 0 4px 14px 0 hsl(15 60% 65% / 0.25);
+    --shadow-glass: 0 8px 32px 0 hsl(0 0% 0% / 0.04), inset 0 0 0 1px hsl(0 0% 100% / 0.2);
+    --shadow-glow: 0 0 60px -12px hsl(15 60% 65% / 0.4);
+    --shadow-gold: 0 0 40px hsl(45 70% 60% / 0.3);
     
     /* Animations */
     --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-fast: all 0.2s ease-out;
     --transition-spring: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    
+    /* Sidebar */
+    --sidebar-background: 40 25% 97%;
+    --sidebar-foreground: 220 15% 25%;
+    --sidebar-primary: 15 60% 60%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 40 25% 94%;
+    --sidebar-accent-foreground: 220 15% 20%;
+    --sidebar-border: 40 20% 90%;
+    --sidebar-ring: 15 65% 55%;
   }
   
-  /* GPU acceleration utility - prevents jank */
+  /* GPU acceleration utility */
   .gpu-accelerated {
     transform: translateZ(0);
     backface-visibility: hidden;
     will-change: transform, opacity;
-    
-    /* Milestone Toast Custom Styles */
-    --milestone-glow: 0 0 30px hsl(95 25% 55% / 0.4);
-
-    --sidebar-background: 80 15% 97%;
-    --sidebar-foreground: 150 10% 25%;
-    --sidebar-primary: 95 25% 45%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 80 15% 94%;
-    --sidebar-accent-foreground: 150 10% 20%;
-    --sidebar-border: 80 12% 90%;
-    --sidebar-ring: 95 30% 50%;
   }
 
   .dark {
-    --background: 150 10% 6%;
-    --foreground: 80 10% 95%;
+    --background: 220 15% 6%;
+    --foreground: 40 20% 95%;
 
-    --card: 150 8% 10%;
-    --card-foreground: 80 10% 95%;
+    --card: 220 12% 10%;
+    --card-foreground: 40 20% 95%;
 
-    --popover: 150 8% 10%;
-    --popover-foreground: 80 10% 95%;
+    --popover: 220 12% 10%;
+    --popover-foreground: 40 20% 95%;
 
-    --primary: 95 30% 50%;
+    --primary: 15 55% 55%;
     --primary-foreground: 0 0% 98%;
-    --primary-glow: 95 40% 60%;
+    --primary-glow: 45 60% 50%;
 
-    --secondary: 150 8% 16%;
-    --secondary-foreground: 80 10% 95%;
+    --secondary: 220 10% 16%;
+    --secondary-foreground: 40 20% 95%;
 
-    --muted: 150 8% 16%;
-    --muted-foreground: 80 10% 60%;
+    --muted: 220 10% 16%;
+    --muted-foreground: 40 15% 60%;
 
-    --accent: 95 20% 20%;
-    --accent-foreground: 95 35% 60%;
+    --accent: 345 40% 30%;
+    --accent-foreground: 0 0% 98%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
@@ -136,44 +145,53 @@
     --warning: 38 92% 60%;
     --warning-foreground: 0 0% 98%;
 
-    --border: 150 8% 18%;
-    --input: 150 8% 18%;
-    --ring: 95 30% 50%;
+    --border: 220 10% 18%;
+    --input: 220 10% 18%;
+    --ring: 15 55% 55%;
     
-    /* Dark mode wedding colors - Nature palette */
-    --wedding-sage: 95 30% 50%;
-    --wedding-eucalyptus: 160 25% 40%;
-    --wedding-olive: 75 20% 35%;
-    --wedding-cream: 45 20% 20%;
-    --wedding-terracotta: 15 40% 45%;
+    /* Dark mode wedding colors */
+    --wedding-rose-gold: 15 55% 55%;
+    --wedding-champagne: 40 30% 25%;
+    --wedding-burgundy: 345 40% 30%;
+    --wedding-ivory: 40 15% 15%;
+    --wedding-gold: 45 60% 50%;
+    --wedding-charcoal: 220 10% 85%;
     
-    /* Dark iOS Glassmorphism */
-    --glass-bg: 150 10% 10% / 0.85;
+    --wedding-sage: 15 55% 55%;
+    --wedding-eucalyptus: 345 40% 30%;
+    --wedding-olive: 345 25% 40%;
+    --wedding-cream: 40 30% 25%;
+    --wedding-terracotta: 15 45% 45%;
+    
+    /* Dark Glassmorphism */
+    --glass-bg: 220 15% 10% / 0.85;
     --glass-border: 0 0% 100% / 0.08;
     --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
     
-    --gradient-hero: linear-gradient(135deg, hsl(95 30% 40%) 0%, hsl(95 40% 50%) 100%);
-    --gradient-elegant: linear-gradient(180deg, hsl(150 10% 6%) 0%, hsl(95 15% 10%) 100%);
-    --gradient-card: linear-gradient(180deg, hsl(150 8% 10% / 0.95) 0%, hsl(150 8% 12% / 0.9) 100%);
-    --gradient-glass: linear-gradient(135deg, hsl(150 10% 15% / 0.8) 0%, hsl(150 10% 10% / 0.6) 100%);
-    --gradient-mesh: radial-gradient(at 40% 20%, hsl(95 25% 50% / 0.06) 0px, transparent 50%),
-                     radial-gradient(at 80% 0%, hsl(160 20% 45% / 0.06) 0px, transparent 50%),
-                     radial-gradient(at 0% 50%, hsl(45 30% 50% / 0.05) 0px, transparent 50%);
+    --gradient-hero: linear-gradient(135deg, hsl(15 55% 45%) 0%, hsl(45 60% 50%) 100%);
+    --gradient-luxe: linear-gradient(135deg, hsl(15 55% 45%) 0%, hsl(45 60% 50%) 100%);
+    --gradient-burgundy: linear-gradient(135deg, hsl(345 40% 25%) 0%, hsl(15 45% 40%) 100%);
+    --gradient-elegant: linear-gradient(180deg, hsl(220 15% 6%) 0%, hsl(220 12% 10%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(220 12% 10% / 0.95) 0%, hsl(220 12% 12% / 0.9) 100%);
+    --gradient-glass: linear-gradient(135deg, hsl(220 12% 15% / 0.8) 0%, hsl(220 12% 10% / 0.6) 100%);
+    --gradient-mesh: radial-gradient(at 40% 20%, hsl(15 55% 50% / 0.06) 0px, transparent 50%),
+                     radial-gradient(at 80% 0%, hsl(45 60% 50% / 0.06) 0px, transparent 50%),
+                     radial-gradient(at 0% 50%, hsl(345 35% 35% / 0.05) 0px, transparent 50%);
     
-    --shadow-elegant: 0 10px 40px -10px hsl(95 20% 15% / 0.4);
+    --shadow-elegant: 0 10px 40px -10px hsl(15 30% 15% / 0.4);
     --shadow-card: 0 4px 24px -4px hsl(0 0% 0% / 0.4);
     --shadow-hover: 0 20px 40px -8px hsl(0 0% 0% / 0.5);
-    --shadow-btn: 0 4px 14px 0 hsl(95 30% 40% / 0.3);
+    --shadow-btn: 0 4px 14px 0 hsl(15 55% 45% / 0.3);
     --shadow-glass: 0 8px 32px 0 hsl(0 0% 0% / 0.3), inset 0 0 0 1px hsl(0 0% 100% / 0.05);
     
-    --sidebar-background: 150 8% 8%;
-    --sidebar-foreground: 80 10% 90%;
-    --sidebar-primary: 95 30% 50%;
+    --sidebar-background: 220 12% 8%;
+    --sidebar-foreground: 40 15% 90%;
+    --sidebar-primary: 15 55% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 150 8% 14%;
-    --sidebar-accent-foreground: 80 10% 90%;
-    --sidebar-border: 150 8% 16%;
-    --sidebar-ring: 95 35% 55%;
+    --sidebar-accent: 220 10% 14%;
+    --sidebar-accent-foreground: 40 15% 90%;
+    --sidebar-border: 220 10% 16%;
+    --sidebar-ring: 15 60% 55%;
   }
 }
 
@@ -191,7 +209,6 @@
     @apply font-bold tracking-tight;
   }
   
-  /* Smooth scrolling */
   html {
     scroll-behavior: smooth;
   }
@@ -199,15 +216,15 @@
 
 /* Component Utilities */
 @layer components {
-  /* iOS Glass Card - Main glass effect */
+  /* LUXE Glass Card */
   .glass-card {
     @apply relative overflow-hidden rounded-2xl;
     background: linear-gradient(135deg, 
       hsl(var(--glass-bg)) 0%, 
-      hsl(0 0% 100% / 0.5) 100%
+      hsl(0 0% 100% / 0.6) 100%
     );
-    backdrop-filter: blur(var(--glass-blur));
-    -webkit-backdrop-filter: blur(var(--glass-blur));
+    backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
     border: 1px solid hsl(var(--glass-border));
     box-shadow: var(--shadow-glass);
   }
@@ -215,39 +232,81 @@
   .dark .glass-card {
     background: linear-gradient(135deg, 
       hsl(var(--glass-bg)) 0%, 
-      hsl(240 10% 15% / 0.6) 100%
+      hsl(220 12% 15% / 0.6) 100%
     );
   }
   
-  /* iOS Glass Surface - Lighter variant */
+  /* LUXE Glass Effect - Premium */
+  .glass-luxe {
+    @apply relative overflow-hidden;
+    background: linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.2) 0%, 
+      rgba(212, 163, 115, 0.1) 100%
+    );
+    backdrop-filter: blur(24px) saturate(200%);
+    -webkit-backdrop-filter: blur(24px) saturate(200%);
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    box-shadow: 
+      0 8px 32px rgba(212, 163, 115, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  }
+  
+  /* Rose Gold Gradient */
+  .gradient-luxe {
+    background: linear-gradient(135deg, 
+      hsl(15 60% 65%) 0%, 
+      hsl(45 70% 60%) 50%,
+      hsl(15 60% 65%) 100%
+    );
+    background-size: 200% 200%;
+    animation: gradient-shift 8s ease infinite;
+  }
+  
+  @keyframes gradient-shift {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+  
+  /* Gold Glow */
+  .glow-gold {
+    box-shadow: 
+      0 0 40px hsl(45 70% 60% / 0.3),
+      0 0 80px hsl(45 70% 60% / 0.15);
+  }
+  
+  /* iOS Glass Surface */
   .glass-surface {
     @apply relative;
     background: hsl(var(--glass-bg));
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid hsl(0 0% 100% / 0.2);
+    border: 1px solid hsl(0 0% 100% / 0.25);
   }
   
-  /* iOS Glass Panel - For larger areas */
+  /* iOS Glass Panel */
   .glass-panel {
     @apply relative overflow-hidden;
     background: linear-gradient(180deg, 
-      hsl(0 0% 100% / 0.85) 0%, 
-      hsl(0 0% 100% / 0.65) 100%
+      hsl(0 0% 100% / 0.9) 0%, 
+      hsl(0 0% 100% / 0.7) 100%
     );
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border: 1px solid hsl(0 0% 100% / 0.3);
+    border: 1px solid hsl(0 0% 100% / 0.35);
     box-shadow: 
       0 1px 3px hsl(0 0% 0% / 0.02),
       0 8px 32px hsl(0 0% 0% / 0.04),
-      inset 0 1px 0 hsl(0 0% 100% / 0.6);
+      inset 0 1px 0 hsl(0 0% 100% / 0.7);
   }
   
   .dark .glass-panel {
     background: linear-gradient(180deg, 
-      hsl(240 10% 12% / 0.9) 0%, 
-      hsl(240 10% 8% / 0.8) 100%
+      hsl(220 12% 12% / 0.9) 0%, 
+      hsl(220 12% 8% / 0.8) 100%
     );
     border-color: hsl(0 0% 100% / 0.08);
     box-shadow: 
@@ -259,17 +318,17 @@
   /* iOS Glass Button */
   .glass-button {
     @apply relative px-6 py-3 rounded-xl font-medium transition-all duration-300;
-    background: hsl(0 0% 100% / 0.7);
+    background: hsl(0 0% 100% / 0.75);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid hsl(0 0% 100% / 0.4);
+    border: 1px solid hsl(0 0% 100% / 0.45);
     box-shadow: 
       0 2px 8px hsl(0 0% 0% / 0.04),
       inset 0 1px 0 hsl(0 0% 100% / 0.8);
   }
   
   .glass-button:hover {
-    background: hsl(0 0% 100% / 0.85);
+    background: hsl(0 0% 100% / 0.9);
     transform: translateY(-1px);
     box-shadow: 
       0 4px 16px hsl(0 0% 0% / 0.08),
@@ -277,14 +336,14 @@
   }
   
   .dark .glass-button {
-    background: hsl(240 10% 20% / 0.6);
+    background: hsl(220 12% 20% / 0.6);
     border-color: hsl(0 0% 100% / 0.1);
   }
   
   /* iOS Glass Input */
   .glass-input {
     @apply w-full px-4 py-3 rounded-xl transition-all duration-200;
-    background: hsl(0 0% 100% / 0.6);
+    background: hsl(0 0% 100% / 0.65);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid hsl(0 0% 0% / 0.06);
@@ -292,16 +351,16 @@
   }
   
   .glass-input:focus {
-    background: hsl(0 0% 100% / 0.8);
+    background: hsl(0 0% 100% / 0.85);
     border-color: hsl(var(--primary));
     box-shadow: 
-      0 0 0 3px hsl(var(--primary) / 0.1),
+      0 0 0 3px hsl(var(--primary) / 0.15),
       inset 0 1px 2px hsl(0 0% 0% / 0.02);
     outline: none;
   }
   
   .dark .glass-input {
-    background: hsl(240 10% 15% / 0.6);
+    background: hsl(220 12% 15% / 0.6);
     border-color: hsl(0 0% 100% / 0.08);
   }
   
@@ -379,7 +438,7 @@
     @apply container mx-auto px-4 sm:px-6 lg:px-8;
   }
   
-  /* Legacy glass effect (keep for backwards compat) */
+  /* Legacy glass effect */
   .glass {
     @apply glass-surface;
   }
@@ -394,7 +453,7 @@
     @apply absolute inset-x-0 top-0 h-px;
     background: linear-gradient(90deg, 
       transparent 0%, 
-      hsl(0 0% 100% / 0.5) 50%, 
+      hsl(0 0% 100% / 0.6) 50%, 
       transparent 100%
     );
   }
@@ -504,6 +563,45 @@
   .animate-blur-in {
     animation: blur-in 0.5s ease-out forwards;
   }
+  
+  /* Bento Grid Layout */
+  .bento-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, auto);
+  }
+  
+  .bento-large {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+  
+  .bento-medium {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+  
+  @media (max-width: 1024px) {
+    .bento-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .bento-large {
+      grid-column: span 2;
+      grid-row: span 1;
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .bento-grid {
+      grid-template-columns: 1fr;
+    }
+    .bento-large,
+    .bento-medium {
+      grid-column: span 1;
+      grid-row: span 1;
+    }
+  }
 }
 
 /* Mobile-first responsive utilities */
@@ -554,18 +652,18 @@
   /* Enhanced glow for premium elements */
   .glow-premium {
     box-shadow: 
-      0 0 30px hsl(var(--primary) / 0.3),
-      0 0 60px hsl(var(--primary) / 0.15),
-      inset 0 1px 0 hsl(0 0% 100% / 0.2);
+      0 0 30px hsl(var(--primary) / 0.35),
+      0 0 60px hsl(45 70% 60% / 0.2),
+      inset 0 1px 0 hsl(0 0% 100% / 0.25);
   }
   
-  /* Text gradient animation */
+  /* Text gradient animation - LUXE version */
   .text-gradient-animated {
     background: linear-gradient(
       135deg,
       hsl(var(--primary)) 0%,
       hsl(var(--primary-glow)) 25%,
-      hsl(var(--wedding-eucalyptus)) 50%,
+      hsl(345 45% 45%) 50%,
       hsl(var(--primary-glow)) 75%,
       hsl(var(--primary)) 100%
     );
@@ -637,7 +735,7 @@
     background: linear-gradient(
       45deg,
       transparent 30%,
-      hsl(0 0% 100% / 0.3) 50%,
+      hsl(45 70% 60% / 0.3) 50%,
       transparent 70%
     );
     animation: sparkle-sweep 3s ease-in-out infinite;
@@ -658,7 +756,7 @@
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
-  /* Gradient border */
+  /* Gradient border - Gold version */
   .gradient-border {
     position: relative;
     background: hsl(var(--card));
@@ -670,7 +768,7 @@
     inset: 0;
     padding: 2px;
     border-radius: inherit;
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)), hsl(var(--wedding-eucalyptus)));
+    background: linear-gradient(135deg, hsl(15 60% 65%), hsl(45 70% 60%), hsl(345 45% 35%));
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
@@ -698,7 +796,7 @@
     opacity: 1;
   }
   
-  /* Aurora background effect */
+  /* Aurora background effect - Rose Gold version */
   .aurora {
     position: relative;
     overflow: hidden;
@@ -717,13 +815,13 @@
   }
   
   .aurora::before {
-    background: hsl(var(--primary) / 0.3);
+    background: hsl(15 60% 65% / 0.35);
     top: -100px;
     left: -100px;
   }
   
   .aurora::after {
-    background: hsl(var(--wedding-eucalyptus) / 0.3);
+    background: hsl(45 70% 60% / 0.3);
     bottom: -100px;
     right: -100px;
     animation-delay: -7.5s;
@@ -819,9 +917,8 @@
     transform-origin: left;
   }
 
-  /* Performance-optimized animations - use GPU acceleration */
+  /* Performance-optimized animations */
   
-  /* Gentle float animation - lightweight */
   .animate-float-gentle {
     animation: float-gentle 6s ease-in-out infinite;
     will-change: transform;
@@ -836,7 +933,6 @@
     }
   }
   
-  /* Slow blob animation - performance friendly */
   .animate-blob-slow {
     animation: blob-slow 20s ease-in-out infinite;
     will-change: transform;
@@ -854,13 +950,11 @@
     }
   }
   
-  /* Slow spin for icons */
   .animate-spin-slow {
     animation: spin 8s linear infinite;
     will-change: transform;
   }
   
-  /* Gentle bounce for scroll indicator */
   .animate-bounce-gentle {
     animation: bounce-gentle 2s ease-in-out infinite;
     will-change: transform;
@@ -875,7 +969,6 @@
     }
   }
   
-  /* Scroll indicator dot */
   .animate-scroll-indicator {
     animation: scroll-indicator 1.5s ease-in-out infinite;
     will-change: transform, opacity;
@@ -889,6 +982,32 @@
     100% {
       transform: translateY(12px) translateZ(0);
       opacity: 0;
+    }
+  }
+  
+  /* 3D Tilt Card */
+  .tilt-card {
+    transform-style: preserve-3d;
+    perspective: 1000px;
+  }
+  
+  .tilt-card-inner {
+    transform-style: preserve-3d;
+    transition: transform 0.1s ease-out;
+  }
+  
+  /* Text Split Reveal */
+  .text-split-reveal span {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: letter-reveal 0.5s ease forwards;
+  }
+  
+  @keyframes letter-reveal {
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
   }
 }

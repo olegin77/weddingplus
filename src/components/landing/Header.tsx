@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Heart, Menu, X, Download } from "lucide-react";
+import { Heart, Menu, X, Download, Gem } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
@@ -16,7 +16,7 @@ export const Header = () => {
   const headerBackground = useTransform(
     scrollY,
     [0, 100],
-    ["rgba(255,255,255,0)", "rgba(255,255,255,0.85)"]
+    ["rgba(255,255,255,0)", "rgba(255,255,255,0.9)"]
   );
   
   const headerBlur = useTransform(
@@ -81,12 +81,12 @@ export const Header = () => {
             whileTap={{ scale: 0.98 }}
           >
             <motion.div 
-              className="w-9 h-9 rounded-xl bg-gradient-hero flex items-center justify-center shadow-lg"
+              className="w-9 h-9 rounded-xl gradient-luxe flex items-center justify-center shadow-lg"
               animate={{ 
                 boxShadow: [
-                  "0 0 20px rgba(156, 175, 136, 0.3)",
-                  "0 0 30px rgba(156, 175, 136, 0.5)",
-                  "0 0 20px rgba(156, 175, 136, 0.3)",
+                  "0 0 20px hsl(15 60% 65% / 0.3)",
+                  "0 0 30px hsl(45 70% 60% / 0.5)",
+                  "0 0 20px hsl(15 60% 65% / 0.3)",
                 ],
               }}
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
@@ -98,7 +98,7 @@ export const Header = () => {
                 <Heart className="w-5 h-5 text-white fill-white" />
               </motion.div>
             </motion.div>
-            <span className="text-xl font-bold bg-gradient-hero bg-clip-text text-transparent">
+            <span className="text-xl font-bold text-gradient-animated">
               WeddingTech
             </span>
           </motion.div>
@@ -151,9 +151,10 @@ export const Header = () => {
             >
               <Button 
                 size="sm"
-                className="bg-gradient-hero shadow-lg hover:shadow-xl transition-all duration-300"
+                className="gradient-luxe shadow-lg hover:shadow-xl transition-all duration-300 text-white border-0"
                 onClick={() => navigate('/auth')}
               >
+                <Gem className="w-4 h-4 mr-1" />
                 {t('hero.cta')}
               </Button>
             </motion.div>
@@ -202,7 +203,7 @@ export const Header = () => {
               transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
             >
               <motion.div 
-                className="flex flex-col gap-1 glass-card p-3 rounded-2xl"
+                className="flex flex-col gap-1 glass-luxe p-3 rounded-2xl"
                 initial={{ y: -20 }}
                 animate={{ y: 0 }}
                 transition={{ delay: 0.1 }}
@@ -245,9 +246,10 @@ export const Header = () => {
                     {t('nav.signIn')}
                   </Button>
                   <Button 
-                    className="w-full bg-gradient-hero shadow-lg"
+                    className="w-full gradient-luxe shadow-lg text-white border-0"
                     onClick={() => navigate('/auth')}
                   >
+                    <Gem className="w-4 h-4 mr-1" />
                     {t('hero.cta')}
                   </Button>
                 </motion.div>

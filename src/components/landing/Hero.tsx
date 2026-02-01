@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Sparkles, Heart, ArrowRight, Play, Star } from "lucide-react";
+import { Sparkles, Heart, ArrowRight, Play, Star, Crown, Award } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState, memo, useMemo } from "react";
@@ -8,7 +8,10 @@ import heroImage from "@/assets/hero-wedding.jpg";
 import { FloatingElement } from "./AnimatedSection";
 import { ParticleBackground } from "./ParticleBackground";
 import { ScrollIndicator } from "./ScrollIndicator";
-import { MagneticButton } from "./MagneticButton";
+import { TextReveal } from "./TextReveal";
+import { TiltCard } from "./TiltCard";
+import { FloatingBadge } from "./FloatingBadge";
+import { GradientButton } from "./GradientButton";
 
 // Optimized variants with GPU-friendly transforms
 const containerVariants = {
@@ -48,40 +51,49 @@ const statVariants = {
   },
 };
 
-// Memoized stat card
-const StatCard = memo(({ value, label, index }: { value: string; label: string; index: number }) => (
-  <motion.div
-    variants={statVariants}
-    whileHover={{ scale: 1.06, y: -4 }}
-    transition={{ duration: 0.2 }}
-    className="glass-card p-4 text-center cursor-default gpu-accelerated"
-  >
-    <motion.div 
-      className="text-2xl sm:text-3xl font-bold bg-gradient-hero bg-clip-text text-transparent mb-1"
-      initial={{ scale: 0 }}
-      whileInView={{ scale: 1 }}
-      viewport={{ once: true }}
-      transition={{ delay: 0.4 + index * 0.08, type: "spring", stiffness: 180 }}
+// Memoized stat card with 3D tilt
+const StatCard = memo(({ value, label, index, icon: Icon }: { value: string; label: string; index: number; icon: React.ElementType }) => (
+  <TiltCard tiltAmount={10} scale={1.05}>
+    <motion.div
+      variants={statVariants}
+      className="glass-luxe p-5 text-center cursor-default rounded-2xl h-full"
     >
-      {value}
+      <motion.div 
+        className="w-10 h-10 rounded-xl gradient-luxe flex items-center justify-center mx-auto mb-3"
+        initial={{ scale: 0, rotate: -180 }}
+        whileInView={{ scale: 1, rotate: 0 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.3 + index * 0.1, type: "spring" as const, stiffness: 200 }}
+      >
+        <Icon className="w-5 h-5 text-white" />
+      </motion.div>
+      <motion.div 
+        className="text-3xl sm:text-4xl font-bold text-gradient-animated mb-1"
+        initial={{ scale: 0 }}
+        whileInView={{ scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.4 + index * 0.08, type: "spring" as const, stiffness: 180 }}
+      >
+        {value}
+      </motion.div>
+      <div className="text-sm text-muted-foreground font-medium">
+        {label}
+      </div>
     </motion.div>
-    <div className="text-xs sm:text-sm text-muted-foreground">
-      {label}
-    </div>
-  </motion.div>
+  </TiltCard>
 ));
 
 StatCard.displayName = "StatCard";
 
-// Memoized decorative stars - rendered once
+// Memoized decorative stars
 const DecorativeStars = memo(() => {
   const stars = useMemo(() => 
-    Array.from({ length: 4 }, (_, i) => ({
+    Array.from({ length: 5 }, (_, i) => ({
       id: i,
-      top: 25 + i * 18,
-      right: 12 + i * 10,
-      delay: i * 0.6,
-      duration: 5 + i,
+      top: 20 + i * 15,
+      right: 8 + i * 8,
+      delay: i * 0.5,
+      duration: 4 + i,
     })), 
   []);
 
@@ -94,8 +106,8 @@ const DecorativeStars = memo(() => {
           style={{ top: `${star.top}%`, right: `${star.right}%` }}
           initial={{ opacity: 0 }}
           animate={{ 
-            opacity: [0.2, 0.6, 0.2], 
-            scale: [0.9, 1.1, 0.9],
+            opacity: [0.3, 0.7, 0.3], 
+            scale: [0.9, 1.2, 0.9],
             rotate: [0, 180, 360],
           }}
           transition={{ 
@@ -105,7 +117,7 @@ const DecorativeStars = memo(() => {
             ease: "easeInOut"
           }}
         >
-          <Star className="w-3 h-3 text-primary/30 fill-primary/15" />
+          <Star className="w-3 h-3 text-wedding-gold/40 fill-wedding-gold/20" />
         </motion.div>
       ))}
     </>
@@ -120,7 +132,7 @@ export const Hero = () => {
   const prefersReducedMotion = useReducedMotion();
   const { scrollY } = useScroll();
   
-  // Parallax effects - disabled if user prefers reduced motion
+  // Parallax effects
   const imageY = useTransform(scrollY, [0, 500], [0, prefersReducedMotion ? 0 : 100]);
   const imageScale = useTransform(scrollY, [0, 500], [1, prefersReducedMotion ? 1 : 1.1]);
   const contentY = useTransform(scrollY, [0, 300], [0, prefersReducedMotion ? 0 : -30]);
@@ -152,49 +164,63 @@ export const Hero = () => {
           className="w-full h-full object-cover gpu-accelerated"
           loading="eager"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/98 via-background/90 to-background/60" />
-        <div className="absolute inset-0 bg-mesh opacity-60" />
-        <div className="absolute inset-0 aurora opacity-25" />
+        {/* Luxe gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-background/98 via-background/85 to-transparent" />
+        <div className="absolute inset-0 bg-mesh opacity-50" />
+        <div className="absolute inset-0 aurora opacity-20" />
       </motion.div>
 
-      {/* Decorative Elements */}
-      <FloatingElement className="absolute top-32 left-10 z-20" delay={0}>
+      {/* Floating Badge - Top Left */}
+      <FloatingBadge className="absolute top-32 left-8 z-20 hidden md:block" delay={0.5}>
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl gradient-luxe flex items-center justify-center">
+            <Crown className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <div className="text-xs text-muted-foreground">2025</div>
+            <div className="text-sm font-semibold">#1 в Центральной Азии</div>
+          </div>
+        </div>
+      </FloatingBadge>
+
+      {/* Floating Decorative Elements */}
+      <FloatingElement className="absolute top-40 right-16 z-20 hidden lg:block" delay={0}>
         <motion.div 
           initial={{ opacity: 0, scale: 0, rotate: -180 }}
           animate={{ opacity: 1, scale: 1, rotate: 0 }}
-          transition={{ delay: 0.8, type: "spring", stiffness: 150 }}
-          className="w-16 h-16 rounded-2xl glass-card flex items-center justify-center glow-premium sparkle gpu-accelerated"
+          transition={{ delay: 0.8, type: "spring" as const, stiffness: 150 }}
+          className="w-16 h-16 rounded-2xl glass-luxe flex items-center justify-center glow-gold gpu-accelerated"
         >
           <Heart className="w-8 h-8 text-primary fill-primary/50" />
         </motion.div>
       </FloatingElement>
       
-      <FloatingElement className="absolute bottom-40 right-20 z-20" delay={0.8}>
+      <FloatingElement className="absolute bottom-40 right-24 z-20 hidden lg:block" delay={0.8}>
         <motion.div 
           initial={{ opacity: 0, scale: 0, rotate: 180 }}
           animate={{ opacity: 1, scale: 1, rotate: 0 }}
-          transition={{ delay: 1, type: "spring", stiffness: 150 }}
-          className="w-20 h-20 rounded-3xl glass-card flex items-center justify-center glow-premium gpu-accelerated"
+          transition={{ delay: 1, type: "spring" as const, stiffness: 150 }}
+          className="w-20 h-20 rounded-3xl glass-luxe flex items-center justify-center glow-premium gpu-accelerated"
         >
           <motion.div
             animate={{ rotate: 360 }}
             transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
             className="gpu-accelerated"
           >
-            <Sparkles className="w-10 h-10 text-primary" />
+            <Sparkles className="w-10 h-10 text-wedding-gold" />
           </motion.div>
         </motion.div>
       </FloatingElement>
       
-      <FloatingElement className="absolute top-1/2 right-32 hidden lg:flex z-20" delay={0.4}>
+      <FloatingElement className="absolute top-1/2 right-40 hidden xl:flex z-20" delay={0.4}>
         <motion.div 
           initial={{ opacity: 0, scale: 0 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 1.2, type: "spring", stiffness: 150 }}
-          className="w-12 h-12 rounded-xl glass-card flex items-center justify-center gpu-accelerated"
+          transition={{ delay: 1.2, type: "spring" as const, stiffness: 150 }}
+          className="w-12 h-12 rounded-xl glass-luxe flex items-center justify-center gpu-accelerated"
         >
           <motion.div 
-            className="w-3 h-3 rounded-full bg-gradient-hero"
+            className="w-3 h-3 rounded-full gradient-luxe"
             animate={{ scale: [1, 1.4, 1] }}
             transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
           />
@@ -214,41 +240,42 @@ export const Hero = () => {
           initial="hidden"
           animate="visible"
         >
-          {/* Badge with shimmer effect */}
+          {/* Premium Badge */}
           <motion.div 
             variants={itemVariants}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl glass-card mb-8 sparkle"
+            className="inline-flex items-center gap-3 px-5 py-2.5 rounded-2xl glass-luxe mb-8 sparkle"
           >
             <motion.div 
-              className="w-2 h-2 rounded-full bg-gradient-hero"
+              className="w-2.5 h-2.5 rounded-full gradient-luxe"
               animate={{ scale: [1, 1.4, 1], opacity: [1, 0.6, 1] }}
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             />
-            <Sparkles className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium text-foreground">
+            <Award className="w-4 h-4 text-wedding-gold" />
+            <span className="text-sm font-semibold text-foreground">
               Первая AI-платформа в Узбекистане
             </span>
           </motion.div>
 
-          {/* Animated Title */}
-          <motion.h1 
-            variants={itemVariants}
-            className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
-          >
-            Увидьте свою{" "}
-            <span className="text-gradient-animated">
-              мечту о свадьбе
-            </span>
-            <br />
-            <motion.span 
-              className="text-foreground/90"
-              initial={{ opacity: 0, x: -15 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.7, duration: 0.5 }}
-            >
-              ещё до её начала
-            </motion.span>
-          </motion.h1>
+          {/* Animated Title with Split Reveal */}
+          <motion.div variants={itemVariants} className="mb-6">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight">
+              <TextReveal text="Увидьте свою" className="block" delay={0.3} />
+              <TextReveal 
+                text="мечту о свадьбе" 
+                className="block" 
+                delay={0.5} 
+                gradient 
+              />
+              <motion.span 
+                className="block text-foreground/85 mt-2"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 1.2, duration: 0.6 }}
+              >
+                ещё до её начала
+              </motion.span>
+            </h1>
+          </motion.div>
 
           <motion.p 
             variants={itemVariants}
@@ -258,61 +285,43 @@ export const Hero = () => {
           </motion.p>
 
           <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4">
-            <MagneticButton strength={15}>
-              <motion.div
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.97 }}
-                transition={{ duration: 0.15 }}
+            <GradientButton
+              size="lg"
+              onClick={() => navigate(isAuthenticated ? '/dashboard' : '/auth')}
+            >
+              <Sparkles className="w-5 h-5" />
+              Начать планирование
+              <motion.span
+                animate={{ x: [0, 4, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
               >
-                <Button
-                  size="lg"
-                  className="text-lg h-14 px-8 bg-gradient-hero shadow-xl hover:shadow-2xl transition-shadow duration-300 group glow-premium"
-                  onClick={() => navigate(isAuthenticated ? '/dashboard' : '/auth')}
-                >
-                  Начать планирование
-                  <motion.span
-                    className="ml-2"
-                    animate={{ x: [0, 3, 0] }}
-                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                  >
-                    <ArrowRight className="w-5 h-5" />
-                  </motion.span>
-                </Button>
-              </motion.div>
-            </MagneticButton>
+                <ArrowRight className="w-5 h-5" />
+              </motion.span>
+            </GradientButton>
 
-            <MagneticButton strength={12}>
-              <motion.div
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.97 }}
-                transition={{ duration: 0.15 }}
+            <GradientButton
+              size="lg"
+              variant="outline"
+              onClick={() => navigate(isAuthenticated ? '/ai-visualizer' : '/auth')}
+            >
+              <motion.span
+                animate={{ scale: [1, 1.15, 1] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
               >
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="text-lg h-14 px-8 glass-button border-2 hover:bg-accent/50 group gradient-border"
-                  onClick={() => navigate(isAuthenticated ? '/ai-visualizer' : '/auth')}
-                >
-                  <motion.span
-                    animate={{ scale: [1, 1.15, 1] }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                  >
-                    <Play className="mr-2 w-5 h-5" />
-                  </motion.span>
-                  Смотреть демо
-                </Button>
-              </motion.div>
-            </MagneticButton>
+                <Play className="w-5 h-5" />
+              </motion.span>
+              Смотреть демо
+            </GradientButton>
           </motion.div>
 
-          {/* Stats */}
+          {/* Stats with 3D Tilt Cards */}
           <motion.div 
             variants={containerVariants}
             className="grid grid-cols-3 gap-4 mt-14 pt-8"
           >
-            <StatCard value="1500+" label="Поставщиков" index={0} />
-            <StatCard value="10K+" label="Свадеб" index={1} />
-            <StatCard value="98%" label="Довольны" index={2} />
+            <StatCard value="1500+" label="Поставщиков" index={0} icon={Sparkles} />
+            <StatCard value="10K+" label="Свадеб" index={1} icon={Heart} />
+            <StatCard value="98%" label="Довольны" index={2} icon={Star} />
           </motion.div>
         </motion.div>
       </motion.div>

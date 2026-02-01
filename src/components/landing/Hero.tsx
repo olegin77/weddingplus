@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState, memo, useMemo } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
-import heroImage from "@/assets/hero-wedding.jpg";
+import heroImage from "@/assets/hero-wedding-luxe.jpg";
 import { FloatingElement } from "./AnimatedSection";
 import { ParticleBackground } from "./ParticleBackground";
 import { ScrollIndicator } from "./ScrollIndicator";
@@ -104,18 +104,10 @@ const DecorativeStars = memo(() => {
           key={star.id}
           className="absolute hidden lg:block gpu-accelerated"
           style={{ top: `${star.top}%`, right: `${star.right}%` }}
-          initial={{ opacity: 0 }}
-          animate={{ 
-            opacity: [0.3, 0.7, 0.3], 
-            scale: [0.9, 1.2, 0.9],
-            rotate: [0, 180, 360],
-          }}
-          transition={{ 
-            duration: star.duration, 
-            repeat: Infinity, 
-            delay: star.delay,
-            ease: "easeInOut"
-          }}
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 0.45, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: star.delay }}
         >
           <Star className="w-3 h-3 text-wedding-gold/40 fill-wedding-gold/20" />
         </motion.div>
@@ -165,7 +157,8 @@ export const Hero = () => {
           loading="eager"
         />
         {/* Luxe gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-background/98 via-background/85 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/98 via-background/92 to-background/30" />
+        <div className="absolute inset-0 bg-background/10" />
         <div className="absolute inset-0 bg-mesh opacity-50" />
         <div className="absolute inset-0 aurora opacity-20" />
       </motion.div>
@@ -203,9 +196,9 @@ export const Hero = () => {
           className="w-20 h-20 rounded-3xl glass-luxe flex items-center justify-center glow-premium gpu-accelerated"
         >
           <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
             className="gpu-accelerated"
+            whileHover={{ rotate: 8, scale: 1.02 }}
+            transition={{ type: "spring" as const, stiffness: 220, damping: 18 }}
           >
             <Sparkles className="w-10 h-10 text-wedding-gold" />
           </motion.div>
@@ -219,11 +212,7 @@ export const Hero = () => {
           transition={{ delay: 1.2, type: "spring" as const, stiffness: 150 }}
           className="w-12 h-12 rounded-xl glass-luxe flex items-center justify-center gpu-accelerated"
         >
-          <motion.div 
-            className="w-3 h-3 rounded-full gradient-luxe"
-            animate={{ scale: [1, 1.4, 1] }}
-            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-          />
+          <div className="w-3 h-3 rounded-full gradient-luxe" />
         </motion.div>
       </FloatingElement>
       
@@ -245,11 +234,7 @@ export const Hero = () => {
             variants={itemVariants}
             className="inline-flex items-center gap-3 px-5 py-2.5 rounded-2xl glass-luxe mb-8 sparkle"
           >
-            <motion.div 
-              className="w-2.5 h-2.5 rounded-full gradient-luxe"
-              animate={{ scale: [1, 1.4, 1], opacity: [1, 0.6, 1] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            />
+            <div className="w-2.5 h-2.5 rounded-full gradient-luxe" />
             <Award className="w-4 h-4 text-wedding-gold" />
             <span className="text-sm font-semibold text-foreground">
               Первая AI-платформа в Узбекистане
@@ -279,7 +264,7 @@ export const Hero = () => {
 
           <motion.p 
             variants={itemVariants}
-            className="text-xl sm:text-2xl text-muted-foreground mb-10 leading-relaxed max-w-2xl"
+            className="text-xl sm:text-2xl text-foreground/80 mb-10 leading-relaxed max-w-2xl"
           >
             Революционная платформа с AI-визуализацией превратит планирование вашей свадьбы в волшебное путешествие
           </motion.p>
@@ -292,8 +277,8 @@ export const Hero = () => {
               <Sparkles className="w-5 h-5" />
               Начать планирование
               <motion.span
-                animate={{ x: [0, 4, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                whileHover={{ x: 4 }}
+                transition={{ type: "spring" as const, stiffness: 260, damping: 20 }}
               >
                 <ArrowRight className="w-5 h-5" />
               </motion.span>
@@ -305,8 +290,8 @@ export const Hero = () => {
               onClick={() => navigate(isAuthenticated ? '/ai-visualizer' : '/auth')}
             >
               <motion.span
-                animate={{ scale: [1, 1.15, 1] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                whileHover={{ scale: 1.06 }}
+                transition={{ type: "spring" as const, stiffness: 260, damping: 20 }}
               >
                 <Play className="w-5 h-5" />
               </motion.span>

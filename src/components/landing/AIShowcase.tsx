@@ -93,8 +93,8 @@ export const AIShowcase = () => {
             whileHover={{ scale: 1.05 }}
           >
             <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+              whileHover={{ rotate: 10 }}
+              transition={{ type: "spring" as const, stiffness: 260, damping: 20 }}
             >
               <Wand2 className="w-4 h-4 text-wedding-gold" />
             </motion.div>
@@ -211,8 +211,8 @@ export const AIShowcase = () => {
                     >
                       <motion.div
                         className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${item.gradient} blur-xl opacity-50`}
-                        animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-                        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                        whileHover={{ scale: 1.08, opacity: 0.55 }}
+                        transition={{ duration: 0.25 }}
                       />
                       <item.icon className="w-7 h-7 text-white relative z-10" />
                     </motion.div>
@@ -234,8 +234,8 @@ export const AIShowcase = () => {
                         >
                           <motion.div 
                             className={`w-2.5 h-2.5 rounded-full bg-gradient-to-r ${item.gradient}`}
-                            animate={{ scale: [1, 1.3, 1] }}
-                            transition={{ duration: 2, repeat: Infinity, delay: idx * 0.2 }}
+                            whileHover={{ scale: 1.25 }}
+                            transition={{ type: "spring" as const, stiffness: 260, damping: 20 }}
                           />
                           <span className="text-foreground font-medium">{feature}</span>
                         </motion.li>

@@ -219,30 +219,15 @@ export const Pricing = () => {
 
   return (
     <section id="pricing" className="py-24 bg-mesh relative overflow-hidden">
-      {/* Animated background blobs */}
-      <motion.div 
+      {/* Static background blobs (no animation - using CSS blob class for very slow morph) */}
+      <div 
         className="absolute top-0 right-1/4 w-96 h-96 bg-primary/8 rounded-full blur-3xl blob"
-        animate={{ 
-          y: [-20, 20, -20],
-          x: [0, 30, 0],
-        }}
-        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
       />
-      <motion.div 
+      <div 
         className="absolute bottom-0 left-1/4 w-96 h-96 bg-wedding-burgundy/8 rounded-full blur-3xl blob"
-        animate={{ 
-          y: [20, -20, 20],
-          x: [0, -30, 0],
-        }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 5 }}
       />
-      <motion.div 
+      <div 
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-wedding-gold/5 rounded-full blur-3xl"
-        animate={{ 
-          scale: [1, 1.2, 1],
-          rotate: [0, 180, 360],
-        }}
-        transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
       />
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

@@ -122,12 +122,10 @@ export const FloatingElement = ({
   return (
     <motion.div
       initial={{ y: 0 }}
-      animate={{ y: [-amplitude, amplitude, -amplitude] }}
+      whileHover={{ y: -amplitude }}
       transition={{
-        duration: 4,
-        ease: "easeInOut",
-        repeat: Infinity,
-        delay,
+        duration: 0.3,
+        ease: "easeOut",
       }}
       className={className}
     >

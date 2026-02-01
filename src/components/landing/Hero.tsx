@@ -4,14 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState, memo, useMemo } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
-import heroImage from "@/assets/hero-wedding-luxe.jpg";
 import { FloatingElement } from "./AnimatedSection";
-import { ParticleBackground } from "./ParticleBackground";
 import { ScrollIndicator } from "./ScrollIndicator";
 import { TextReveal } from "./TextReveal";
 import { TiltCard } from "./TiltCard";
 import { FloatingBadge } from "./FloatingBadge";
 import { GradientButton } from "./GradientButton";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Optimized variants with GPU-friendly transforms
 const containerVariants = {
@@ -56,19 +55,19 @@ const StatCard = memo(({ value, label, index, icon: Icon }: { value: string; lab
   <TiltCard tiltAmount={10} scale={1.05}>
     <motion.div
       variants={statVariants}
-      className="glass-luxe p-5 text-center cursor-default rounded-2xl h-full"
+      className="glass-luxe p-4 sm:p-5 text-center cursor-default rounded-2xl h-full"
     >
       <motion.div 
-        className="w-10 h-10 rounded-xl gradient-luxe flex items-center justify-center mx-auto mb-3"
+        className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl gradient-luxe flex items-center justify-center mx-auto mb-2 sm:mb-3"
         initial={{ scale: 0, rotate: -180 }}
         whileInView={{ scale: 1, rotate: 0 }}
         viewport={{ once: true }}
         transition={{ delay: 0.3 + index * 0.1, type: "spring" as const, stiffness: 200 }}
       >
-        <Icon className="w-5 h-5 text-white" />
+        <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
       </motion.div>
       <motion.div 
-        className="text-3xl sm:text-4xl font-bold text-gradient-animated mb-1"
+        className="text-2xl sm:text-3xl md:text-4xl font-bold text-gradient-animated mb-1"
         initial={{ scale: 0 }}
         whileInView={{ scale: 1 }}
         viewport={{ once: true }}
@@ -76,7 +75,7 @@ const StatCard = memo(({ value, label, index, icon: Icon }: { value: string; lab
       >
         {value}
       </motion.div>
-      <div className="text-sm text-muted-foreground font-medium">
+      <div className="text-xs sm:text-sm text-muted-foreground font-medium">
         {label}
       </div>
     </motion.div>
@@ -85,7 +84,7 @@ const StatCard = memo(({ value, label, index, icon: Icon }: { value: string; lab
 
 StatCard.displayName = "StatCard";
 
-// Memoized decorative stars
+// Memoized decorative stars - only on desktop
 const DecorativeStars = memo(() => {
   const stars = useMemo(() => 
     Array.from({ length: 5 }, (_, i) => ({
@@ -93,7 +92,6 @@ const DecorativeStars = memo(() => {
       top: 20 + i * 15,
       right: 8 + i * 8,
       delay: i * 0.5,
-      duration: 4 + i,
     })), 
   []);
 
@@ -122,12 +120,11 @@ export const Hero = () => {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const prefersReducedMotion = useReducedMotion();
+  const isMobile = useIsMobile();
   const { scrollY } = useScroll();
   
-  // Parallax effects
-  const imageY = useTransform(scrollY, [0, 500], [0, prefersReducedMotion ? 0 : 100]);
-  const imageScale = useTransform(scrollY, [0, 500], [1, prefersReducedMotion ? 1 : 1.1]);
-  const contentY = useTransform(scrollY, [0, 300], [0, prefersReducedMotion ? 0 : -30]);
+  // Parallax effects - disabled on mobile for performance
+  const contentY = useTransform(scrollY, [0, 300], [0, prefersReducedMotion || isMobile ? 0 : -30]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0.4]);
 
   useEffect(() => {
@@ -138,32 +135,82 @@ export const Hero = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Particle Background */}
-      <ParticleBackground />
-      
-      {/* Background Image with Parallax */}
-      <motion.div 
-        className="absolute inset-0 z-0 gpu-accelerated"
-        style={{ y: imageY }}
-      >
-        <motion.img
-          initial={{ scale: 1.1, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-          style={{ scale: imageScale }}
-          src={heroImage}
-          alt="Elegant wedding couple"
-          className="w-full h-full object-cover gpu-accelerated"
-          loading="eager"
+      {/* Premium Mesh Gradient Background (no photo) */}
+      <div className="absolute inset-0 z-0">
+        {/* Base gradient */}
+        <div 
+          className="absolute inset-0"
+          style={{
+            background: `
+              linear-gradient(135deg, 
+                hsl(40 30% 98%) 0%,
+                hsl(40 45% 95%) 25%,
+                hsl(40 35% 96%) 50%,
+                hsl(40 40% 94%) 75%,
+                hsl(40 30% 97%) 100%
+              )
+            `,
+          }}
         />
-        {/* Luxe gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-background/98 via-background/92 to-background/30" />
-        <div className="absolute inset-0 bg-background/10" />
-        <div className="absolute inset-0 bg-mesh opacity-50" />
-        <div className="absolute inset-0 aurora opacity-20" />
-      </motion.div>
+        
+        {/* Mesh gradient overlay */}
+        <div 
+          className="absolute inset-0"
+          style={{
+            background: `
+              radial-gradient(ellipse 80% 50% at 20% 40%, hsl(15 60% 65% / 0.08) 0%, transparent 50%),
+              radial-gradient(ellipse 60% 40% at 80% 20%, hsl(45 70% 60% / 0.1) 0%, transparent 50%),
+              radial-gradient(ellipse 70% 60% at 40% 80%, hsl(40 45% 88% / 0.15) 0%, transparent 50%),
+              radial-gradient(ellipse 50% 30% at 90% 70%, hsl(345 45% 35% / 0.05) 0%, transparent 50%)
+            `,
+          }}
+        />
+        
+        {/* Floating blobs - very slow animation */}
+        <motion.div 
+          className="absolute top-1/4 left-1/4 w-[400px] h-[400px] rounded-full blur-3xl"
+          style={{ 
+            background: 'hsl(15 60% 65% / 0.06)',
+          }}
+          animate={!isMobile ? { 
+            x: [0, 30, 0],
+            y: [0, 20, 0],
+          } : undefined}
+          transition={{ duration: 45, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div 
+          className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full blur-3xl"
+          style={{ 
+            background: 'hsl(45 70% 60% / 0.05)',
+          }}
+          animate={!isMobile ? { 
+            x: [0, -25, 0],
+            y: [0, -15, 0],
+          } : undefined}
+          transition={{ duration: 50, repeat: Infinity, ease: "easeInOut", delay: 15 }}
+        />
+        
+        {/* Subtle noise texture overlay */}
+        <div 
+          className="absolute inset-0 opacity-30"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E")`,
+          }}
+        />
+        
+        {/* Soft vignette */}
+        <div 
+          className="absolute inset-0"
+          style={{
+            background: 'radial-gradient(ellipse at center, transparent 0%, hsl(40 30% 98% / 0.3) 100%)',
+          }}
+        />
+        
+        {/* Aurora effect */}
+        <div className="absolute inset-0 aurora opacity-30" />
+      </div>
 
-      {/* Floating Badge - Top Left */}
+      {/* Floating Badge - Top Left - hidden on mobile */}
       <FloatingBadge className="absolute top-32 left-8 z-20 hidden md:block" delay={0.5}>
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl gradient-luxe flex items-center justify-center">
@@ -176,47 +223,51 @@ export const Hero = () => {
         </div>
       </FloatingBadge>
 
-      {/* Floating Decorative Elements */}
-      <FloatingElement className="absolute top-40 right-16 z-20 hidden lg:block" delay={0}>
-        <motion.div 
-          initial={{ opacity: 0, scale: 0, rotate: -180 }}
-          animate={{ opacity: 1, scale: 1, rotate: 0 }}
-          transition={{ delay: 0.8, type: "spring" as const, stiffness: 150 }}
-          className="w-16 h-16 rounded-2xl glass-luxe flex items-center justify-center glow-gold gpu-accelerated"
-        >
-          <Heart className="w-8 h-8 text-primary fill-primary/50" />
-        </motion.div>
-      </FloatingElement>
-      
-      <FloatingElement className="absolute bottom-40 right-24 z-20 hidden lg:block" delay={0.8}>
-        <motion.div 
-          initial={{ opacity: 0, scale: 0, rotate: 180 }}
-          animate={{ opacity: 1, scale: 1, rotate: 0 }}
-          transition={{ delay: 1, type: "spring" as const, stiffness: 150 }}
-          className="w-20 h-20 rounded-3xl glass-luxe flex items-center justify-center glow-premium gpu-accelerated"
-        >
-          <motion.div
-            className="gpu-accelerated"
-            whileHover={{ rotate: 8, scale: 1.02 }}
-            transition={{ type: "spring" as const, stiffness: 220, damping: 18 }}
-          >
-            <Sparkles className="w-10 h-10 text-wedding-gold" />
-          </motion.div>
-        </motion.div>
-      </FloatingElement>
-      
-      <FloatingElement className="absolute top-1/2 right-40 hidden xl:flex z-20" delay={0.4}>
-        <motion.div 
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 1.2, type: "spring" as const, stiffness: 150 }}
-          className="w-12 h-12 rounded-xl glass-luxe flex items-center justify-center gpu-accelerated"
-        >
-          <div className="w-3 h-3 rounded-full gradient-luxe" />
-        </motion.div>
-      </FloatingElement>
-      
-      <DecorativeStars />
+      {/* Floating Decorative Elements - only on desktop */}
+      {!isMobile && (
+        <>
+          <FloatingElement className="absolute top-40 right-16 z-20 hidden lg:block" delay={0}>
+            <motion.div 
+              initial={{ opacity: 0, scale: 0, rotate: -180 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              transition={{ delay: 0.8, type: "spring" as const, stiffness: 150 }}
+              className="w-16 h-16 rounded-2xl glass-luxe flex items-center justify-center glow-gold gpu-accelerated"
+            >
+              <Heart className="w-8 h-8 text-primary fill-primary/50" />
+            </motion.div>
+          </FloatingElement>
+          
+          <FloatingElement className="absolute bottom-40 right-24 z-20 hidden lg:block" delay={0.8}>
+            <motion.div 
+              initial={{ opacity: 0, scale: 0, rotate: 180 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              transition={{ delay: 1, type: "spring" as const, stiffness: 150 }}
+              className="w-20 h-20 rounded-3xl glass-luxe flex items-center justify-center glow-premium gpu-accelerated"
+            >
+              <motion.div
+                className="gpu-accelerated"
+                whileHover={{ rotate: 8, scale: 1.02 }}
+                transition={{ type: "spring" as const, stiffness: 220, damping: 18 }}
+              >
+                <Sparkles className="w-10 h-10 text-wedding-gold" />
+              </motion.div>
+            </motion.div>
+          </FloatingElement>
+          
+          <FloatingElement className="absolute top-1/2 right-40 hidden xl:flex z-20" delay={0.4}>
+            <motion.div 
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 1.2, type: "spring" as const, stiffness: 150 }}
+              className="w-12 h-12 rounded-xl glass-luxe flex items-center justify-center gpu-accelerated"
+            >
+              <div className="w-3 h-3 rounded-full gradient-luxe" />
+            </motion.div>
+          </FloatingElement>
+          
+          <DecorativeStars />
+        </>
+      )}
 
       {/* Content with parallax */}
       <motion.div 
@@ -232,18 +283,18 @@ export const Hero = () => {
           {/* Premium Badge */}
           <motion.div 
             variants={itemVariants}
-            className="inline-flex items-center gap-3 px-5 py-2.5 rounded-2xl glass-luxe mb-8 sparkle"
+            className="inline-flex items-center gap-2 sm:gap-3 px-4 sm:px-5 py-2 sm:py-2.5 rounded-2xl glass-luxe mb-6 sm:mb-8"
           >
-            <div className="w-2.5 h-2.5 rounded-full gradient-luxe" />
-            <Award className="w-4 h-4 text-wedding-gold" />
-            <span className="text-sm font-semibold text-foreground">
+            <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full gradient-luxe" />
+            <Award className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-wedding-gold" />
+            <span className="text-xs sm:text-sm font-semibold text-foreground">
               Первая AI-платформа в Узбекистане
             </span>
           </motion.div>
 
           {/* Animated Title with Split Reveal */}
-          <motion.div variants={itemVariants} className="mb-6">
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight">
+          <motion.div variants={itemVariants} className="mb-4 sm:mb-6">
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold leading-tight">
               <TextReveal text="Увидьте свою" className="block" delay={0.3} />
               <TextReveal 
                 text="мечту о свадьбе" 
@@ -264,28 +315,28 @@ export const Hero = () => {
 
           <motion.p 
             variants={itemVariants}
-            className="text-xl sm:text-2xl text-foreground/80 mb-10 leading-relaxed max-w-2xl"
+            className="text-lg sm:text-xl md:text-2xl text-foreground/80 mb-8 sm:mb-10 leading-relaxed max-w-2xl"
           >
             Революционная платформа с AI-визуализацией превратит планирование вашей свадьбы в волшебное путешествие
           </motion.p>
 
-          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4">
+          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-3 sm:gap-4">
             <GradientButton
-              size="lg"
+              size={isMobile ? "default" : "lg"}
               onClick={() => navigate(isAuthenticated ? '/dashboard' : '/auth')}
             >
-              <Sparkles className="w-5 h-5" />
+              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
               Начать планирование
               <motion.span
                 whileHover={{ x: 4 }}
                 transition={{ type: "spring" as const, stiffness: 260, damping: 20 }}
               >
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </motion.span>
             </GradientButton>
 
             <GradientButton
-              size="lg"
+              size={isMobile ? "default" : "lg"}
               variant="outline"
               onClick={() => navigate(isAuthenticated ? '/ai-visualizer' : '/auth')}
             >
@@ -293,7 +344,7 @@ export const Hero = () => {
                 whileHover={{ scale: 1.06 }}
                 transition={{ type: "spring" as const, stiffness: 260, damping: 20 }}
               >
-                <Play className="w-5 h-5" />
+                <Play className="w-4 h-4 sm:w-5 sm:h-5" />
               </motion.span>
               Смотреть демо
             </GradientButton>
@@ -302,7 +353,7 @@ export const Hero = () => {
           {/* Stats with 3D Tilt Cards */}
           <motion.div 
             variants={containerVariants}
-            className="grid grid-cols-3 gap-4 mt-14 pt-8"
+            className="grid grid-cols-3 gap-2 sm:gap-4 mt-10 sm:mt-14 pt-6 sm:pt-8"
           >
             <StatCard value="1500+" label="Поставщиков" index={0} icon={Sparkles} />
             <StatCard value="10K+" label="Свадеб" index={1} icon={Heart} />

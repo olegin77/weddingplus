@@ -115,19 +115,11 @@ const ActionButton = ({ icon: Icon, label, onClick, gradient = "from-primary to-
       variant={isPrimary ? "default" : "outline"}
       onClick={onClick}
     >
-      {/* Shimmer effect */}
-      <motion.div
-        className="absolute inset-0 opacity-0 group-hover:opacity-100"
+      {/* Static shimmer on hover only */}
+      <div
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
         style={{
-          background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)",
-        }}
-        animate={{
-          x: ["-100%", "100%"],
-        }}
-        transition={{
-          duration: 1.5,
-          repeat: Infinity,
-          ease: "easeInOut",
+          background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)",
         }}
       />
       
@@ -223,14 +215,12 @@ const Dashboard = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
-            <motion.div
-              className="w-12 h-12 rounded-2xl bg-gradient-hero flex items-center justify-center"
-              animate={{ rotate: 360, scale: [1, 1.1, 1] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+            <div
+              className="w-12 h-12 rounded-2xl gradient-luxe flex items-center justify-center animate-spin-slow"
             >
               <Sparkles className="w-6 h-6 text-white" />
-            </motion.div>
-            <div className="text-muted-foreground">Загрузка...</div>
+            </div>
+            <div className="text-muted-foreground mt-4">Загрузка...</div>
           </motion.div>
         </div>
       </DashboardLayout>
@@ -299,13 +289,8 @@ const Dashboard = () => {
         <motion.div variants={itemVariants}>
           <Card className="glass-card overflow-hidden">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <motion.div
-                  animate={{ rotate: [0, 360] }}
-                  transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                >
-                  <Sparkles className="w-5 h-5 text-primary" />
-                </motion.div>
+            <CardTitle className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-primary" />
                 Быстрые действия
               </CardTitle>
               <CardDescription>Начните планирование прямо сейчас</CardDescription>

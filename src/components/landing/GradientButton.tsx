@@ -75,9 +75,9 @@ export const GradientButton = memo(({
       whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.97 }}
     >
-      {/* Animated mesh gradient background */}
+      {/* Static mesh gradient background (no animation) */}
       {variant === "primary" && (
-        <motion.div
+        <div
           className="absolute inset-0 opacity-80"
           style={{
             background: `
@@ -85,15 +85,6 @@ export const GradientButton = memo(({
               radial-gradient(circle at 80% 80%, hsl(345 45% 35% / 0.3) 0%, transparent 50%),
               radial-gradient(circle at 50% 50%, hsl(15 60% 65%) 0%, hsl(45 70% 60%) 100%)
             `,
-            backgroundSize: "200% 200%",
-          }}
-          animate={{
-            backgroundPosition: ["0% 0%", "100% 100%", "0% 0%"],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut",
           }}
         />
       )}

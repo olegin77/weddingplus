@@ -83,6 +83,13 @@
     --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-fast: all 0.2s ease-out;
     --transition-spring: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  
+  /* GPU acceleration utility - prevents jank */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    will-change: transform, opacity;
     
     /* Milestone Toast Custom Styles */
     --milestone-glow: 0 0 30px hsl(95 25% 55% / 0.4);

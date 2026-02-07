@@ -20,14 +20,12 @@ Deno.serve(async (req) => {
     const token = url.searchParams.get('token')
 
     if (!token) {
-      // Return HTML page for QR scan without token
       return new Response(
         getErrorHTML('Неверный QR-код'),
         { headers: { ...corsHeaders, 'Content-Type': 'text/html; charset=utf-8' } }
       )
     }
 
-    // Get QR session
     const { data: session, error: sessionError } = await supabase
       .from('qr_payment_sessions')
       .select(`
@@ -44,9 +42,7 @@ Deno.serve(async (req) => {
       )
     }
 
-    // Check if expired
     if (new Date(session.expires_at) < new Date()) {
-      // Update status to expired
       await supabase
         .from('qr_payment_sessions')
         .update({ status: 'expired' })
@@ -58,7 +54,6 @@ Deno.serve(async (req) => {
       )
     }
 
-    // Check if already paid
     if (session.status === 'paid') {
       return new Response(
         getSuccessHTML('Этот платёж уже был оплачен'),
@@ -66,7 +61,6 @@ Deno.serve(async (req) => {
       )
     }
 
-    // Return payment page
     const paymentHTML = getPaymentHTML({
       sessionId: session.id,
       amount: session.amount,
@@ -107,7 +101,7 @@ function getPaymentHTML(data: PaymentPageData): string {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Оплата - WeddingTech UZ</title>
+  <title>Оплата - Weddinguz</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -164,7 +158,7 @@ function getPaymentHTML(data: PaymentPageData): string {
 </head>
 <body>
   <div class="card">
-    <div class="logo">💍 WeddingTech UZ</div>
+    <div class="logo">💍 Weddinguz</div>
     <div class="vendor-name">${data.vendorName}</div>
     <div class="vendor-location">${data.vendorLocation}</div>
     <div class="amount">${formattedAmount} ${data.currency}</div>
@@ -203,7 +197,6 @@ function getPaymentHTML(data: PaymentPageData): string {
       payBtn.textContent = 'Обработка...';
       
       try {
-        // Redirect to payment processing
         window.location.href = '/functions/v1/process-qr-payment?token=${data.token}&provider=' + selectedProvider;
       } catch (error) {
         alert('Ошибка обработки платежа');
@@ -221,7 +214,7 @@ function getErrorHTML(message: string): string {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ошибка - WeddingTech UZ</title>
+  <title>Ошибка - Weddinguz</title>
   <style>
     body { font-family: -apple-system, sans-serif; background: #fef2f2; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
     .card { background: white; padding: 32px; border-radius: 16px; text-align: center; max-width: 300px; }
@@ -244,7 +237,7 @@ function getSuccessHTML(message: string): string {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Успех - WeddingTech UZ</title>
+  <title>Успех - Weddinguz</title>
   <style>
     body { font-family: -apple-system, sans-serif; background: #f0fdf4; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
     .card { background: white; padding: 32px; border-radius: 16px; text-align: center; max-width: 300px; }

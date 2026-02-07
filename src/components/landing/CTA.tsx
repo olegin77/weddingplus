@@ -85,12 +85,7 @@ export const CTA = () => {
                 transition={{ delay: 0.7, type: "spring" as const, stiffness: 200 }}
                 whileHover={{ rotate: -15, scale: 1.1 }}
               >
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                >
-                  <Sparkles className="w-5 h-5 text-white" />
-                </motion.div>
+              <Sparkles className="w-5 h-5 text-white" />
               </motion.div>
             </FloatingElement>
             
@@ -127,17 +122,8 @@ export const CTA = () => {
                 transition={{ delay: 0.2 }}
                 whileHover={{ scale: 1.05 }}
               >
-                <motion.div 
-                  className="w-2 h-2 rounded-full bg-white"
-                  animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                />
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                >
-                  <Gem className="w-4 h-4" />
-                </motion.div>
+                <div className="w-2 h-2 rounded-full bg-white" />
+                <Gem className="w-4 h-4" />
                 <span className="text-sm font-semibold">
                   Начните планирование бесплатно
                 </span>
@@ -171,7 +157,7 @@ export const CTA = () => {
                 viewport={{ once: true }}
                 transition={{ delay: 0.4 }}
               >
-                Присоединяйтесь к тысячам пар, которые уже планируют свою идеальную свадьбу с WeddingTech UZ
+                Присоединяйтесь к тысячам пар, которые уже планируют свою идеальную свадьбу с Weddinguz
               </motion.p>
 
               <motion.div 
@@ -220,12 +206,7 @@ export const CTA = () => {
                     />
                     <span className="relative z-10 flex items-center gap-2">
                       Начать
-                      <motion.span
-                        animate={{ x: [0, 4, 0] }}
-                        transition={{ duration: 1.5, repeat: Infinity }}
-                      >
-                        <ArrowRight className="w-5 h-5" />
-                      </motion.span>
+                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </span>
                   </Button>
                 </motion.div>
@@ -238,12 +219,7 @@ export const CTA = () => {
                 viewport={{ once: true }}
                 transition={{ delay: 0.6 }}
               >
-                <motion.span
-                  animate={{ scale: [1, 1.2, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                >
-                  ✨
-                </motion.span>
+                <span>✨</span>
                 Бесплатно навсегда. Кредитная карта не требуется.
               </motion.p>
             </div>

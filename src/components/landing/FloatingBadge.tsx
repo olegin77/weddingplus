@@ -36,34 +36,13 @@ export const FloatingBadge = memo(({
         damping: 20,
       }}
     >
-      <motion.div
+      <div
         className="relative glass-luxe rounded-2xl p-4 shadow-lg"
-        animate={{
-          y: [0, -8, 0],
-        }}
-        transition={{
-          duration: 4,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: delay * 2,
-        }}
       >
-        {/* Glow effect */}
-        <motion.div
+        {/* Static glow effect */}
+        <div
           className="absolute inset-0 rounded-2xl"
-          animate={{
-            boxShadow: [
-              "0 0 20px hsl(45 70% 60% / 0.2)",
-              "0 0 40px hsl(45 70% 60% / 0.4)",
-              "0 0 20px hsl(45 70% 60% / 0.2)",
-            ],
-          }}
-          transition={{
-            duration: 3,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay,
-          }}
+          style={{ boxShadow: "0 0 20px hsl(45 70% 60% / 0.2)" }}
         />
         
         {/* Sparkle overlay */}
@@ -73,7 +52,7 @@ export const FloatingBadge = memo(({
         <div className="relative z-10">
           {children}
         </div>
-      </motion.div>
+      </div>
     </motion.div>
   );
 });

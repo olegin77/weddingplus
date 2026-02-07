@@ -122,11 +122,7 @@ const StatCard = ({ stat, index }: StatCardProps) => {
             transition={{ type: "spring" as const, stiffness: 300 }}
           >
             {/* Icon glow */}
-            <motion.div
-              className="absolute inset-0 rounded-2xl bg-white blur-xl opacity-30"
-              animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.4, 0.2] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: index * 0.5 }}
-            />
+            <div className="absolute inset-0 rounded-2xl bg-white blur-xl opacity-30" />
             <stat.icon className="w-8 h-8 text-white relative z-10" />
           </motion.div>
           
@@ -184,25 +180,14 @@ export const Stats = () => {
         transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 3 }}
       />
       
-      {/* Floating particles */}
+      {/* Static decorative particles */}
       {[...Array(8)].map((_, i) => (
-        <motion.div
+        <div
           key={i}
-          className="absolute w-2 h-2 rounded-full bg-white/35"
+          className="absolute w-2 h-2 rounded-full bg-white/25"
           style={{
             left: `${10 + i * 12}%`,
             top: `${20 + (i % 3) * 20}%`,
-          }}
-          animate={{
-            y: [0, -30, 0],
-            opacity: [0.3, 0.8, 0.3],
-            scale: [0.8, 1.2, 0.8],
-          }}
-          transition={{
-            duration: 4 + i,
-            repeat: Infinity,
-            delay: i * 0.3,
-            ease: "easeInOut",
           }}
         />
       ))}

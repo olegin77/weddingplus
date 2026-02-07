@@ -1,8 +1,20 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.81.1'
 
+const ALLOWED_ORIGIN = Deno.env.get('ALLOWED_ORIGIN') || 'https://weddinguz.uz'
+
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+}
+
+function escapeHtml(str: string | null | undefined): string {
+  if (!str) return ''
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
 }
 
 interface EmailRequest {
@@ -24,7 +36,7 @@ const getEmailTemplate = (type: string, data: any) => {
           <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <p><strong>Дата:</strong> ${new Date(data.booking_date).toLocaleDateString('ru-RU')}</p>
             <p><strong>Стоимость:</strong> ${data.price.toLocaleString()} UZS</p>
-            ${data.notes ? `<p><strong>Примечания:</strong> ${data.notes}</p>` : ''}
+            ${data.notes ? `<p><strong>Примечания:</strong> ${escapeHtml(data.notes)}</p>` : ''}
           </div>
           <p>С наилучшими пожеланиями,<br>Команда Weddinguz</p>
         </div>
@@ -55,7 +67,7 @@ const getEmailTemplate = (type: string, data: any) => {
           <p>Напоминаем, что ваше мероприятие состоится через 7 дней!</p>
           <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <p><strong>Дата:</strong> ${new Date(data.booking_date).toLocaleDateString('ru-RU')}</p>
-            <p><strong>Поставщик:</strong> ${data.vendor_name}</p>
+            <p><strong>Поставщик:</strong> ${escapeHtml(data.vendor_name)}</p>
           </div>
           <p>Убедитесь, что все готово к важному дню!</p>
           <p>С наилучшими пожеланиями,<br>Команда Weddinguz</p>
@@ -71,8 +83,8 @@ const getEmailTemplate = (type: string, data: any) => {
           <p>Ваш платеж был успешно обработан.</p>
           <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <p><strong>Сумма:</strong> ${data.amount.toLocaleString()} UZS</p>
-            <p><strong>Провайдер:</strong> ${data.provider}</p>
-            <p><strong>ID транзакции:</strong> ${data.transaction_id}</p>
+            <p><strong>Провайдер:</strong> ${escapeHtml(data.provider)}</p>
+            <p><strong>ID транзакции:</strong> ${escapeHtml(data.transaction_id)}</p>
           </div>
           <p>Спасибо за использование Weddinguz!</p>
           <p>С уважением,<br>Команда Weddinguz</p>
@@ -90,6 +102,33 @@ Deno.serve(async (req) => {
   }
 
   try {
+    // Verify request is from authorized service (service role key or valid JWT)
+    const authHeader = req.headers.get('Authorization')
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized: missing authorization' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    const token = authHeader.replace('Bearer ', '')
+    const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+
+    // Allow service role key or valid user JWT
+    if (token !== serviceRoleKey) {
+      const authClient = createClient(
+        Deno.env.get('SUPABASE_URL') ?? '',
+        Deno.env.get('SUPABASE_ANON_KEY') ?? ''
+      )
+      const { data: { user }, error: authError } = await authClient.auth.getUser(token)
+      if (authError || !user) {
+        return new Response(
+          JSON.stringify({ error: 'Unauthorized' }),
+          { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        )
+      }
+    }
+
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''

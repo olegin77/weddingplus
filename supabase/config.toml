@@ -30,5 +30,8 @@ verify_jwt = false
 [functions.voice-rsvp]
 verify_jwt = false
 
+[functions.wedding-assistant]
+verify_jwt = true
+
 [functions.telegram-webhook]
 verify_jwt = false

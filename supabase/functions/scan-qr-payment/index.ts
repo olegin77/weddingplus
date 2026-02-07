@@ -1,7 +1,9 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.81.1'
 
+const ALLOWED_ORIGIN = Deno.env.get('ALLOWED_ORIGIN') || 'https://weddinguz.uz'
+
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
@@ -83,6 +85,16 @@ Deno.serve(async (req) => {
   }
 })
 
+function escapeHtml(str: string | null | undefined): string {
+  if (!str) return ''
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
+}
+
 interface PaymentPageData {
   sessionId: string
   amount: number
@@ -159,10 +171,10 @@ function getPaymentHTML(data: PaymentPageData): string {
 <body>
   <div class="card">
     <div class="logo">💍 Weddinguz</div>
-    <div class="vendor-name">${data.vendorName}</div>
-    <div class="vendor-location">${data.vendorLocation}</div>
-    <div class="amount">${formattedAmount} ${data.currency}</div>
-    <div class="description">${data.description}</div>
+    <div class="vendor-name">${escapeHtml(data.vendorName)}</div>
+    <div class="vendor-location">${escapeHtml(data.vendorLocation)}</div>
+    <div class="amount">${formattedAmount} ${escapeHtml(data.currency)}</div>
+    <div class="description">${escapeHtml(data.description)}</div>
     
     <div class="providers">
       <button class="provider-btn" data-provider="payme">💳 Payme</button>

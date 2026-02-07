@@ -1,7 +1,9 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.81.1'
 
+const ALLOWED_ORIGIN = Deno.env.get('ALLOWED_ORIGIN') || 'https://weddinguz.uz'
+
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
@@ -18,18 +20,18 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const supabase = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    )
-
-    // Verify user
+    // Authenticate user with anon key (not service role)
     const authHeader = req.headers.get('Authorization')
     if (!authHeader) {
       throw new Error('No authorization header')
     }
 
-    const { data: { user }, error: authError } = await supabase.auth.getUser(
+    const authClient = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_ANON_KEY') ?? ''
+    )
+
+    const { data: { user }, error: authError } = await authClient.auth.getUser(
       authHeader.replace('Bearer ', '')
     )
 
@@ -37,11 +39,17 @@ Deno.serve(async (req) => {
       throw new Error('Unauthorized')
     }
 
+    // Service role client for privileged operations only
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+    )
+
     const { action, escrowId, reason, partialAmount }: EscrowAction = await req.json()
 
     console.log('Escrow action:', { action, escrowId, userId: user.id })
 
-    // Get escrow transaction
+    // Get escrow transaction and verify ownership
     const { data: escrow, error: escrowError } = await supabase
       .from('escrow_transactions')
       .select(`

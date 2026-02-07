@@ -1052,8 +1052,16 @@ CREATE POLICY "Couples can create guest invitations" ON public.guest_invitations
 CREATE POLICY "Couples can update guest invitations" ON public.guest_invitations FOR UPDATE USING (
   EXISTS (SELECT 1 FROM public.wedding_plans WHERE id = guest_invitations.wedding_plan_id AND couple_user_id = auth.uid())
 );
-CREATE POLICY "Public can view invitations by token with time limit" ON public.guest_invitations FOR SELECT USING (created_at > (now() - INTERVAL '90 days'));
-CREATE POLICY "Public can update invitation response" ON public.guest_invitations FOR UPDATE USING (token IS NOT NULL);
+-- Public RSVP: only viewable/updatable by knowing the exact token (passed via RPC or app-level filter)
+CREATE POLICY "Public can view invitation by exact token" ON public.guest_invitations FOR SELECT USING (
+  token = current_setting('app.current_invitation_token', true)
+);
+CREATE POLICY "Public can respond to invitation by exact token" ON public.guest_invitations FOR UPDATE
+  USING (token = current_setting('app.current_invitation_token', true))
+  WITH CHECK (
+    -- Only allow updating response fields, not structural fields
+    guest_id = guest_id AND wedding_plan_id = wedding_plan_id AND token = token
+  );
 
 -- ---- Wedding Events ----
 CREATE POLICY "Couples can view their wedding events" ON public.wedding_events FOR SELECT USING (
@@ -1186,7 +1194,9 @@ CREATE POLICY "Users can manage their gift registry" ON public.gift_registry_ite
 );
 
 -- ---- Gift Contributions ----
-CREATE POLICY "Anyone can contribute to gifts" ON public.gift_contributions FOR INSERT WITH CHECK (true);
+CREATE POLICY "Authenticated users can contribute to gifts" ON public.gift_contributions FOR INSERT WITH CHECK (
+  auth.uid() IS NOT NULL AND payment_status = 'pending'
+);
 CREATE POLICY "Users can view contributions to their gifts" ON public.gift_contributions FOR SELECT USING (
   gift_item_id IN (
     SELECT id FROM public.gift_registry_items
@@ -1253,8 +1263,17 @@ CREATE POLICY "Couples can view telegram responses" ON public.telegram_rsvp_resp
 CREATE POLICY "Couples can view their voice sessions" ON public.voice_rsvp_sessions FOR SELECT USING (
   wedding_plan_id IN (SELECT id FROM public.wedding_plans WHERE couple_user_id = auth.uid())
 );
-CREATE POLICY "Public can create voice sessions with valid token" ON public.voice_rsvp_sessions FOR INSERT WITH CHECK (true);
-CREATE POLICY "Public can update voice sessions with valid token" ON public.voice_rsvp_sessions FOR UPDATE USING (true);
+CREATE POLICY "Service role can create voice sessions" ON public.voice_rsvp_sessions FOR INSERT WITH CHECK (
+  -- Only allow insert if the guest_invitation exists and has a valid token
+  EXISTS (
+    SELECT 1 FROM public.guest_invitations gi
+    WHERE gi.id = voice_rsvp_sessions.guest_invitation_id
+    AND gi.guest_id = voice_rsvp_sessions.guest_id
+  )
+);
+CREATE POLICY "Sessions can be updated by session token" ON public.voice_rsvp_sessions FOR UPDATE USING (
+  session_token = current_setting('app.current_session_token', true)
+);
 
 -- ---- Achievements ----
 CREATE POLICY "Anyone can view achievements" ON public.achievements FOR SELECT USING (true);

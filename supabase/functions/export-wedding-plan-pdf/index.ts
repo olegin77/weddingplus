@@ -1,8 +1,20 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.81.1'
 
+const ALLOWED_ORIGIN = Deno.env.get('ALLOWED_ORIGIN') || 'https://weddinguz.uz'
+
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+}
+
+function escapeHtml(str: string | null | undefined): string {
+  if (!str) return ''
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
 }
 
 interface WeddingPlanData {
@@ -121,11 +133,11 @@ const generatePDFHTML = (plan: WeddingPlanData, bookings: any[], guests: any[]) 
       </div>
       <div class="info-item">
         <strong>Место проведения:</strong><br>
-        ${plan.venue_location || 'Не указано'}
+        ${escapeHtml(plan.venue_location) || 'Не указано'}
       </div>
       <div class="info-item">
         <strong>Тема:</strong><br>
-        ${plan.theme || 'Не указана'}
+        ${escapeHtml(plan.theme) || 'Не указана'}
       </div>
       <div class="info-item">
         <strong>Гостей:</strong><br>
@@ -174,7 +186,7 @@ const generatePDFHTML = (plan: WeddingPlanData, bookings: any[], guests: any[]) 
       <tbody>
         ${bookings.map(b => `
           <tr>
-            <td>${b.vendor?.business_name || 'N/A'}</td>
+            <td>${escapeHtml(b.vendor?.business_name) || 'N/A'}</td>
             <td>${new Date(b.booking_date).toLocaleDateString('ru-RU')}</td>
             <td>${b.price.toLocaleString()} UZS</td>
             <td>${b.status === 'confirmed' ? '✅ Подтверждено' : 
@@ -203,9 +215,9 @@ const generatePDFHTML = (plan: WeddingPlanData, bookings: any[], guests: any[]) 
       <tbody>
         ${guests.map(g => `
           <tr>
-            <td>${g.full_name}${g.plus_one_allowed ? ' +1' : ''}</td>
-            <td>${g.email || '-'}</td>
-            <td>${g.phone || '-'}</td>
+            <td>${escapeHtml(g.full_name)}${g.plus_one_allowed ? ' +1' : ''}</td>
+            <td>${escapeHtml(g.email) || '-'}</td>
+            <td>${escapeHtml(g.phone) || '-'}</td>
             <td>${g.attendance_status === 'confirmed' ? '✅ Придет' : 
                   g.attendance_status === 'declined' ? '❌ Не придет' : 
                   '⏳ Ожидание'}</td>
@@ -220,7 +232,7 @@ const generatePDFHTML = (plan: WeddingPlanData, bookings: any[], guests: any[]) 
   <div class="section">
     <h2>📝 Заметки</h2>
     <div class="info-item">
-      ${plan.notes}
+      ${escapeHtml(plan.notes)}
     </div>
   </div>
   ` : ''}

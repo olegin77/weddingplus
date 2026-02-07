@@ -3,10 +3,10 @@
 
 -- 1. VENUES (5 items)
 INSERT INTO vendor_profiles (
-  id, user_id, business_name, category, description, 
-  price_range_min, price_range_max, location, rating, 
-  verified, search_tags, attributes
-) VALUES 
+  id, user_id, business_name, category, description,
+  price_range_min, price_range_max, location, rating,
+  verified, styles, attributes
+) VALUES
 (
   gen_random_uuid(), gen_random_uuid(), 'Versailles Grand Hall', 'venue', 
   'Роскошный банкетный зал в стиле барокко для больших свадеб.', 
@@ -80,10 +80,10 @@ INSERT INTO vendor_profiles (
 
 -- 2. PHOTOGRAPHERS (5 items)
 INSERT INTO vendor_profiles (
-  id, user_id, business_name, category, description, 
-  price_range_min, price_range_max, location, rating, 
-  verified, search_tags, attributes
-) VALUES 
+  id, user_id, business_name, category, description,
+  price_range_min, price_range_max, location, rating,
+  verified, styles, attributes
+) VALUES
 (
   gen_random_uuid(), gen_random_uuid(), 'Alex Lens', 'photographer', 
   'Репортажная съемка, ловлю живые эмоции.', 
@@ -147,10 +147,10 @@ INSERT INTO vendor_profiles (
 
 -- 3. DECORATORS (5 items)
 INSERT INTO vendor_profiles (
-  id, user_id, business_name, category, description, 
-  price_range_min, price_range_max, location, rating, 
-  verified, search_tags, attributes
-) VALUES 
+  id, user_id, business_name, category, description,
+  price_range_min, price_range_max, location, rating,
+  verified, styles, attributes
+) VALUES
 (
   gen_random_uuid(), gen_random_uuid(), 'Boho Dreams', 'decorator', 
   'Оформление в стиле бохо: пампасная трава, макраме.', 
@@ -210,12 +210,12 @@ INSERT INTO vendor_profiles (
 
 -- 4. MUSICIANS (5 items)
 INSERT INTO vendor_profiles (
-  id, user_id, business_name, category, description, 
-  price_range_min, price_range_max, location, rating, 
-  verified, search_tags, attributes
-) VALUES 
+  id, user_id, business_name, category, description,
+  price_range_min, price_range_max, location, rating,
+  verified, styles, attributes
+) VALUES
 (
-  gen_random_uuid(), gen_random_uuid(), 'DJ Party Starter', 'musician', 
+  gen_random_uuid(), gen_random_uuid(), 'DJ Party Starter', 'music',
   'Топовый DJ для молодежных свадеб.', 
   300, 800, 'Tashkent', 4.8, true, 
   ARRAY['dj', 'party', 'pop'], 
@@ -226,7 +226,7 @@ INSERT INTO vendor_profiles (
   }'::jsonb
 ),
 (
-  gen_random_uuid(), gen_random_uuid(), 'Jazz Band "Soul"', 'musician', 
+  gen_random_uuid(), gen_random_uuid(), 'Jazz Band "Soul"', 'music', 
   'Живой джаз для welcome-зоны и ужина.', 
   1000, 2500, 'Tashkent', 4.9, true, 
   ARRAY['live-band', 'jazz', 'classy'], 
@@ -237,7 +237,7 @@ INSERT INTO vendor_profiles (
   }'::jsonb
 ),
 (
-  gen_random_uuid(), gen_random_uuid(), 'National Orchestra', 'musician', 
+  gen_random_uuid(), gen_random_uuid(), 'National Orchestra', 'music', 
   'Карнай-сурнай и национальный ансамбль.', 
   500, 1500, 'Tashkent', 4.7, true, 
   ARRAY['traditional', 'national', 'live'], 
@@ -248,7 +248,7 @@ INSERT INTO vendor_profiles (
   }'::jsonb
 ),
 (
-  gen_random_uuid(), gen_random_uuid(), 'Rock Covers', 'musician', 
+  gen_random_uuid(), gen_random_uuid(), 'Rock Covers', 'music', 
   'Драйвовая кавер-группа.', 
   1500, 3000, 'Tashkent', 4.8, false, 
   ARRAY['live-band', 'rock', 'energy'], 
@@ -259,7 +259,7 @@ INSERT INTO vendor_profiles (
   }'::jsonb
 ),
 (
-  gen_random_uuid(), gen_random_uuid(), 'Violin Duo', 'musician', 
+  gen_random_uuid(), gen_random_uuid(), 'Violin Duo', 'music', 
   'Романтичное сопровождение церемонии.', 
   200, 500, 'Tashkent', 4.9, true, 
   ARRAY['duo', 'classical', 'romantic'], 
@@ -272,12 +272,12 @@ INSERT INTO vendor_profiles (
 
 -- 5. MAKEUP & HAIR (5 items)
 INSERT INTO vendor_profiles (
-  id, user_id, business_name, category, description, 
-  price_range_min, price_range_max, location, rating, 
-  verified, search_tags, attributes
-) VALUES 
+  id, user_id, business_name, category, description,
+  price_range_min, price_range_max, location, rating,
+  verified, styles, attributes
+) VALUES
 (
-  gen_random_uuid(), gen_random_uuid(), 'Natural Beauty', 'makeup_artist', 
+  gen_random_uuid(), gen_random_uuid(), 'Natural Beauty', 'makeup',
   'Подчеркиваю естественную красоту, без эффекта маски.', 
   100, 200, 'Tashkent', 4.9, true, 
   ARRAY['natural', 'nude', 'light'], 
@@ -288,7 +288,7 @@ INSERT INTO vendor_profiles (
   }'::jsonb
 ),
 (
-  gen_random_uuid(), gen_random_uuid(), 'Glamour Queen', 'makeup_artist', 
+  gen_random_uuid(), gen_random_uuid(), 'Glamour Queen', 'makeup', 
   'Яркий вечерний макияж, стойкость 24 часа.', 
   150, 300, 'Tashkent', 4.8, true, 
   ARRAY['glamour', 'evening', 'bright'], 
@@ -299,7 +299,7 @@ INSERT INTO vendor_profiles (
   }'::jsonb
 ),
 (
-  gen_random_uuid(), gen_random_uuid(), 'Wedding Stylist Pro', 'makeup_artist', 
+  gen_random_uuid(), gen_random_uuid(), 'Wedding Stylist Pro', 'makeup', 
   'Полный образ: макияж + прическа + помощь с платьем.', 
   250, 500, 'Tashkent', 5.0, true, 
   ARRAY['full-look', 'hair', 'makeup'], 
@@ -310,7 +310,7 @@ INSERT INTO vendor_profiles (
   }'::jsonb
 ),
 (
-  gen_random_uuid(), gen_random_uuid(), 'Budget Beauty', 'makeup_artist', 
+  gen_random_uuid(), gen_random_uuid(), 'Budget Beauty', 'makeup', 
   'Качественный макияж по доступной цене.', 
   50, 100, 'Tashkent', 4.5, false, 
   ARRAY['budget', 'simple'], 
@@ -321,7 +321,7 @@ INSERT INTO vendor_profiles (
   }'::jsonb
 ),
 (
-  gen_random_uuid(), gen_random_uuid(), 'Creative MUA', 'makeup_artist', 
+  gen_random_uuid(), gen_random_uuid(), 'Creative MUA', 'makeup', 
   'Необычные образы для смелых невест.', 
   200, 400, 'Tashkent', 4.7, true, 
   ARRAY['creative', 'art', 'unique'], 
@@ -334,12 +334,12 @@ INSERT INTO vendor_profiles (
 
 -- 6. HOSTS (5 items)
 INSERT INTO vendor_profiles (
-  id, user_id, business_name, category, description, 
-  price_range_min, price_range_max, location, rating, 
-  verified, search_tags, attributes
-) VALUES 
+  id, user_id, business_name, category, description,
+  price_range_min, price_range_max, location, rating,
+  verified, styles, attributes
+) VALUES
 (
-  gen_random_uuid(), gen_random_uuid(), 'Funny Guy', 'host', 
+  gen_random_uuid(), gen_random_uuid(), 'Funny Guy', 'other',
   'Современный ведущий со стендап-юмором.', 
   500, 1000, 'Tashkent', 4.8, true, 
   ARRAY['comedy', 'modern', 'standup'], 
@@ -350,7 +350,7 @@ INSERT INTO vendor_profiles (
   }'::jsonb
 ),
 (
-  gen_random_uuid(), gen_random_uuid(), 'Elegant MC', 'host', 
+  gen_random_uuid(), gen_random_uuid(), 'Elegant MC', 'other', 
   'Интеллигентное ведение, без пошлых конкурсов.', 
   800, 1500, 'Tashkent', 5.0, true, 
   ARRAY['elegant', 'classic', 'tactful'], 
@@ -361,7 +361,7 @@ INSERT INTO vendor_profiles (
   }'::jsonb
 ),
 (
-  gen_random_uuid(), gen_random_uuid(), 'National Tamada', 'host', 
+  gen_random_uuid(), gen_random_uuid(), 'National Tamada', 'other', 
   'Соблюдение всех традиций, опыт 20 лет.', 
   400, 1000, 'Tashkent', 4.6, true, 
   ARRAY['traditional', 'national', 'experienced'], 
@@ -372,7 +372,7 @@ INSERT INTO vendor_profiles (
   }'::jsonb
 ),
 (
-  gen_random_uuid(), gen_random_uuid(), 'Showman Max', 'host', 
+  gen_random_uuid(), gen_random_uuid(), 'Showman Max', 'other', 
   'Ведущий + шоу-программа + вокал.', 
   1200, 2500, 'Tashkent', 4.9, true, 
   ARRAY['show', 'singer', 'active'], 
@@ -383,7 +383,7 @@ INSERT INTO vendor_profiles (
   }'::jsonb
 ),
 (
-  gen_random_uuid(), gen_random_uuid(), 'Bilingual Host', 'host', 
+  gen_random_uuid(), gen_random_uuid(), 'Bilingual Host', 'other', 
   'Веду свадьбы на двух языках свободно.', 
   600, 1200, 'Tashkent', 4.8, true, 
   ARRAY['bilingual', 'modern'], 

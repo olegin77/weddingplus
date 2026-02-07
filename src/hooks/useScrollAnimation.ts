@@ -117,11 +117,10 @@ export const springScale = {
 export const floatAnimation = {
   initial: { y: 0 },
   animate: {
-    y: [-10, 10, -10],
+    y: -6,
     transition: {
-      duration: 4,
-      ease: "easeInOut",
-      repeat: Infinity,
+      duration: 0.6,
+      ease: "easeOut",
     }
   }
 };
@@ -131,15 +130,10 @@ export const glowPulse = {
     boxShadow: "0 0 20px rgba(236, 72, 153, 0.3)" 
   },
   animate: {
-    boxShadow: [
-      "0 0 20px rgba(236, 72, 153, 0.3)",
-      "0 0 40px rgba(236, 72, 153, 0.5)",
-      "0 0 20px rgba(236, 72, 153, 0.3)",
-    ],
+    boxShadow: "0 0 30px rgba(236, 72, 153, 0.4)",
     transition: {
-      duration: 2,
-      ease: "easeInOut",
-      repeat: Infinity,
+      duration: 0.6,
+      ease: "easeOut",
     }
   }
 };

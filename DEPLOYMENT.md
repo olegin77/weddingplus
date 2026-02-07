@@ -1,201 +1,104 @@
-# 🚀 WeddingTech UZ - Deployment Guide
+# Weddinguz — Deployment Guide
 
-**Текущая платформа:** Lovable  
-**Статус:** Development
-
----
-
-## 📦 Текущее состояние
-
-Проект работает на платформе Lovable в dev режиме.
-
-### ✅ Что уже готово:
-- Frontend на React + Vite + TypeScript
-- Design system с Tailwind CSS
-- Landing page с 8 компонентами
-- 4 AI-generated изображения
-- Responsive дизайн
-
-### ⏳ Что нужно для production:
-- [ ] Подключить Lovable Cloud (backend)
-- [ ] Настроить authentication
-- [ ] Создать database schema
-- [ ] Добавить edge functions
-- [ ] Настроить CI/CD
+**Status:** Production Ready | **Version:** 2.1.0
 
 ---
 
-## 🌐 Deployment на Lovable
+## Infrastructure
 
-### Текущий URL (Development):
-```
-https://lovable.dev/projects/6092f4a2-7d47-4c19-b20c-ae122ed6925f
-```
-
-### Шаги для публикации:
-
-1. **В Lovable Editor:**
-   - Нажать кнопку "Publish" (верхний правый угол)
-   - Выбрать production URL
-   - Подтвердить deployment
-
-2. **Production URL будет:**
-   ```
-   https://yoursite.lovable.app
-   ```
-
-3. **Для custom domain:**
-   - Зайти в Project > Settings > Domains
-   - Добавить custom domain (например: weddingtech.uz)
-   - Настроить DNS records
-   - Примечание: Требуется платный план Lovable
+| Component | Platform | Status |
+|-----------|----------|--------|
+| Frontend | Lovable Cloud | ✅ Deployed |
+| Backend | Lovable Cloud | ✅ Connected |
+| Database | PostgreSQL | ✅ 28+ tables with RLS |
+| Edge Functions | Deno (auto-deploy) | ✅ 15 functions |
+| AI | Lovable AI Gateway | ✅ Active |
+| PWA | Service Worker | ✅ Configured |
 
 ---
 
-## 🔗 GitHub Integration
+## URLs
 
-Для подключения GitHub:
-
-1. **В Lovable:**
-   - Нажать кнопку GitHub (верхний правый угол)
-   - Выбрать "Connect to GitHub"
-   - Авторизовать Lovable GitHub App
-
-2. **Создать репозиторий:**
-   - Название: `wedding_lovable`
-   - Visibility: Private (рекомендуется)
-
-3. **Automatic Sync:**
-   - Изменения в Lovable → автоматически push в GitHub
-   - Push в GitHub → автоматически sync в Lovable
+| Environment | URL |
+|-------------|-----|
+| Preview | `https://id-preview--6092f4a2-7d47-4c19-b20c-ae122ed6925f.lovable.app` |
+| Production | `https://wedding.lovable.app` |
 
 ---
 
-## 🛠️ Lovable Cloud Setup
+## Deployment Process
 
-Когда будете готовы к backend:
+### Frontend
+1. Make changes in Lovable editor
+2. Preview auto-updates in real-time
+3. Click **Publish** → **Update** to deploy to production
 
-1. **Активировать Cloud:**
-   ```
-   В Lovable Editor:
-   1. Открыть Cloud tab
-   2. Нажать "Enable Lovable Cloud"
-   3. Подождать provisioning (~2-3 минуты)
-   ```
+### Backend (Edge Functions)
+- Auto-deployed on save — no manual action needed
 
-2. **Что включено:**
-   - PostgreSQL database
-   - Supabase Auth
-   - File Storage
-   - Edge Functions
-   - Real-time subscriptions
-
-3. **После активации:**
-   - Получите connection strings
-   - Создайте database schema
-   - Настройте authentication providers
+### Database
+- Migrations applied via Lovable Cloud migration tool
+- User approval required before execution
 
 ---
 
-## 📊 Environment Variables
+## Required Secrets
 
-После активации Cloud, нужно будет добавить:
+Configure in Lovable Project Settings → Cloud → Secrets:
 
-```bash
-# Database
-DATABASE_URL="postgresql://..."
-DIRECT_URL="postgresql://..."
+| Secret | Service | Required |
+|--------|---------|:--------:|
+| `RESEND_API_KEY` | Email notifications | Optional |
+| `TELEGRAM_BOT_TOKEN` | Telegram RSVP | Optional |
+| `ELEVENLABS_API_KEY` | Voice RSVP | Optional |
+| `PAYME_MERCHANT_ID` | Payme payments | Optional |
+| `CLICK_SERVICE_ID` | Click payments | Optional |
+| `CLICK_MERCHANT_ID` | Click payments | Optional |
+| `UZUM_MERCHANT_ID` | Uzum payments | Optional |
+| `APELSIN_MERCHANT_ID` | Apelsin payments | Optional |
 
-# Supabase (автоматически через Lovable Cloud)
-SUPABASE_URL="https://..."
-SUPABASE_ANON_KEY="..."
-SUPABASE_SERVICE_KEY="..."
+> **Note:** `LOVABLE_API_KEY`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` are auto-configured.
 
-# AI Services (когда добавим)
-OPENAI_API_KEY="sk-..."
-REPLICATE_API_KEY="..."
+---
 
-# Payment Providers (когда добавим)
-PAYME_MERCHANT_ID="..."
-CLICK_MERCHANT_ID="..."
+## PWA Configuration
+
+```json
+{
+  "name": "Weddinguz",
+  "short_name": "Weddinguz",
+  "theme_color": "#9CAF88",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "orientation": "portrait"
+}
 ```
 
 ---
 
-## 🔐 Security Checklist
+## Payment Webhooks
 
-Перед production:
-
-- [ ] Включить Row Level Security (RLS) в Supabase
-- [ ] Настроить CORS policies
-- [ ] Добавить rate limiting
-- [ ] Настроить backup стратегию
-- [ ] Включить SSL/HTTPS (автоматически в Lovable)
-- [ ] Добавить error monitoring (Sentry)
-- [ ] Настроить logging
-
----
-
-## 📈 Scaling Plan
-
-### Phase 1: MVP (Текущая)
-- Lovable hosting
-- Lovable Cloud (Supabase)
-- Базовый frontend
-
-### Phase 2: Growth
-- Custom domain
-- Analytics integration
-- Performance optimization
-- SEO optimization
-
-### Phase 3: Scale
-- CDN для статики
-- Optimize database queries
-- Add caching layer (Redis)
-- Multiple regions
-
----
-
-## 🆘 Troubleshooting
-
-### Проблема: Build fails
-```bash
-# Проверить:
-1. package.json - все версии корректны?
-2. TypeScript errors - есть ли ошибки типов?
-3. Imports - все пути правильные?
 ```
-
-### Проблема: Deployment stuck
-```bash
-# Решение:
-1. Проверить Lovable status page
-2. Очистить кеш браузера
-3. Пересобрать проект
-```
-
-### Проблема: Images не загружаются
-```bash
-# Проверить:
-1. Импорты - использовать ES6 imports из src/assets
-2. Пути - относительные пути правильные?
-3. Build - файлы включены в сборку?
+https://whrxhiyeysydhagrkjbe.supabase.co/functions/v1/payment-webhook?provider=payme
+https://whrxhiyeysydhagrkjbe.supabase.co/functions/v1/payment-webhook?provider=click
+https://whrxhiyeysydhagrkjbe.supabase.co/functions/v1/payment-webhook?provider=uzum
+https://whrxhiyeysydhagrkjbe.supabase.co/functions/v1/payment-webhook?provider=apelsin
 ```
 
 ---
 
-## 📞 Support
+## Monitoring
 
-**Lovable Documentation:**  
-https://docs.lovable.dev/
-
-**Lovable Discord:**  
-https://discord.com/channels/1119885301872070706
-
-**Project Issues:**  
-GitHub Issues (после подключения GitHub)
+- **Edge Function Logs:** Lovable Cloud → Functions → Logs
+- **Database:** Lovable Cloud → Database → Tables
+- **Auth:** Lovable Cloud → Users
 
 ---
 
-**Last Updated:** 14 ноября 2025
+## Custom Domain
+
+To connect a custom domain:
+1. Go to Project Settings → Domains
+2. Add your custom domain
+3. Configure DNS records as instructed
+4. Requires paid Lovable plan

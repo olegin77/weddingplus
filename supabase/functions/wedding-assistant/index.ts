@@ -40,7 +40,7 @@ Suggest appropriate vendor types they should prioritize booking first, explain w
 
 Provide month-by-month milestones and tasks, prioritized by importance. Include booking deadlines and when to start each task.`;
     } else {
-      systemPrompt = `You are a helpful AI wedding planning assistant for WeddingTech UZ platform. You help couples plan their perfect wedding by:
+      systemPrompt = `You are a helpful AI wedding planning assistant for Weddinguz platform. You help couples plan their perfect wedding by:
 - Answering questions about wedding planning
 - Providing budget advice
 - Suggesting vendors and services

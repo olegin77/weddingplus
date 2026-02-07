@@ -1,166 +1,179 @@
 
-# Тестирование и исправление мобильной версии + Ребрендинг на "Weddinguz"
 
-## Обнаруженные проблемы
+# Полный аудит платформы Weddinguz: Обновление документации и оптимизация
 
-### Критические (Mobile UI)
-| # | Проблема | Локация |
-|---|----------|---------|
-| 1 | Текст "мечту о свадьбе" не отображается в Hero секции | `Hero.tsx` |
-| 2 | Footer содержит `animate-pulse` на иконке (запрещённая анимация) | `Footer.tsx` line 104 |
-| 3 | Главная страница (/) не имеет нижней навигации для мобильных | `Index.tsx` / `DashboardLayout.tsx` |
+---
 
-### Ребрендинг "WeddingTech" → "Weddinguz"
-Название и бренд упоминаются в 17+ файлах. Необходимо заменить везде:
+## Результаты аудита
 
-| Файл | Текущее значение | Новое значение |
-|------|------------------|----------------|
-| `vite.config.ts` | `name: 'WeddingTech UZ'`, `short_name: 'WeddingTech'` | `name: 'Weddinguz'`, `short_name: 'Weddinguz'` |
-| `index.html` | `<title>WeddingTech UZ...`, `apple-mobile-web-app-title="WeddingTech"`, `og:title="WeddingTech UZ..."` | `Weddinguz` везде |
-| `src/components/DashboardLayout.tsx` line 51 | `WeddingTech` | `Weddinguz` |
-| `src/components/AppSidebar.tsx` line 131 | `WeddingTech` | `Weddinguz` |
-| `src/components/landing/Header.tsx` line 96 | `WeddingTech` | `Weddinguz` |
-| `src/components/landing/Footer.tsx` lines 54-55, 100 | `WeddingTech UZ` | `Weddinguz` |
-| `src/pages/Auth.tsx` line 165, 185 | `WeddingTech UZ` | `Weddinguz` |
-| `src/pages/Install.tsx` lines 52, 65, 79 | `WeddingTech UZ` | `Weddinguz` |
-| `src/pages/WeddingWebsite.tsx` line 313 | `WeddingTech UZ` | `Weddinguz` |
-| `src/i18n/locales/en.json` line 206 | `WeddingTech UZ` | `Weddinguz` |
-| `src/i18n/locales/ru.json` line 206 | `WeddingTech UZ` | `Weddinguz` |
-| Edge Functions (5 файлов) | `WeddingTech UZ` | `Weddinguz` |
+### 1. Ребрендинг не завершён
+
+"WeddingTech" / "WeddingTech UZ" всё ещё присутствует в **14 файлах**:
+
+| Файл | Количество упоминаний |
+|------|-----------------------|
+| `README.md` | ~12 |
+| `PROGRESS.md` | ~10 |
+| `PROJECT_CONCEPT.md` | ~5 |
+| `PROJECT_OVERVIEW.md` | ~20 |
+| `DEPLOYMENT.md` | ~8 |
+| `CHANGELOG.md` | ~15 |
+| `PWA_GUIDE.md` | ~10 |
+| `EMAIL_SETUP.md` | ~6 |
+| `PAYMENT_SETUP.md` | нужно проверить |
+| `src/i18n/locales/uz.json` | 1 |
+| `src/components/landing/CTA.tsx` | 1 |
+| `supabase/functions/wedding-assistant/index.ts` | 1 |
+| `supabase/functions/scan-qr-payment/index.ts` | 5 |
+| `supabase/seed.sql` | нужно проверить |
+
+### 2. Бесконечные анимации (repeat: Infinity) -- частично оставлены
+
+Допустимые (фоновые, медленные 10s+):
+- `Hero.tsx` -- 45s/50s blobs, только на десктопе -- **OK**
+- `Features.tsx`, `HowItWorks.tsx`, `ParticleBackground.tsx` -- 10-30s фоновые блобы -- **OK**
+- `CTA.tsx` -- фоновые 10-30s -- **OK**
+
+Требующие внимания (быстрые/заметные):
+| Файл | Проблема |
+|------|----------|
+| `src/components/landing/CTA.tsx` | `rotate: 360` за 4s + `scale [1,1.5,1]` за 2s + arrow `x: [0,4,0]` за 1.5s -- быстрая заметная пульсация |
+| `src/components/landing/Stats.tsx` | `scale [1,1.5,1]` за 1.5s на иконках -- быстрая пульсация |
+| `src/components/landing/FloatingBadge.tsx` | `y: [-5,5,-5]` за 4s -- заметное качание |
+| `src/hooks/useScrollAnimation.ts` | `repeat: Infinity` за 4s/2s -- быстрые циклы |
+| `src/index.css` | `.animate-spin-slow` -- 8s бесконечный вращение |
+| `src/pages/Dashboard.tsx` | `animate-spin-slow` на лоадере -- **допустимо для лоадера** |
+
+### 3. Документация устарела
+
+| Документ | Статус | Проблемы |
+|----------|--------|----------|
+| `README.md` | Устарел | Название, версия, контакты, тесты "9 passing" (сейчас 18) |
+| `PROGRESS.md` | Устарел | Название, дублированные секции, неактуальные "Known Issues" |
+| `PROJECT_CONCEPT.md` | Устарел | Название, PWA manifest данные |
+| `PROJECT_OVERVIEW.md` | Сильно устарел | Версия 0.9.0, 10+ страниц (сейчас 25+), 5 edge functions (сейчас 15+), 8 таблиц (сейчас 20+) |
+| `DEPLOYMENT.md` | Сильно устарел | "Status: Development", backend "не подключен" |
+| `CHANGELOG.md` | Устарел | Не содержит записи для 2.0, ребрендинг, мобильная оптимизация |
+| `PWA_GUIDE.md` | Устарел | Название, theme color |
+| `EMAIL_SETUP.md` | Устарел | Название, домен |
+| `SETUP_SECRETS.md` | Частично устарел | Упоминание OpenAI (используется Lovable AI) |
+
+### 4. Оставшиеся UI/UX проблемы
+
+| Проблема | Файл |
+|----------|------|
+| CTA секция содержит быстро мигающую звёздочку Sparkles (4s rotate) | `CTA.tsx` |
+| Stats иконки пульсируют с `scale [1,1.5,1]` за 1.5s | `Stats.tsx` |
+| FloatingBadge заметно качается | `FloatingBadge.tsx` |
 
 ---
 
 ## План исправлений
 
-### Часть 1: Исправление Hero секции (текст не отображается)
+### Часть 1: Завершение ребрендинга (2 файла кода + документация)
 
-Проблема в `TextReveal` компоненте или анимации. Текст "мечту о свадьбе" исчезает.
+**Код:**
+- `src/components/landing/CTA.tsx` -- заменить "WeddingTech UZ" на "Weddinguz"
+- `src/i18n/locales/uz.json` -- заменить "WeddingTech UZ" на "Weddinguz"
+- `supabase/functions/wedding-assistant/index.ts` -- заменить "WeddingTech UZ" на "Weddinguz"
+- `supabase/functions/scan-qr-payment/index.ts` -- заменить все 5 упоминаний "WeddingTech UZ" на "Weddinguz"
 
-**Решение:** Упростить Hero заголовок для мобильных - убрать сложные анимации `TextReveal`, сделать простой статичный текст на мобильных:
+### Часть 2: Убрать быстрые бесконечные анимации
 
-```tsx
-// Hero.tsx - упрощённый заголовок
-<h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold leading-tight">
-  {isMobile ? (
-    // Статичный текст для мобильных
-    <>
-      <span className="block text-gradient-animated">Увидьте свою</span>
-      <span className="block text-gradient-animated">мечту о свадьбе</span>
-      <span className="block text-foreground/85 mt-2">ещё до её начала</span>
-    </>
-  ) : (
-    // Анимированный текст для десктопа
-    <>
-      <TextReveal text="Увидьте свою" className="block" delay={0.3} />
-      <TextReveal text="мечту о свадьбе" className="block" delay={0.5} gradient />
-      ...
-    </>
-  )}
-</h1>
-```
+| Файл | Действие |
+|------|----------|
+| `CTA.tsx` | Убрать `rotate: 360` за 4s, заменить `scale [1,1.5,1]` за 2s на hover-only, убрать `x [0,4,0]` arrow |
+| `Stats.tsx` | Убрать `scale [1,1.5,1]` за 1.5s с иконок, оставить только initial animation |
+| `FloatingBadge.tsx` | Заменить `repeat: Infinity` на единоразовую анимацию появления |
+| `useScrollAnimation.ts` | Убрать `repeat: Infinity` из floatingVariants и pulseVariants |
+| `AIShowcase.tsx` | Замедлить или сделать hover-only |
 
-### Часть 2: Удаление animate-pulse из Footer
+### Часть 3: Обновление всей документации
 
-```tsx
-// Footer.tsx line 104 - БЫЛО:
-<Heart className="inline w-4 h-4 text-primary fill-primary animate-pulse" />
+Полная перезапись 8 документов с актуальной информацией:
 
-// Footer.tsx line 104 - СТАНЕТ:
-<Heart className="inline w-4 h-4 text-primary fill-primary" />
-```
+**README.md** -- обновить:
+- Заголовок: "Weddinguz - AI-Powered Wedding Platform"
+- Версия: 2.1.0
+- Тесты: 18 passing
+- Контакты: актуальный URL wedding.lovable.app
+- Стек: актуальные зависимости и AI модели
+- Структура проекта: 25+ страниц, 15+ edge functions, 20+ таблиц
 
-### Часть 3: Ребрендинг на "Weddinguz"
+**PROGRESS.md** -- обновить:
+- Название: Weddinguz
+- Добавить Phase 17: Mobile Optimization & Rebranding
+- Убрать устаревшие "Known Issues" и "Ideas"
+- Обновить статус "WEDDINGUZ 2.1 COMPLETE"
 
-#### 3.1 Логотип
-Создать более уникальный логотип вместо простого сердца:
-- Стилизованная буква "W" с обручальными кольцами
-- Или текстовый логотип "Weddinguz" с акцентным градиентом
+**PROJECT_CONCEPT.md** -- обновить:
+- Заменить все WeddingTech на Weddinguz
+- Обновить PWA manifest section
+- Добавить секцию Mobile Optimization
 
-#### 3.2 Замена названия во всех файлах
+**PROJECT_OVERVIEW.md** -- полная перезапись:
+- Версия 2.1.0
+- 25+ страниц
+- 15+ Edge Functions
+- 20+ таблиц БД
+- Актуальный дизайн (Rose Gold + Champagne)
+- Мобильная оптимизация (BottomNavigation, safe-area)
 
-| Группа файлов | Количество замен |
-|---------------|------------------|
-| Config (vite, index.html) | ~8 замен |
-| Components | ~6 замен |
-| Pages | ~5 замен |
-| i18n локали | ~3 замены |
-| Edge Functions | ~15 замен |
+**DEPLOYMENT.md** -- обновить:
+- Статус: Production Ready
+- Backend: Lovable Cloud подключен и работает
+- Published URL: wedding.lovable.app
+- Убрать устаревшие TODO
 
-### Часть 4: Улучшение мобильной навигации на главной
+**CHANGELOG.md** -- добавить:
+- `[2.1.0]` -- Mobile optimization, rebranding, animation cleanup
+- `[2.0.0]` -- Summary of all v2 features
 
-Главная страница (/) не использует `DashboardLayout`, поэтому `BottomNavigation` там не отображается. Варианты решения:
+**PWA_GUIDE.md** -- обновить:
+- Заменить WeddingTech на Weddinguz
+- Обновить theme_color на #9CAF88 (текущий)
+- Актуальные скриншоты/инструкции
 
-**Вариант A (рекомендуется):** Добавить отдельную мобильную навигацию на главную страницу
-- Sticky CTA кнопка внизу экрана на мобильных
-- Упрощённая версия без полной навигации
+**EMAIL_SETUP.md** -- обновить:
+- Заменить WeddingTech на Weddinguz
+- Актуальные домены
 
-**Вариант B:** Оставить как есть (Header уже имеет hamburger menu)
+**SETUP_SECRETS.md** -- обновить:
+- Убрать OPENAI_API_KEY (используется Lovable AI)
+- Добавить информацию о Lovable AI (не требует ключ)
+- Обновить дату
 
 ---
 
 ## Файлы для изменения
 
-| # | Файл | Изменения |
-|---|------|-----------|
-| 1 | `vite.config.ts` | Заменить `WeddingTech` → `Weddinguz` |
-| 2 | `index.html` | Заменить все упоминания `WeddingTech` → `Weddinguz` |
-| 3 | `src/components/landing/Hero.tsx` | Исправить отображение текста на мобильных |
-| 4 | `src/components/landing/Footer.tsx` | Удалить `animate-pulse`, заменить `WeddingTech UZ` → `Weddinguz` |
-| 5 | `src/components/landing/Header.tsx` | Заменить `WeddingTech` → `Weddinguz` |
-| 6 | `src/components/DashboardLayout.tsx` | Заменить `WeddingTech` → `Weddinguz` |
-| 7 | `src/components/AppSidebar.tsx` | Заменить `WeddingTech` → `Weddinguz` |
-| 8 | `src/pages/Auth.tsx` | Заменить `WeddingTech UZ` → `Weddinguz` |
-| 9 | `src/pages/Install.tsx` | Заменить `WeddingTech UZ` → `Weddinguz` |
-| 10 | `src/pages/WeddingWebsite.tsx` | Заменить `WeddingTech UZ` → `Weddinguz` |
-| 11 | `src/i18n/locales/en.json` | Заменить `WeddingTech UZ` → `Weddinguz` |
-| 12 | `src/i18n/locales/ru.json` | Заменить `WeddingTech UZ` → `Weddinguz` |
-| 13 | `supabase/functions/send-email-notification/index.ts` | Заменить в email шаблонах |
-| 14 | `supabase/functions/export-wedding-plan-pdf/index.ts` | Заменить в PDF |
-
----
-
-## Техническая часть
-
-### Исправление TextReveal для мобильных
-
-Проверить компонент `TextReveal.tsx` - возможно анимация "съедает" текст на мобильных из-за viewport timing или intersection observer.
-
-Безопасное решение - условный рендер:
-
-```tsx
-// Проверка isMobile перед применением сложных анимаций
-{isMobile ? (
-  <span className={gradient ? "text-gradient-animated" : ""}>
-    {text}
-  </span>
-) : (
-  <TextReveal text={text} gradient={gradient} delay={delay} />
-)}
-```
-
-### Обновлённый логотип
-
-Предлагаю использовать стилизованный текстовый логотип:
-
-```tsx
-// Вместо Heart иконки - текстовый логотип
-<div className="flex items-center gap-2">
-  <div className="w-9 h-9 rounded-xl gradient-luxe flex items-center justify-center shadow-lg">
-    <span className="text-white font-bold text-lg">W</span>
-  </div>
-  <span className="text-xl font-bold text-gradient-animated">
-    Weddinguz
-  </span>
-</div>
-```
+| # | Файл | Тип | Описание |
+|---|------|-----|----------|
+| 1 | `src/components/landing/CTA.tsx` | Edit | Убрать быстрые infinite, заменить WeddingTech |
+| 2 | `src/components/landing/Stats.tsx` | Edit | Убрать быстрые infinite на иконках |
+| 3 | `src/components/landing/FloatingBadge.tsx` | Edit | Убрать infinite quality |
+| 4 | `src/hooks/useScrollAnimation.ts` | Edit | Убрать repeat: Infinity |
+| 5 | `src/components/landing/AIShowcase.tsx` | Edit | Замедлить/убрать infinite |
+| 6 | `src/i18n/locales/uz.json` | Edit | WeddingTech -> Weddinguz |
+| 7 | `supabase/functions/wedding-assistant/index.ts` | Edit | WeddingTech -> Weddinguz |
+| 8 | `supabase/functions/scan-qr-payment/index.ts` | Edit | WeddingTech -> Weddinguz |
+| 9 | `README.md` | Rewrite | Полное обновление |
+| 10 | `PROGRESS.md` | Rewrite | Полное обновление |
+| 11 | `PROJECT_CONCEPT.md` | Edit | Ребрендинг + обновления |
+| 12 | `PROJECT_OVERVIEW.md` | Rewrite | Полное обновление |
+| 13 | `DEPLOYMENT.md` | Rewrite | Полное обновление |
+| 14 | `CHANGELOG.md` | Edit | Добавить 2.0 и 2.1 записи |
+| 15 | `PWA_GUIDE.md` | Edit | Ребрендинг + обновления |
+| 16 | `EMAIL_SETUP.md` | Edit | Ребрендинг |
+| 17 | `SETUP_SECRETS.md` | Edit | Убрать OpenAI, обновить |
 
 ---
 
 ## Ожидаемый результат
 
-После внедрения:
-1. **Мобильная версия** - весь текст отображается корректно
-2. **Нет пульсирующих анимаций** - Footer без `animate-pulse`
-3. **Единый бренд "Weddinguz"** - везде консистентное название
-4. **Современный логотип** - стилизованная буква W или текстовый логотип
-5. **Оптимизированный UI** - всё читается и работает на мобильных устройствах
+1. **Бренд "Weddinguz"** -- единообразно во всех файлах (0 упоминаний WeddingTech)
+2. **Нет быстрых мигающих анимаций** -- только медленные фоновые (10s+)
+3. **Актуальная документация** -- все 8 .md файлов отражают текущее состояние v2.1
+4. **Корректные данные** -- 18 тестов, 25+ страниц, 15+ edge functions, 20+ таблиц
+5. **Актуальные инструкции** -- Lovable AI вместо OpenAI, правильные URL
+

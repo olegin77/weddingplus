@@ -1,0 +1,37 @@
+project_id = "whrxhiyeysydhagrkjbe"
+
+[functions.process-payment]
+verify_jwt = true
+
+[functions.payment-webhook]
+verify_jwt = false
+
+[functions.send-email-notification]
+verify_jwt = false
+
+[functions.export-wedding-plan-pdf]
+verify_jwt = true
+
+[functions.generate-venue-decor]
+verify_jwt = false
+
+[functions.ai-seating-optimizer]
+verify_jwt = true
+
+[functions.escrow-management]
+verify_jwt = true
+
+[functions.generate-qr-payment]
+verify_jwt = true
+
+[functions.scan-qr-payment]
+verify_jwt = false
+
+[functions.voice-rsvp]
+verify_jwt = false
+
+[functions.wedding-assistant]
+verify_jwt = true
+
+[functions.telegram-webhook]
+verify_jwt = false

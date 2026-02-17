@@ -696,3 +696,72 @@ INSERT INTO vendor_profiles (
   '{"style": "modest", "services": ["makeup", "hijab-styling"], "muslim_traditions": true}'::jsonb
 );
 
+
+-- =====================
+-- CATERERS (Кейтеринг) - 15 items
+-- =====================
+
+INSERT INTO vendor_profiles (
+  id, user_id, business_name, category, description,
+  price_range_min, price_range_max, location, rating,
+  verified, styles, attributes
+) VALUES
+(gen_random_uuid(), gen_random_uuid(), 'Royal Catering Service', 'caterer',
+  'Премиум кейтеринг. Авторское меню от шеф-повара. Европейская, азиатская, узбекская кухня. Безупречный сервис.',
+  50, 150, 'Tashkent', 5.0, true,
+  ARRAY['premium', 'chef', 'international', 'luxury'],
+  '{"cuisines": ["european", "asian", "uzbek"], "chef_service": true, "waiters_included": true, "min_guests": 50}'::jsonb
+),
+(gen_random_uuid(), gen_random_uuid(), 'Plov Master Catering', 'caterer',
+  'Традиционный узбекский плов. Готовим на месте в казане. Шашлык, самса, лагман. Аутентично!',
+  25, 60, 'Tashkent', 4.9, true,
+  ARRAY['traditional', 'uzbek', 'plov', 'authentic'],
+  '{"specialty": "plov", "live_cooking": true, "traditional_dishes": true, "halal": true}'::jsonb
+),
+(gen_random_uuid(), gen_random_uuid(), 'European Gourmet', 'caterer',
+  'Европейская кухня. Фуршетные столы, банкетное меню, кэнди-бар. Презентация блюд - искусство.',
+  40, 100, 'Tashkent', 4.8, true,
+  ARRAY['european', 'gourmet', 'presentation', 'buffet'],
+  '{"cuisines": ["french", "italian"], "buffet_service": true, "candy_bar": true}'::jsonb
+),
+(gen_random_uuid(), gen_random_uuid(), 'BBQ & Grill Masters', 'caterer',
+  'Барбекю и гриль. Стейки, рёбра, овощи на углях. Живое приготовление, аромат костра.',
+  30, 75, 'Tashkent', 4.7, false,
+  ARRAY['bbq', 'grill', 'outdoor', 'live-cooking'],
+  '{"specialty": "bbq", "live_grilling": true, "outdoor_setup": true, "meat_specialist": true}'::jsonb
+),
+(gen_random_uuid(), gen_random_uuid(), 'Vegan Feast Catering', 'caterer',
+  'Веганское и вегетарианское меню. Креативные блюда без мяса. Здоровое питание, вкусно и красиво.',
+  35, 80, 'Tashkent', 4.6, true,
+  ARRAY['vegan', 'vegetarian', 'healthy', 'creative'],
+  '{"dietary": ["vegan", "vegetarian"], "organic": true, "allergy_friendly": true}'::jsonb
+);
+
+-- =====================
+-- FLORISTS (Флористы) - 10 items
+-- =====================
+
+INSERT INTO vendor_profiles (
+  id, user_id, business_name, category, description,
+  price_range_min, price_range_max, location, rating,
+  verified, styles, attributes
+) VALUES
+(gen_random_uuid(), gen_random_uuid(), 'Rose Garden Florist', 'florist',
+  'Букет невесты, бутоньерки, композиции. Только свежие цветы из Голландии и Эквадора.',
+  200, 800, 'Tashkent', 4.9, true,
+  ARRAY['roses', 'bridal', 'imported', 'fresh'],
+  '{"specialty": "bridal-bouquet", "flower_sources": ["holland", "ecuador"], "delivery_included": true}'::jsonb
+),
+(gen_random_uuid(), gen_random_uuid(), 'Wildflower Studio', 'florist',
+  'Полевые цветы, рустик стиль. Натуральная красота, эко-флористика, сезонные цветы.',
+  150, 500, 'Tashkent', 4.7, false,
+  ARRAY['wildflowers', 'rustic', 'eco', 'seasonal'],
+  '{"style": "rustic", "seasonal_flowers": true, "eco_friendly": true}'::jsonb
+),
+(gen_random_uuid(), gen_random_uuid(), 'Orchid Paradise', 'florist',
+  'Орхидеи, экзотика, редкие цветы. Роскошные композиции для премиум свадеб.',
+  300, 1200, 'Tashkent', 4.8, true,
+  ARRAY['orchids', 'exotic', 'luxury', 'rare'],
+  '{"specialty": "orchids", "exotic_flowers": true, "luxury_arrangements": true}'::jsonb
+);
+

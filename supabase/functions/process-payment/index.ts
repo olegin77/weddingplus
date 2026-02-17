@@ -74,10 +74,16 @@ Deno.serve(async (req) => {
       throw new Error('Booking not found or unauthorized')
     }
 
-    // Validate amount matches booking price (allow 0.01 tolerance for floating point)
-    const bookingPrice = Number(booking.price);
-    if (Math.abs(amount - bookingPrice) > 0.01) {
-      throw new Error(`Payment amount (${amount}) does not match booking price (${bookingPrice})`);
+    // Validate amount matches booking price using integer comparison to avoid floating point issues
+    const bookingPriceCents = Math.round(Number(booking.price) * 100);
+    const amountCents = Math.round(amount * 100);
+    if (amountCents !== bookingPriceCents) {
+      throw new Error('Payment amount does not match booking price');
+    }
+
+    // Validate amount is within reasonable bounds
+    if (amount <= 0 || amount > 1000000000) {
+      throw new Error('Invalid payment amount');
     }
 
     // Create payment record

@@ -11,8 +11,6 @@ services:
       POSTGRES_PASSWORD: WeddingPlus2026SecurePassword
     volumes:
       - postgres-data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
     networks:
       - weddingplus-network
 
@@ -25,23 +23,23 @@ services:
       DATABASE_URL: postgresql://weddinguz_admin:WeddingPlus2026SecurePassword@postgres:5432/weddinguz_prod
       JWT_SECRET: wedding-plus-jwt-secret-key-2026-super-secure
       NODE_ENV: production
+    depends_on:
+      - postgres
     ports:
       - "3000:3000"
     networks:
       - weddingplus-network
-    depends_on:
-      - postgres
 
   frontend:
     image: weddinguz-frontend:latest
     container_name: weddingplus-frontend
     restart: unless-stopped
+    depends_on:
+      - api
     ports:
       - "80:80"
     networks:
       - weddingplus-network
-    depends_on:
-      - api
 
 volumes:
   postgres-data:

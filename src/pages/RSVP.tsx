@@ -14,8 +14,6 @@ import { useTranslation } from "react-i18next";
 
 interface GuestData {
   full_name: string;
-  email: string | null;
-  phone: string | null;
   plus_one_allowed: boolean | null;
   plus_one_name: string | null;
   attendance_status: string | null;
@@ -92,10 +90,10 @@ export default function RSVP() {
           .eq("id", invitationData.id);
       }
 
-      // Fetch guest data
+      // Fetch guest data - only fields needed for RSVP form
       const { data: guestData, error: guestError } = await supabase
         .from("guests")
-        .select("*")
+        .select("full_name, plus_one_allowed, plus_one_name, attendance_status, dietary_restrictions")
         .eq("id", invitationData.guest_id)
         .single();
 
@@ -405,11 +403,6 @@ export default function RSVP() {
         {/* Footer */}
         <div className="text-center mt-8 text-sm text-muted-foreground">
           <p>Если у вас есть вопросы, свяжитесь с организаторами</p>
-          {guest.email && (
-            <p className="mt-1">
-              Подтверждение будет отправлено на: {guest.email}
-            </p>
-          )}
         </div>
       </div>
     </div>
